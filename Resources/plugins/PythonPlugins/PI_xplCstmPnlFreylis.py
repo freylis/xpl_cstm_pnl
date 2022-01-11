@@ -12,7 +12,6 @@ log = frey_utils.echo
 
 
 class PythonInterface:
-    cfg_filename = 'cstm_pnl_frey_config.yml'
 
     def __init__(self):
         self.Name = "xplCstmPnlFreylis"
