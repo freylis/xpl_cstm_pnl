@@ -9,3 +9,5 @@ This plugin [xppython3](https://xppython3.readthedocs.io/en/stable/index.html) b
 #### Configuration
 
 #### Usage
+
+[now works](docs/success_events.md)

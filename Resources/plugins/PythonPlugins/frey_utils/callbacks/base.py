@@ -8,7 +8,7 @@ class Callback:
     def __init__(self, *commands):
         self.commands = commands
 
-    def set_callbacks(self):
+    def set(self):
         for cmd in self.commands:
             xp.registerCommandHandler(cmd.command, self.callback)
 
