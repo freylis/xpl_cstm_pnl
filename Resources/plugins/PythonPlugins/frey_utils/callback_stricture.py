@@ -18,6 +18,12 @@ CALLBACK_STRUCTURE = {
     'frey_utils.CallbackThrottleChange': (
         'sim/engines/throttle_up',
         'sim/engines/throttle_down',
+        'sim/engines/prop_down',
+        'sim/engines/prop_up',
+        'sim/engines/idle_hi_lo_toggle',
+        # subscribe to dataref
+        'sim/cockpit2/engine/actuators/throttle_ratio',
+
     ),
 
     # speed brakes

@@ -15,7 +15,9 @@ def error_log(func):
     return handler
 
 
-def echo(msg):
+def echo(msg, error=False):
+    if error:
+        msg = f'\tERROR\t: {msg}'
     xp.log(msg)
     now = datetime.datetime.now()
     with open('D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log', 'a') as f:
