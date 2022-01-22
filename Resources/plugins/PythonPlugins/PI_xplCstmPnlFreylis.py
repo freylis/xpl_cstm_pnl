@@ -68,7 +68,10 @@ class PythonInterface:
 
             commands = []
             for cmd in commands_set:
-                command = frey_utils.CustomCommand(cmd)
+                if isinstance(cmd, str):
+                    command = frey_utils.CustomCommand(cmd)
+                elif isinstance(cmd, frey_utils.Command):
+                    command = cmd
                 commands.append(command)
                 good += 1
             callback = callback_cls(*commands)

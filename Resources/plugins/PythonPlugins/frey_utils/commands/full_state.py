@@ -1,7 +1,6 @@
 import xp
 
 from . import base
-from .. import utils
 from .. import state_manager
 
 

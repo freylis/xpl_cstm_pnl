@@ -19,7 +19,9 @@ class State:
         """
         Получить подстроку с состоянием для команды
         """
-        return str(self.get_percent_value())[:self.repr_length]
+        val = str(self.get_percent_value())[:self.repr_length]
+        val = val.rjust(self.repr_length, '0')
+        return val[:self.repr_length]
 
 
 class StateInt(State):
@@ -39,4 +41,4 @@ class StateFloat(State):
         return val
 
     def get_percent_value(self):
-        return self.get_value() * 100
+        return int(self.get_value() * 100)

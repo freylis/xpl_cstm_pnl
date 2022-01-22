@@ -13,9 +13,8 @@ class Command:
         self.command_sender = self.sender(command=self)
 
     def execute(self):
-        utils.echo(f'1/Execute command {self}')
+        utils.echo(f'Execute command {self}')
         xp.commandOnce(self.command)
-        utils.echo(f'2/Complete command {self}')
 
     @property
     def command(self):
