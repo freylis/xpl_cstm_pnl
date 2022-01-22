@@ -12,3 +12,4 @@ from .engine import CommandEngineFirstDown
 from .engine import *
 from .speed_brakes import CommandSpeedBrakeUp
 from .speed_brakes import CommandSpeedBrakeDown
+from full_state import CommandFullState

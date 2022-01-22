@@ -13,6 +13,9 @@ log = frey_utils.echo
 
 class PythonInterface:
     cfg_filename = 'cstm_pnl_frey_config.yml'
+    to_register_commands = [
+        frey_utils.CommandFullState,
+    ]
 
     def __init__(self):
         self.Name = "xplCstmPnlFreylis"
@@ -46,6 +49,13 @@ class PythonInterface:
 
     @frey_utils.error_log
     def _config_handle(self):
+        # register my custom commands
+        for cmd in [
+            frey_utils.CommandFullState,
+        ]:
+            frey_utils.echo(f'Register custom command {cmd}')
+            cmd.register()
+
         # subscribe callbacks to commands
         good, bad = 0, 0
         for callback_path, commands_set in frey_utils.CALLBACK_STRUCTURE.items():
@@ -70,4 +80,3 @@ class PythonInterface:
         schedule_loop_id = xp.createFlightLoop(frey_utils.scheduled_callback)
         xp.scheduleFlightLoop(schedule_loop_id, interval=0.3)
         xp.speakString("[frey] Run loop event")
-

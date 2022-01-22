@@ -22,7 +22,5 @@ class Callback:
             success_commands.append(cmd)
         utils.echo(f'Subscribed {success_commands!r} for {self}')
 
-    @classmethod
-    def callback(cls, commandRef, phase, refCon):
-        utils.echo(f'Callback for {commandRef} / p:{phase!r}')
+    def callback(self, commandRef, phase, refCon):
         return 1
