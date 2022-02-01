@@ -8,13 +8,39 @@
 #include <EncButton.h>
 
 
+/*
+ Define all pin constants
+*/
+// gear
+const unsigned int pinGearToggleButtonIn = 53;
+const unsigned int pinGearToggleButtonOut = 52;
+// speed brakes
+const unsigned int pinSpeedBrakesEncoderCLK = 51;
+const unsigned int pinSpeedBrakesEncoderDIO = 50;
+const unsigned int pinSpeedBrakesDisplayCLK = 49;
+const unsigned int pinSpeedBrakesDisplayDIO = 48;
+// flaps
+const unsigned int pinFlapsEncoderCLK = 47;
+const unsigned int pinFlapsEncoderDIO = 46;
+const unsigned int pinFlapsDisplayCLK = 45;
+const unsigned int pinFlapsDisplayDIO = 44;
+// vertical trim
+const unsigned int pinVertTrimEncoderCLK = 43;
+const unsigned int pinVertTrimEncoderDIO = 42;
+const unsigned int pinVertTrimDisplayCLK = 41;
+const unsigned int pinVertTrimDisplayDIO = 40;
+
+
+GyverTM1637 displaySpeedBrakes(pinSpeedBrakesDisplayCLK, pinSpeedBrakesDisplayDIO);
+GyverTM1637 displayFlaps(pinFlapsDisplayCLK, pinFlapsDisplayDIO);
+GyverTM1637 displayVertTrim(pinVertTrimDisplayCLK, pinVertTrimDisplayDIO);
+EncButton<EB_TICK, pinSpeedBrakesEncoderCLK, pinSpeedBrakesEncoderDIO> encoderSpeedBrakes;
+EncButton<EB_TICK, pinFlapsEncoderCLK, pinFlapsEncoderDIO> encoderFlaps;
+EncButton<EB_TICK, pinVertTrimEncoderCLK, pinVertTrimEncoderDIO> encoderVertTrim;
+
 
 bool lastGearState = false;
 bool isGearUp = false;
-unsigned int flapsDegrees = 0;
-
-const int PIN_GEAR_DISPLAY = 11;
-const int PIN_GEAR_BUTTON = 10;
 
 
 void sendLog(String message) {
@@ -38,7 +64,6 @@ void commandGearUp() {
   digitalWrite(PIN_GEAR_DISPLAY, LOW);
 }
 
-
 void commandGearDown() {
   sendCommand("GEARDOWN");
   isGearUp = false;
@@ -59,14 +84,39 @@ void handleGearFromFullState(String fullState) {
 
 
 void handleSpeedBrakeFromFullState(String fullState) {
-  String sbrake = fullState.substring(28, 29);
-  sendLog("Handle speedbrabkes " + sbrake);
+  /*
+  int rbrake = fullState.substring(28, 31).toInt();
+  byte sbrake[4];
+  sendLog("Handle rspeedbrabkes " + sbrake);
+  switch (rbrake) {
+    case 0:
+      sbrake = {_D, _o, _u, _n};
+      break;
+    case -50:
+      sbrake = {_A, _r, _d};
+      break;
+    case 98:
+      sbrake = {_F, _l, _D, _t};
+      break;
+    case 100:
+      sbrake[0] = _U;
+      sbrake[1] = _P;
+      break;
+    default:
+      sbrake[0] = _E;
+      sbrake[1] = _r;
+      sbrake[2] = _r;
+      // {_E, _r, _r};
+      break;
+  };
+  */
+  //sendLog("Draw sbrake " + (String)sbrake);
 }
 
 
 void setFlaps(int dFlaps) {
-  flapsDegrees = dFlaps;
-  sendLog("Write " + (String)dFlaps + " in flaps display");
+  flasDegrees = dFlaps;
+  sendLog("Draw " + (String)dFlaps + " in flaps display");
 }
 
 
@@ -206,38 +256,52 @@ void preparePins() {
   /*
    * Подготовим пины к работе
    */
-   
+  pinMode(pinGearToggleButtonIn, INPUT_PULLUP);
+  pinMode(pinGearToggleButtonOut, OUTPUT);
+  // speed brakes
+  pinMode(pinSpeedBrakesEncoderCLK, INPUT);
+  pinMode(pinSpeedBrakesEncoderDIO, INPUT);
+  pinMode(pinSpeedBrakesDisplayCLK, OUTPUT);
+  pinMode(pinSpeedBrakesDisplayDIO, OUTPUT);
+  // flaps
+  pinMode(pinFlapsEncoderCLK, INPUT);
+  pinMode(pinFlapsEncoderDIO, INPUT);
+  pinMode(pinFlapsDisplayCLK, OUTPUT);
+  pinMode(pinFlapsDisplayDIO, OUTPUT);
+  // vertical trim
+  pinMode(pinVertTrimEncoderCLK, INPUT);
+  pinMode(pinVertTrimEncoderDIO, INPUT);
+  pinMode(pinVertTrimDisplayCLK, OUTPUT);
+  pinMode(pinVertTrimDisplayDIO, OUTPUT);
+
 }
-
-int pos_encoder = 1; // Первоначальная позиция енкодера равна 0
-int Last;            // Тут всегда будет лежать предыдущие значение положения енкодера 
-int DT;
-boolean left;
-int CLK = 12;
-int DIO = 13;
-
-const int pin_CLK = 7;
-const int pin_DT = 8;
-
-
-GyverTM1637 disp(CLK, DIO);
-EncButton<EB_TICK, pin_CLK, pin_DT> enc;
 
 
 void setup() { 
+  Serial.begin (9600);
+  preparePins();
+  /*
+   * display + encoder
    pinMode (pin_DT, INPUT);
    pinMode (pin_CLK, INPUT);
    Last = digitalRead(pin_DT); // Считываем значение на выходе DT и запоминаем его
-   Serial.begin (9600);
    disp.clear();
    disp.brightness(5);
    disp.displayInt(pos_encoder);
+   */
+
 }
 
 void loop() {
   // listen to external command
-  handleExternalCommand();
+  // handleExternalCommand();
 
+  int lVal = digitalRead(toggleButtonLeft);
+  int rVal = digitalRead(toggleButtonRight);
+  Serial.println("l: " + (String)lVal + " | " + (String)rVal + " :r");
+
+  /*
+   * encoder + display
   enc.tick();
 
   if (enc.turn()) {
@@ -265,5 +329,6 @@ void loop() {
     disp.displayInt(pos_encoder);
     Serial.println("write " + (String)pos_encoder);
   };
+    */
 
-} 
+}
