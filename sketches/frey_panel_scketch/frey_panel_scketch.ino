@@ -27,8 +27,8 @@ const unsigned int pinFlapsDisplayDIO = 11;
 // vertical trim
 const unsigned int pinVertTrimEncoderCLK = 12;
 const unsigned int pinVertTrimEncoderDIO = 13;
-const unsigned int pinVertTrimDisplayCLK = 12;
-const unsigned int pinVertTrimDisplayDIO = 13;
+const unsigned int pinVertTrimDisplayCLK = 18;
+const unsigned int pinVertTrimDisplayDIO = 19;
 
 
 GyverTM1637 displaySpeedBrakes(pinSpeedBrakesDisplayCLK, pinSpeedBrakesDisplayDIO);
@@ -268,21 +268,21 @@ void handleFlapsFromFullState(String fullState) {
 void setVerticalTrimValue(int iVertTrim) {
    verticalTrimValue = iVertTrim;
    String sVertTrim = (String)iVertTrim;
-   sendLog("Draw vtrim " + sVertTrim);
    if (iVertTrim < -9) {
       // -63 .. -10
-      displayVertTrim.displayByte(3, _empty);
-      displayVertTrim.displayByte(2, _dash);
-      displayVertTrim.display(1, (int)sVertTrim[1]);
-      displayVertTrim.display(0, (int)sVertTrim[2]);
+      displayVertTrim.displayByte(0, _empty);
+      displayVertTrim.displayByte(1, _dash);
+      displayVertTrim.display(2, ((String)sVertTrim[1]).toInt());
+      displayVertTrim.display(3, ((String)sVertTrim[2]).toInt());
       sendLog("D1:" + sVertTrim + "/" + sVertTrim[1] + "/" + sVertTrim[2]);
+      displayVertTrim.displayInt(iVertTrim);
 
    } else if (iVertTrim < 0) {
       // -9..-1
       displayVertTrim.displayByte(0, _empty);
       displayVertTrim.displayByte(1, _empty);
       displayVertTrim.displayByte(2, _dash);
-      displayVertTrim.display(3, (int)sVertTrim[1]);
+      displayVertTrim.display(3, ((String)sVertTrim[1]).toInt());
       sendLog("D2");
 
    } else if (iVertTrim == 0) {
@@ -298,23 +298,23 @@ void setVerticalTrimValue(int iVertTrim) {
      displayVertTrim.displayByte(0, _empty);
      displayVertTrim.displayByte(1, _empty);
      displayVertTrim.displayByte(2, _empty);
-     displayVertTrim.display(3, iVertTrim);
+     displayVertTrim.display(3, ((String)sVertTrim[0]).toInt());
      sendLog("D4");
 
    } else if (iVertTrim < 100) {
      // 11..99
      displayVertTrim.displayByte(0, _empty);
      displayVertTrim.displayByte(1, _empty);
-     displayVertTrim.display(2, (int)sVertTrim[0]);
-     displayVertTrim.display(3, (int)sVertTrim[1]);
+     displayVertTrim.display(2, ((String)sVertTrim[0]).toInt());
+     displayVertTrim.display(3, ((String)sVertTrim[1]).toInt());
      sendLog("D5");
 
    } else {
      // 100..999
      displayVertTrim.displayByte(0, _empty);
-     displayVertTrim.display(1, (int)sVertTrim[0]);
-     displayVertTrim.display(2, (int)sVertTrim[1]);
-     displayVertTrim.display(3, (int)sVertTrim[2]);
+     displayVertTrim.display(1, ((String)sVertTrim[0]).toInt());
+     displayVertTrim.display(2, ((String)sVertTrim[1]).toInt());
+     displayVertTrim.display(3, ((String)sVertTrim[2]).toInt());
      sendLog("D6");
    }
 }
@@ -472,6 +472,7 @@ void afterStartCheckList() {
   delay(2000);
 
   executeCommand("[frey-cmd-x] STATEFULL 100__-50__037__-65");
+  sendLog("Send start command [frey-cmd-x] STATEFULL 100__-50__037__-65");
   sendLog("After start checklist complete");
 }
 
