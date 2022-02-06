@@ -67,11 +67,13 @@ void commandGearUp() {
   digitalWrite(pinGearToggleButtonOut, LOW);
 }
 
+
 void commandGearDown() {
   sendCommand("GEARDOWN");
   isGearUp = false;
   digitalWrite(pinGearToggleButtonOut, HIGH);
 }
+
 
 void speedBrakeDown() {
   displaySpeedBrakes.displayByte(0, _D);
@@ -219,8 +221,6 @@ void setFlaps(int dFlaps) {
       break;
 
   }
-  
-  
   sendLog("Draw " + (String)dFlaps + " in flaps display");
 }
 
@@ -274,7 +274,6 @@ void setVerticalTrimValue(int iVertTrim) {
       displayVertTrim.displayByte(1, _dash);
       displayVertTrim.display(2, ((String)sVertTrim[1]).toInt());
       displayVertTrim.display(3, ((String)sVertTrim[2]).toInt());
-      sendLog("D1:" + sVertTrim + "/" + sVertTrim[1] + "/" + sVertTrim[2]);
       displayVertTrim.displayInt(iVertTrim);
 
    } else if (iVertTrim < 0) {
@@ -283,7 +282,6 @@ void setVerticalTrimValue(int iVertTrim) {
       displayVertTrim.displayByte(1, _empty);
       displayVertTrim.displayByte(2, _dash);
       displayVertTrim.display(3, ((String)sVertTrim[1]).toInt());
-      sendLog("D2");
 
    } else if (iVertTrim == 0) {
       // 0
@@ -291,7 +289,6 @@ void setVerticalTrimValue(int iVertTrim) {
       displayVertTrim.displayByte(1, _empty);
       displayVertTrim.displayByte(2, _empty);
       displayVertTrim.display(3, 0);
-      sendLog("D3");
 
    } else if (iVertTrim < 10) {
      // 1..9
@@ -299,7 +296,6 @@ void setVerticalTrimValue(int iVertTrim) {
      displayVertTrim.displayByte(1, _empty);
      displayVertTrim.displayByte(2, _empty);
      displayVertTrim.display(3, ((String)sVertTrim[0]).toInt());
-     sendLog("D4");
 
    } else if (iVertTrim < 100) {
      // 11..99
@@ -307,7 +303,6 @@ void setVerticalTrimValue(int iVertTrim) {
      displayVertTrim.displayByte(1, _empty);
      displayVertTrim.display(2, ((String)sVertTrim[0]).toInt());
      displayVertTrim.display(3, ((String)sVertTrim[1]).toInt());
-     sendLog("D5");
 
    } else {
      // 100..999
@@ -315,7 +310,6 @@ void setVerticalTrimValue(int iVertTrim) {
      displayVertTrim.display(1, ((String)sVertTrim[0]).toInt());
      displayVertTrim.display(2, ((String)sVertTrim[1]).toInt());
      displayVertTrim.display(3, ((String)sVertTrim[2]).toInt());
-     sendLog("D6");
    }
 }
 
@@ -326,8 +320,6 @@ void handleVerticalTrimFromFullState(String fullState) {
    * vertical trim is ddd: 38-41 position
    */
    unsigned int iVertTrim = fullState.substring(38, 41).toInt();
-   // из-за дисплея я вынужден рисовать каждый знак отдельно
-   sendLog("Set vtrim " + (String)iVertTrim);
    setVerticalTrimValue(iVertTrim);
 }
 
@@ -405,11 +397,56 @@ void calcGear() {
 }
 
 
+void listenSpeedBrakes() {
+    /* Соглашение отпавляемого события
+        [frey-cmd-a] SPEEDBRAKE_UP_ONE
+        [frey-cmd-a] SPEEDBRAKE_DOWN_ONE
+    */
+    encoderSpeedBrakes.tick();
+    if (encoderSpeedBrakes.left()) {
+        sendSelfCommand("SPEEDBRAKE_DOWN_ONE");
+    } else if (encoderSpeedBrakes.right()) {
+        sendSelfCommand("SPEEDBRAKE_UP_ONE");
+    };
+}
+
+
+void listenFlaps() {
+  /* Соглашение отправляемого сообщения
+   *  [frey-cmd-a] FLAPS_UP_ONE
+   *  [frey-cmd-a] FLAPS_DOWN_ONE
+   */
+   encoderFlaps.tick();
+   if (encoderFlaps.left()) {
+        sendSelfCommand("FLAPS_DOWN_ONE");
+   } else if (encoderFlaps.right()) {
+        sendSelfCommand("FLAPS_UP_ONE");
+   };
+}
+
+
+void listenVerticalTrim() {
+  /* Соглашение отправляемого сообщения
+   * [frey-cmd-a] VTRIM_UP_ONE
+   * [frey-cmd-a] VTRIM_DOWN_ONE
+   */
+   encoderVertTrim.tick();
+   if (encoderVertTrim.left()) {
+        sendSelfCommand("VTRIM_DOWN_ONE");
+   } else if (encoderVertTrim.right()) {
+        sendSelfCommand("VTRIM_UP_ONE");
+   };
+}
+
+
 void listenMyself() {
   /*
    * Слушать себя самого, выяснить какие команды нужно послать
    */
   calcGear();
+  listenSpeedBrakes();
+  listenFlaps();
+  listenVerticalTrim();
 }
 
 
@@ -428,18 +465,18 @@ void preparePins() {
   pinMode(pinGearToggleButtonIn, INPUT_PULLUP);
   pinMode(pinGearToggleButtonOut, OUTPUT);
   // speed brakes
-  pinMode(pinSpeedBrakesEncoderCLK, INPUT);
-  pinMode(pinSpeedBrakesEncoderDIO, INPUT);
+  pinMode(pinSpeedBrakesEncoderCLK, INPUT_PULLUP);
+  pinMode(pinSpeedBrakesEncoderDIO, INPUT_PULLUP);
   pinMode(pinSpeedBrakesDisplayCLK, OUTPUT);
   pinMode(pinSpeedBrakesDisplayDIO, OUTPUT);
   // flaps
-  pinMode(pinFlapsEncoderCLK, INPUT);
-  pinMode(pinFlapsEncoderDIO, INPUT);
+  pinMode(pinFlapsEncoderCLK, INPUT_PULLUP);
+  pinMode(pinFlapsEncoderDIO, INPUT_PULLUP);
   pinMode(pinFlapsDisplayCLK, OUTPUT);
   pinMode(pinFlapsDisplayDIO, OUTPUT);
   // vertical trim
-  pinMode(pinVertTrimEncoderCLK, INPUT);
-  pinMode(pinVertTrimEncoderDIO, INPUT);
+  pinMode(pinVertTrimEncoderCLK, INPUT_PULLUP);
+  pinMode(pinVertTrimEncoderDIO, INPUT_PULLUP);
   pinMode(pinVertTrimDisplayCLK, OUTPUT);
   pinMode(pinVertTrimDisplayDIO, OUTPUT);
 
@@ -471,26 +508,17 @@ void afterStartCheckList() {
 
   delay(2000);
 
-  executeCommand("[frey-cmd-x] STATEFULL 100__-50__037__-65");
-  sendLog("Send start command [frey-cmd-x] STATEFULL 100__-50__037__-65");
+  sendLog("Panel enabled. Wait for xplane.");
+  // [frey-cmd-x] STATEFULL 100__-50__037__-65
   sendLog("After start checklist complete");
 }
 
 
 void setup() { 
-  Serial.begin (9600);
+  Serial.begin(9600);
+  Serial.setTimeout(30);
   preparePins();
   afterStartCheckList();
-  /*
-   * display + encoder
-   pinMode (pin_DT, INPUT);
-   pinMode (pin_CLK, INPUT);
-   Last = digitalRead(pin_DT); // Считываем значение на выходе DT и запоминаем его
-   disp.clear();
-   disp.brightness(5);
-   disp.displayInt(pos_encoder);
-   */
-
 }
 
 void loop() {
@@ -499,36 +527,5 @@ void loop() {
 
   // listen to external command
   handleExternalCommand();
-
-  /*
-   * encoder + display
-  enc.tick();
-
-  if (enc.turn()) {
-    if (enc.left()) {
-      if (enc.fast()) {
-        Serial.println("isfast left");
-        pos_encoder -= 10;
-      } else {
-        pos_encoder -= 1;
-      }
-    } else if (enc.right()) {
-      if (enc.fast()) {
-        pos_encoder += 10;
-        Serial.println("isfast right");
-      } else {
-        pos_encoder += 1;
-      }
-    };
-    if (pos_encoder > 360) {
-      pos_encoder = 1;
-    }
-    else if (pos_encoder < 1) {
-      pos_encoder = 360;
-    };
-    disp.displayInt(pos_encoder);
-    Serial.println("write " + (String)pos_encoder);
-  };
-    */
 
 }
