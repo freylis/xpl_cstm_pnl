@@ -68,10 +68,14 @@ class ArduinoToXplane(Race):
 
 
 class XplaneToArduino(Race):
-    command_regexp = re.compile(r'^\[frey-cmd-x] (\w+)\s*$', flags=re.I)
+    command_regexp = re.compile(r'^\[frey-cmd-x] ([\w ]+)\s*$', flags=re.I)
     command_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_x.log'
     log_regexp = re.compile(r'\[frey-log-x] (\w+)', flags=re.I)
     log_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log'
+
+    def __init__(self):
+        super().__init__()
+        self.future_commands = []
 
     def lap(self):
         super().lap()
@@ -93,6 +97,8 @@ class XplaneToArduino(Race):
         if cmd is not None:
             self.handle_command(msg)
             return
+        if msg.startswith('[frey-cmd-x]'):
+            self.future_commands.append(msg)
         self.log(f'Непонятное сообщение: {msg!r}')
 
     def handle_command(self, cmd):

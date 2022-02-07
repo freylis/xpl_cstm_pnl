@@ -10,8 +10,8 @@ class CommandFullState(base.Command):
     """
     positions = [
         state_manager.StateGear,
-        state_manager.StateFlaps,
         state_manager.StateSpeedBrakes,
+        state_manager.StateFlaps,
         state_manager.StateVerticalTrim,
     ]
     cmd = 'frey/command/send_full_state'
@@ -40,4 +40,4 @@ class CommandFullState(base.Command):
             state = state_cls()
             parts.append(state.get_cmd_part())
         result_str = '__'.join(parts)
-        return f'[frey-cmd-x] FULLSTATE {result_str}'
+        return f'[frey-cmd-x] STATEFULL {result_str}'

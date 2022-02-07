@@ -8,6 +8,9 @@
 #include <EncButton.h>
 
 
+const bool DEBUG = false;
+
+
 /*
  Define all pin constants
 */
@@ -47,7 +50,9 @@ int verticalTrimValue = 0;
 
 
 void sendLog(String message) {
-  Serial.println("[frey-log-a] " + message);
+  if (DEBUG) {
+    Serial.println("[frey-log-a] " + message);
+  };
 }
 
 
@@ -89,7 +94,6 @@ void speedBrakeArmed() {
   displaySpeedBrakes.displayByte(1, _A);
   displaySpeedBrakes.displayByte(2, _r);
   displaySpeedBrakes.displayByte(3, _d);
-
   speedBrakeState = 1;
   sendLog("Draw sbrake armed");
 }
@@ -98,7 +102,6 @@ void speedBrakeFlightDetent() {
   displaySpeedBrakes.displayByte(1, _l);
   displaySpeedBrakes.displayByte(2, _D);
   displaySpeedBrakes.displayByte(3, _t);
-
   speedBrakeState = 2;
   sendLog("Draw sbrake flight detent");
 }
@@ -107,7 +110,6 @@ void speedBrakeUp() {
   displaySpeedBrakes.displayByte(1, _empty);
   displaySpeedBrakes.displayByte(2, _U);
   displaySpeedBrakes.displayByte(3, _P);
-
   speedBrakeState = 3;
   sendLog("Draw sbrake flight up");
 }
@@ -116,7 +118,6 @@ void speedBrakeUnknown() {
   displaySpeedBrakes.displayByte(1, _E);
   displaySpeedBrakes.displayByte(2, _r);
   displaySpeedBrakes.displayByte(3, _r);
-
   speedBrakeState = 0;
   sendLog("Draw sbrake error");
 }
@@ -399,14 +400,14 @@ void calcGear() {
 
 void listenSpeedBrakes() {
     /* Соглашение отпавляемого события
-        [frey-cmd-a] SPEEDBRAKE_UP_ONE
-        [frey-cmd-a] SPEEDBRAKE_DOWN_ONE
+        [frey-cmd-a] SPEEDBRAKES_UP_ONE
+        [frey-cmd-a] SPEEDBRAKES_DOWN_ONE
     */
     encoderSpeedBrakes.tick();
     if (encoderSpeedBrakes.left()) {
-        sendSelfCommand("SPEEDBRAKE_DOWN_ONE");
+        sendSelfCommand("SPEEDBRAKES_DOWN_ONE");
     } else if (encoderSpeedBrakes.right()) {
-        sendSelfCommand("SPEEDBRAKE_UP_ONE");
+        sendSelfCommand("SPEEDBRAKES_UP_ONE");
     };
 }
 

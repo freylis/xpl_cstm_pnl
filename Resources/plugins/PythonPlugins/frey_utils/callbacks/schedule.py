@@ -13,6 +13,12 @@ command_regexp = re.compile(r'\[frey-cmd-a] (\w+)\s*', flags=re.I)
 COMMANDS_MAPPING = {
     commands.CommandGearDown.short_cmd: commands.CommandGearDown,
     commands.CommandGearUp.short_cmd: commands.CommandGearUp,
+    commands.CommandFlapsUp.short_cmd: commands.CommandFlapsUp,
+    commands.CommandFlapsDown.short_cmd: commands.CommandFlapsDown,
+    commands.CommandSpeedBrakeUp.short_cmd: commands.CommandSpeedBrakeUp,
+    commands.CommandSpeedBrakeDown.short_cmd: commands.CommandSpeedBrakeDown,
+    commands.CommandVertTrimUp.short_cmd: commands.CommandVertTrimUp,
+    commands.CommandVertTrimDown.short_cmd: commands.CommandVertTrimDown,
 }
 
 
@@ -36,6 +42,7 @@ def scheduled_callback(sinceLast, elapsedTime, counter, refCon):
     with open(CMD_PATH, 'w', encoding='utf-8') as f:
         f.truncate()
 
+    commands.CommandFullState().send_command()
     # utils.echo('Throttle changed')
     # throttle_ref = xp.findDataRef('sim/cockpit2/engine/actuators/throttle_ratio_all')
     # throttle_val = xp.getDataf(throttle_ref)
