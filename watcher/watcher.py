@@ -1,9 +1,34 @@
 import re
 import time
 import serial
+import logging
+from logging import handlers
 
 
-pipe = serial.Serial('COM8', baudrate=9600, timeout=0)
+# prepare logger
+logger = logging.getLogger('frey-panel-watcher')
+logger.setLevel(logging.INFO)
+
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s')
+
+f_handler = handlers.TimedRotatingFileHandler(
+    'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log',
+    when='D', encoding='utf-8'
+)
+f_handler.setFormatter(formatter)
+c_handler = logging.StreamHandler()
+c_handler.setFormatter(formatter)
+
+logger.addHandler(f_handler)
+logger.addHandler(c_handler)
+
+try:
+    pipe = serial.Serial('COM8', baudrate=9600, timeout=0)
+except serial.SerialException as exc:
+    logger.error(str(exc))
+    logger.error('Exit with status 0')
+    import sys
+    sys.exit(0)
 
 
 class Race:
@@ -15,7 +40,7 @@ class Race:
         self.l_num += 1
 
     def log(self, msg):
-        print(msg)
+        logger.info(msg)
 
 
 class ArduinoToXplane(Race):

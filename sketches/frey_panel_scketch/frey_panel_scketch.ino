@@ -2,6 +2,7 @@
  * Welcome to freylis plane panel sketch
  */
 
+#define EB_BETTER_ENC true;
 #define EB_HALFSTEP_ENC true;
 
 #include <GyverTM1637.h>
