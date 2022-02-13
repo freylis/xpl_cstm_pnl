@@ -4,6 +4,7 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
+
 class FreySpeedBrakes {
   public:
     FreySpeedBrakes(unsigned char pinEncCLK, unsigned char pinEncDIO, unsigned char pinDisplayCLK, unsigned char pinDisplayDIO);
@@ -19,7 +20,7 @@ class FreySpeedBrakes {
     unsigned char _pinEncDIO;
     unsigned char _pinDisplayCLK;
     unsigned char _pinDisplayDIO;
-    EncButton _enc;
+    // EncButton _enc;
     GyverTM1637 _display;
 };
 
