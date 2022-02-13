@@ -221,7 +221,6 @@ void setFlaps(int dFlaps) {
       displayFlaps.displayInt(dFlaps);
       displayFlaps.displayByte(0, _dash);
       break;
-
   }
   sendLog("Draw " + (String)dFlaps + " in flaps display");
 }
