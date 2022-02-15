@@ -5,13 +5,6 @@
 #include <EncButton.h>
 #include "FreyCommand.h"
 
-#define PIN_FLAPS_ENC_CLK 0
-#define PIN_FLAPS_ENC_DIO 0
-
-
-// GyverTM1637 flapsDisplay(PIN_FLAPS_ENC_CLK, PIN_FLAPS_ENC_DIO);
-EncButton<EB_TICK, PIN_FLAPS_DISPLAY_CLK, PIN_FLAPS_DISPLAY_DIO> flapsEnc;
-
 
 class FreyFlaps {
 
@@ -21,15 +14,22 @@ class FreyFlaps {
     unsigned char _pinEncDIO;
     unsigned char _pinDisplayCLK;
     unsigned char _pinDisplayDIO;
-    GyverTM1637() flapsDisplay;
+    GyverTM1637 flapsDisplay;
+
+    EncButton flapsEncoder;
+
+    // <EB_TICK, pinSpeedBrakesEncoderCLK, pinSpeedBrakesEncoderDIO> encoderSpeedBrakes;
 
   public:
-    FreyFlaps(unsigned char pinEncCLK, unsigned char pinEncDIO, unsigned char pinDisplayCLK, unsigned char pinDisplayDIO) {
+    FreyFlaps(unsigned char pinEncCLK, unsigned char pinEncDIO, unsigned char pinDisplayCLK, unsigned char pinDisplayDIO)
+        :flapsDisplay(pinDisplayCLK, pinDisplayDIO),
+            flapsEnc<EB_TICK, pinEncCLK, pinEncDIO>
+//        :flapsEncoder(EB_TICK, pinEncCLK, pinEncDIO)
+    {
         unsigned char _pinEncCLK = pinEncCLK;
         unsigned char _pinEncDIO = pinEncDIO;
         unsigned char _pinDisplayCLK = pinEncCLK;
         unsigned char _pinDisplayDIO = pinEncDIO;
-        GyverTM1637 flapsDisplay(pinDisplayCLK, pinDisplayDIO);
     };
     /* call it once in setup func */
     void prepare() {
@@ -41,12 +41,12 @@ class FreyFlaps {
     };
     /* call it each loop and relax */
     void lap() {
-        flapsEnc.tick();
-        if (flapsEnc.left()) {
-            sendPanelCommand("FLAPS_DOWN_ONE");
-        } else if (flapsEnc.right()) {
-            sendPanelCommand("FLAPS_UP_ONE");
-        };
+//        flapsEnc.tick();
+//        if (flapsEnc.left()) {
+//            sendPanelCommand("FLAPS_DOWN_ONE");
+//        } else if (flapsEnc.right()) {
+//            sendPanelCommand("FLAPS_UP_ONE");
+//        };
     };
     void readFullState(String fullState) {
       unsigned int dFlaps = 10;

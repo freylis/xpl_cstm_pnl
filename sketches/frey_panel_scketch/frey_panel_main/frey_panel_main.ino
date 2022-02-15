@@ -16,9 +16,6 @@ FULLSTATE message format:
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
 
-#define PIN_FLAPS_ENC_CLK 4
-#define PIN_FLAPS_ENC_DIO 3
-
 byte pinGearUp = 1;
 byte pinGearDown = 2;
 byte pinGearLightUp = 3;
