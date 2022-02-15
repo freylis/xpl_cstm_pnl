@@ -1,52 +1,44 @@
 #ifndef FreyFlaps_h
 #define FreyFlaps_h
 
+#include "Arduino.h"
 #include <GyverTM1637.h>
 #include <EncButton.h>
 #include "FreyCommand.h"
+
+const unsigned int pinFlapsEncoderCLK = A5;
+const unsigned int pinFlapsEncoderDIO = A4;
+const unsigned int pinFlapsDisplayCLK = A7;
+const unsigned int pinFlapsDisplayDIO = A6;
+
+
+GyverTM1637 flapsDisplay(pinFlapsDisplayCLK, pinFlapsDisplayDIO);
+EncButton<EB_TICK, pinFlapsEncoderCLK, pinFlapsEncoderDIO> flapsEncoder;
 
 
 class FreyFlaps {
 
   private:
     unsigned char _flapsVal;
-    unsigned char _pinEncCLK;
-    unsigned char _pinEncDIO;
-    unsigned char _pinDisplayCLK;
-    unsigned char _pinDisplayDIO;
-    GyverTM1637 flapsDisplay;
-
-    EncButton flapsEncoder;
-
-    // <EB_TICK, pinSpeedBrakesEncoderCLK, pinSpeedBrakesEncoderDIO> encoderSpeedBrakes;
 
   public:
-    FreyFlaps(unsigned char pinEncCLK, unsigned char pinEncDIO, unsigned char pinDisplayCLK, unsigned char pinDisplayDIO)
-        :flapsDisplay(pinDisplayCLK, pinDisplayDIO),
-            flapsEnc<EB_TICK, pinEncCLK, pinEncDIO>
-//        :flapsEncoder(EB_TICK, pinEncCLK, pinEncDIO)
-    {
-        unsigned char _pinEncCLK = pinEncCLK;
-        unsigned char _pinEncDIO = pinEncDIO;
-        unsigned char _pinDisplayCLK = pinEncCLK;
-        unsigned char _pinDisplayDIO = pinEncDIO;
-    };
+    FreyFlaps() {};
     /* call it once in setup func */
     void prepare() {
         _flapsVal = 0;
-        pinMode(_pinEncCLK, INPUT_PULLUP);
-        pinMode(_pinEncDIO, INPUT_PULLUP);
-        pinMode(_pinDisplayCLK, OUTPUT);
-        pinMode(_pinDisplayDIO, OUTPUT);
+        pinMode(pinFlapsEncoderCLK, INPUT_PULLUP);
+        pinMode(pinFlapsEncoderDIO, INPUT_PULLUP);
+        pinMode(pinFlapsDisplayCLK, OUTPUT);
+        pinMode(pinFlapsDisplayDIO, OUTPUT);
     };
     /* call it each loop and relax */
     void lap() {
-//        flapsEnc.tick();
-//        if (flapsEnc.left()) {
-//            sendPanelCommand("FLAPS_DOWN_ONE");
-//        } else if (flapsEnc.right()) {
-//            sendPanelCommand("FLAPS_UP_ONE");
-//        };
+        flapsEncoder.tick();
+        if (flapsEncoder.left()) {
+            sendPanelCommand("FLAPS_DOWN_ONE");
+        } else if (flapsEncoder.right()) {
+            sendPanelCommand("FLAPS_UP_ONE");
+        };
     };
     void readFullState(String fullState) {
       unsigned int dFlaps = 10;
