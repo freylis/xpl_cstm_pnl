@@ -7,10 +7,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinCourseEncoderCLK = 47;
-const unsigned int pinCourseEncoderDIO = 46;
-const unsigned int pinCourseDisplayCLK = 49;
-const unsigned int pinCourseDisplayDIO = 48;
+const unsigned int pinCourseEncoderCLK = 4;
+const unsigned int pinCourseEncoderDIO = 5;
+const unsigned int pinCourseDisplayCLK = 2;
+const unsigned int pinCourseDisplayDIO = 3;
 
 
 EncButton<EB_TICK, pinCourseEncoderCLK, pinCourseEncoderDIO> courseEncoder;
@@ -21,6 +21,15 @@ class FreyCourse {
 
   private:
     void _setCourseDisplay(unsigned int courseValue) {
+      if (courseValue > 360 || courseValue < 0) {
+        sendLog("Invalid course: " + (String)courseValue);
+        vTrimDisplay.displayByte(0, _empty);
+        vTrimDisplay.displayByte(1, _E);
+        vTrimDisplay.displayByte(2, _r);
+        vTrimDisplay.displayByte(3, _r);
+        return;
+      };
+
       String sCourseValue = (String)courseValue;
       if (courseValue == 0) {
           vTrimDisplay.displayByte(0, _empty);
@@ -53,7 +62,7 @@ class FreyCourse {
 
   public:
     FreyCourse() {};
-    unsigned int courseValue = 0;
+    int courseValue = 0;
 
     /* call it once in setup func */
     void prepare() {
@@ -88,7 +97,9 @@ class FreyCourse {
     };
 
     void readFullState(String fullState) {
-      int iCourseValue = fullState.substring(37, 39).toInt();
+      String sCourse = fullState.substring(39, 42);
+      sendLog("Got course: " + sCourse);
+      int iCourseValue = sCourse.toInt();
       courseValue = iCourseValue;
       _setCourseDisplay(iCourseValue);
     };

@@ -6,20 +6,19 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinNav1EncoderIntCLK = 10;
-const unsigned int pinNav1EncoderIntDIO = 11;
-const unsigned int pinNav1EncoderFloatCLK = 12;
-const unsigned int pinNav1EncoderFloatDIO = 13;
-const unsigned int pinNav1ActiveDisplayCLK = 8;
-const unsigned int pinNav1ActiveDisplayDIO = 9;
-const unsigned int pinNav1StandbyDisplayCLK = 6;
-const unsigned int pinNav1StandbyDisplayDIO = 7;
-const unsigned int pinNav1SwitchStation = 50;
+const unsigned int pinNav1EncoderIntCLK = 5;
+const unsigned int pinNav1EncoderIntDIO = 4;
+const unsigned int pinNav1EncoderFloatCLK = 8;
+const unsigned int pinNav1EncoderFloatDIO = 9;
+const unsigned int pinNav1ActiveDisplayCLK = 6;
+const unsigned int pinNav1ActiveDisplayDIO = 7;
+const unsigned int pinNav1StandbyDisplayCLK = 2;
+const unsigned int pinNav1StandbyDisplayDIO = 3;
+const unsigned int pinNav1SwitchStation = 10;
 
 
 EncButton<EB_TICK, pinNav1EncoderIntCLK, pinNav1EncoderIntDIO> navIntEncoder;
-EncButton<EB_TICK, pinNav1EncoderFloatCLK, pinNav1EncoderFloatDIO> navFloatEncoder;
-EncButton<EB_TICK, pinNav1SwitchStation> navSwitchButton;
+EncButton<EB_TICK, pinNav1EncoderFloatCLK, pinNav1EncoderFloatDIO, pinNav1SwitchStation> navFloatEncoder;
 
 GyverTM1637 navActiveDisplay(pinNav1ActiveDisplayCLK, pinNav1ActiveDisplayDIO);
 GyverTM1637 navStandByDisplay(pinNav1StandbyDisplayCLK, pinNav1StandbyDisplayDIO);
@@ -28,10 +27,10 @@ GyverTM1637 navStandByDisplay(pinNav1StandbyDisplayCLK, pinNav1StandbyDisplayDIO
 class FreyNav {
     private:
         unsigned char intStandByFreq;
-        unsigned char floatStandByFreq;
+        int floatStandByFreq;
         unsigned char intActiveFreq;
         unsigned char floatActiveFreq;
-        void drawIntStandByFreq() {
+        void drawStandByFreq() {
             /*
                 Частота NAV может быть от 108.00 до 120.95
                 Задается она двумя отдельными энкодерами, один для единиц, другой для сотых
@@ -40,18 +39,30 @@ class FreyNav {
                     в XX десятки и единицы
                     в YY десятые и сотые
             */
+
           String sIntStandByFreq = (String)intStandByFreq;
+          sendLog("Draw standby " + ((String)sIntStandByFreq[1]) + ((String)sIntStandByFreq[2]) + ":__");
           navStandByDisplay.display(0, ((String)sIntStandByFreq[1]).toInt());
           navStandByDisplay.display(1, ((String)sIntStandByFreq[2]).toInt());
-        };
 
-        void drawFloatStandByFreq() {
           String sFloatStandByFreq = (String)floatStandByFreq;
-          navStandByDisplay.display(0, ((String)sFloatStandByFreq[0]).toInt());
-          navStandByDisplay.display(1, ((String)sFloatStandByFreq[1]).toInt());
+          if (floatStandByFreq == 0) {
+            sendLog("Draw standby __:00");
+            navStandByDisplay.display(2, 0);
+            navStandByDisplay.display(3, 0);
+          } else if (floatStandByFreq < 10) {
+            sendLog("Draw standby __:0" + ((String)sFloatStandByFreq[0]));
+            navStandByDisplay.display(2, 0);
+            navStandByDisplay.display(3, ((String)sFloatStandByFreq[0]).toInt());
+          } else {
+            sendLog("Draw standby __:" + ((String)sFloatStandByFreq[0]) + ((String)sFloatStandByFreq[1]));
+            navStandByDisplay.display(2, ((String)sFloatStandByFreq[0]).toInt());
+            navStandByDisplay.display(3, ((String)sFloatStandByFreq[1]).toInt());
+          }
+
         };
 
-        void drawIntActiveFreq() {
+        void drawActiveFreq() {
             /*
                 Частота NAV может быть от 108.00 до 120.95
                 Задается она двумя отдельными энкодерами, один для единиц, другой для сотых
@@ -61,14 +72,24 @@ class FreyNav {
                     в YY десятые и сотые
             */
           String sIntActiveFreq = (String)intActiveFreq;
+          sendLog("Draw active " + ((String)sIntActiveFreq[1]) + ((String)sIntActiveFreq[2]) + ":__");
           navActiveDisplay.display(0, ((String)sIntActiveFreq[1]).toInt());
           navActiveDisplay.display(1, ((String)sIntActiveFreq[2]).toInt());
-        };
 
-        void drawFloatActiveFreq() {
           String sFloatActiveFreq = (String)floatActiveFreq;
-          navActiveDisplay.display(0, ((String)sFloatActiveFreq[0]).toInt());
-          navActiveDisplay.display(1, ((String)sFloatActiveFreq[1]).toInt());
+          if (floatActiveFreq == 0) {
+            sendLog("Draw active __:00");
+            navActiveDisplay.display(2, 0);
+            navActiveDisplay.display(3, 0);
+          } else if (floatActiveFreq < 10) {
+            sendLog("Draw active __:0" + ((String)sFloatActiveFreq[0]));
+            navActiveDisplay.display(2, 0);
+            navActiveDisplay.display(3, ((String)sFloatActiveFreq[0]).toInt());
+          } else {
+            sendLog("Draw active __:" + ((String)sFloatActiveFreq[0]) + ((String)sFloatActiveFreq[1]));
+            navActiveDisplay.display(2, ((String)sFloatActiveFreq[0]).toInt());
+            navActiveDisplay.display(3, ((String)sFloatActiveFreq[1]).toInt());
+          }
         };
 
         void switchFreq() {
@@ -79,23 +100,46 @@ class FreyNav {
             floatActiveFreq = floatStandByFreq;
             intStandByFreq = oldActiveInt;
             floatStandByFreq = oldActiveFloat;
-            drawIntActiveFreq();
-            drawFloatActiveFreq();
-            drawIntActiveFreq();
-            drawFloatStandByFreq();
+
+            sendPanelCommand("NAV_FREQ_" + (String)intActiveFreq + "." + (String)floatActiveFreq);
+            drawActiveFreq();
+            drawStandByFreq();
         }
 
     public:
         FreyNav() {};
 
         void prepare() {
-            intActiveFreq = 0;
-            floatActiveFreq = 0;
-            intActiveFreq = 0;
-            floatActiveFreq = 0;
+            intActiveFreq = 108;
+            floatActiveFreq = 50;
+            intStandByFreq = 108;
+            floatStandByFreq = 50;
+
+            pinMode(pinNav1EncoderFloatCLK, INPUT_PULLUP);
+            pinMode(pinNav1EncoderFloatDIO, INPUT_PULLUP);
+            pinMode(pinNav1ActiveDisplayCLK, INPUT_PULLUP);
+            pinMode(pinNav1ActiveDisplayDIO, INPUT_PULLUP);
+            pinMode(pinNav1StandbyDisplayCLK, OUTPUT);
+            pinMode(pinNav1StandbyDisplayDIO, OUTPUT);
+            pinMode(pinNav1ActiveDisplayCLK, OUTPUT);
+            pinMode(pinNav1ActiveDisplayDIO, OUTPUT);
+            pinMode(pinNav1SwitchStation, INPUT_PULLUP);
+
+            navStandByDisplay.clear();
+            navActiveDisplay.clear();
+            navStandByDisplay.brightness(5);
+            navActiveDisplay.brightness(5);
+
+            navStandByDisplay.point(true);
+            navActiveDisplay.point(true);
+
+            drawStandByFreq();
+            drawActiveFreq();
         };
 
         void lap() {
+            navIntEncoder.tick();
+            navFloatEncoder.tick();
             if (navIntEncoder.turn()) {
                 if (navIntEncoder.left()) {
                     intStandByFreq -= 1;
@@ -109,7 +153,8 @@ class FreyNav {
                 else if (intStandByFreq > 120) {
                     intStandByFreq = 108;
                 };
-                drawIntStandByFreq();
+                sendLog("Draw nav1i " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
+                drawStandByFreq();
             };
             if (navFloatEncoder.turn()) {
                 if (navFloatEncoder.left()) {
@@ -122,10 +167,12 @@ class FreyNav {
                 } else if (floatStandByFreq > 95) {
                     floatStandByFreq = 0;
                 };
-                drawFloatStandByFreq();
+                sendLog("Draw nav1 " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
+                drawStandByFreq();
             };
 
-            if (navSwitchButton.release()) {
+            if (navFloatEncoder.release()) {
+                sendLog("Switch standby <-> active");
                 switchFreq();
             };
 

@@ -5,10 +5,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned char pinEncCLK = A0;
-const unsigned char pinEncDIO = A1;
-const unsigned char pinDisplayCLK = A3;
-const unsigned char pinDisplayDIO = A2;
+const unsigned char pinEncCLK = 4;
+const unsigned char pinEncDIO = 5;
+const unsigned char pinDisplayCLK = 2;
+const unsigned char pinDisplayDIO = 3;
 
 
 GyverTM1637 speedBrakesDisplay(pinDisplayCLK, pinDisplayDIO);
@@ -43,6 +43,7 @@ class FreySpeedBrakes {
     void readFullState(String fullState) {
       // read flaps value from fullString
       int rbrake = fullState.substring(31, 32).toInt();
+      sendLog("Got sbrake: " + (String)rbrake);
       switch (rbrake) {
         case 0:
           speedBrakesDisplay.displayByte(0, _empty);
@@ -50,19 +51,19 @@ class FreySpeedBrakes {
           speedBrakesDisplay.displayByte(2, _F);
           speedBrakesDisplay.displayByte(3, _F);
           break;
-        case -50:
+        case 1:
           speedBrakesDisplay.displayByte(0, _empty);
           speedBrakesDisplay.displayByte(1, _A);
           speedBrakesDisplay.displayByte(2, _r);
           speedBrakesDisplay.displayByte(3, _d);
           break;
-        case 98:
+        case 2:
           speedBrakesDisplay.displayByte(0, _F);
           speedBrakesDisplay.displayByte(1, _l);
           speedBrakesDisplay.displayByte(2, _D);
           speedBrakesDisplay.displayByte(3, _t);
           break;
-        case 100:
+        case 3:
           speedBrakesDisplay.displayByte(0, _empty);
           speedBrakesDisplay.displayByte(1, _empty);
           speedBrakesDisplay.displayByte(2, _U);

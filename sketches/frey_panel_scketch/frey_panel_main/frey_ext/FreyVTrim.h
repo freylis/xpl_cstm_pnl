@@ -7,10 +7,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinVertTrimEncoderCLK = A9;
-const unsigned int pinVertTrimEncoderDIO = A8;
-const unsigned int pinVertTrimDisplayCLK = A11;
-const unsigned int pinVertTrimDisplayDIO = A10;
+const unsigned int pinVertTrimEncoderCLK = 4;
+const unsigned int pinVertTrimEncoderDIO = 5;
+const unsigned int pinVertTrimDisplayCLK = 2;
+const unsigned int pinVertTrimDisplayDIO = 3;
 
 
 GyverTM1637 vTrimDisplay(pinVertTrimDisplayCLK, pinVertTrimDisplayDIO);
@@ -41,15 +41,15 @@ class FreyVTrim {
     };
 
     void readFullState(String fullState) {
-      int iVertTrim = fullState.substring(34, 36).toInt();
-      String sVertTrim = (String)iVertTrim;
+      String sVertTrim = fullState.substring(34, 37);
+      sendLog("Got vtrim: " + sVertTrim);
+      int iVertTrim = sVertTrim.toInt();
       if (iVertTrim < -9) {
           // -63 .. -10
           vTrimDisplay.displayByte(0, _empty);
           vTrimDisplay.displayByte(1, _dash);
           vTrimDisplay.display(2, ((String)sVertTrim[1]).toInt());
           vTrimDisplay.display(3, ((String)sVertTrim[2]).toInt());
-          vTrimDisplay.displayInt(iVertTrim);
 
        } else if (iVertTrim < 0) {
           // -9..-1

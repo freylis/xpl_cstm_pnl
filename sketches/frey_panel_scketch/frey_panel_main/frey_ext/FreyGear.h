@@ -4,10 +4,10 @@
 #include "Arduino.h"
 #include "FreyCommand.h"
 
-const unsigned char pinGearUp = A15;
-const unsigned char pinGearDown = A14;
-const unsigned char pinGearLightUp = A13;
-const unsigned char pinGearLightDown = A12;
+const unsigned char pinGearUp = A1;
+const unsigned char pinGearDown = A2;
+const unsigned char pinGearLightUp = A3;
+const unsigned char pinGearLightDown = A4;
 
 const unsigned char FREY_GEAR_STATE_UP = 1;
 const unsigned char FREY_GEAR_STATE_MIDDLE = 2;
