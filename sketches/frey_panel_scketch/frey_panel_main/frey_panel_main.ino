@@ -2,13 +2,19 @@
 Кастомная панель от freylis
 
 FULLSTATE message format:
-    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3
+    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9
         1 - [23] - GEAR
         100 - [26..28] - FLAPS
         2 - [31] - SPEED BRAKES
         101 - [34..37] - VTRIM
         102 - [39..42] - COURSE
         3 - [44] - AP SPEED enabed/disabled
+        4 - [47] - VNAV
+        5 - [50] - LNAV
+        6 - [53] - VORLOCK
+        7 - [56] - APPROACH
+        8 - [59] - CMD
+        9 - [62] - CWS
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
@@ -21,6 +27,7 @@ FULLSTATE message format:
 #include "frey_ext/FreyCourse.h"
 #include "frey_ext/FreyNav.h"
 #include "frey_ext/FreyAPSpeed.h"
+#include "frey_ext/FreyAPButtons.h"
 
 
 FreyGear gear;
@@ -30,6 +37,7 @@ FreyVTrim vtrim;
 FreyCourse course;
 FreyNav nav1;
 FreyAPSpeed ap_speed;
+FreyAPButtons ap_buttons;
 
 
 void setup() {
@@ -42,7 +50,8 @@ void setup() {
     //vtrim.prepare();
     //course.prepare();
     //nav1.prepare();
-    ap_speed.prepare();
+    //ap_speed.prepare();
+    ap_buttons.prepare();
 }
 
 void executeFullState() {
@@ -61,7 +70,8 @@ void executeFullState() {
             //vtrim.readFullState(message);
             //course.readFullState(message);
             //nav1.readFullState(message);
-            ap_speed.readFullState(message);
+            //ap_speed.readFullState(message);
+            ap_buttons.readFullState(message);
         };
     }
 
@@ -75,7 +85,8 @@ void loop() {
     //vtrim.lap();
     //course.lap();
     //nav1.lap();
-    ap_speed.lap();
+    //ap_speed.lap();
+    ap_buttons.lap();
 
     executeFullState();
 };
