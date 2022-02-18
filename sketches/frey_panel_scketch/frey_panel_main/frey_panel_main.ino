@@ -2,7 +2,7 @@
 Кастомная панель от freylis
 
 FULLSTATE message format:
-    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9
+    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9__1
         1 - [23] - GEAR
         100 - [26..28] - FLAPS
         2 - [31] - SPEED BRAKES
@@ -15,6 +15,7 @@ FULLSTATE message format:
         7 - [56] - APPROACH
         8 - [59] - CMD
         9 - [62] - CWS
+        1 - [65] - HEADING enabled\disabled
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
@@ -28,6 +29,7 @@ FULLSTATE message format:
 #include "frey_ext/FreyNav.h"
 #include "frey_ext/FreyAPSpeed.h"
 #include "frey_ext/FreyAPButtons.h"
+#include "frey_ext/FreyAPHeading.h"
 
 
 FreyGear gear;
@@ -38,6 +40,7 @@ FreyCourse course;
 FreyNav nav1;
 FreyAPSpeed ap_speed;
 FreyAPButtons ap_buttons;
+FreyAPHeading ap_heading;
 
 
 void setup() {
@@ -51,7 +54,8 @@ void setup() {
     //course.prepare();
     //nav1.prepare();
     //ap_speed.prepare();
-    ap_buttons.prepare();
+    // ap_buttons.prepare();
+    ap_heading.prepare();
 }
 
 void executeFullState() {
@@ -71,7 +75,8 @@ void executeFullState() {
             //course.readFullState(message);
             //nav1.readFullState(message);
             //ap_speed.readFullState(message);
-            ap_buttons.readFullState(message);
+            //ap_buttons.readFullState(message);
+            ap_heading.readFullState(message);
         };
     }
 
@@ -86,7 +91,8 @@ void loop() {
     //course.lap();
     //nav1.lap();
     //ap_speed.lap();
-    ap_buttons.lap();
+    //ap_buttons.lap();
+    ap_heading.lap();
 
     executeFullState();
 };
