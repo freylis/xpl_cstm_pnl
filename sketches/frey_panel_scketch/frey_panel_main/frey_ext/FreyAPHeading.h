@@ -19,14 +19,17 @@ EncButton<EB_TICK, pinAPHeadingButton> apHeadingButton;
 
 
 class FreyAPHeading {
+
     public:
         FreyAPHeading() {};
+
         void prepare() {
             pinMode(pinAPHeadingEncoderCLK, INPUT_PULLUP);
             pinMode(pinAPHeadingEncoderDIO, INPUT_PULLUP);
             pinMode(pinAPHeadingButton, INPUT_PULLUP);
             pinMode(pinAPHeadingDisplayCLK, OUTPUT);
             pinMode(pinAPHeadingDisplayDIO, OUTPUT);
+            pinMode(pinAPHeadingEnabled, OUTPUT);
 
             apHeadingDisplay.clear();
             apHeadingDisplay.brightness(5);
@@ -35,6 +38,7 @@ class FreyAPHeading {
 
             drawHeading();
         };
+
         void lap() {
 
             apHeadingEncoder.tick();
