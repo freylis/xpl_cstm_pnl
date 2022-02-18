@@ -17,6 +17,33 @@ FULLSTATE message format:
         9 - [62] - CWS
         1 - [65] - HEADING enabled\disabled
         2 - [68] - ALTITUDE enabled\disabled
+
+Сообщения, отправляемые панелью в сторону xplane:
+AP_ALTITUDE_TOGGLE - вкл/выкл автопилот высоты
+AP_ALTITUDE_XXX - где XXX - высота в сотнях футов.
+    Т.е. сообщение AP_ALTITUDE_200, означает задатчик высоты в 20000 фт
+AP_HEADING_TOGGLE - вкл/выкл автопилот курса
+AP_HEADING_XXX - сам курс. от 0 до 360. в градусах
+AP_SPEED_TOGGLE - вкл/выкл автопилот скорости
+AP_SPEED_XXX - скорость в узлах. от 100 до 500
+DISENGAGE_TOGGLE - ВЫКЛ автопилот. Вкл НЕ этой кнопкой.
+CWS_TOGGLE - вкл/выкл следование по текущей скорости, положению носа и курсу
+CMD_TOGGLE - вкл/выкл базовый автопилот
+APPROACH_TOGGLE - вкл/выкл подход к аэродрому в автоматическом режиме
+VOR_LOCK_TOGGLE - вкл/выкл подход к аэродрому по VOR маяку (только по горизонтали)
+LNAV_TOGGLE - вкл/выкл следование по горизонтальному маршруту, заданному в FMC
+VNAV_TOGGLE - вкл/выкл следование по вертикальному маршруту, заданному в FMC
+SET_COURSE_XXX - курс маяка для автоматической посадки. XXX - градусы.
+FLAPS_UP_ONE - переключить закрылки вверх на одну позицию
+FLAPS_DOWN_ONE - переключить закрылки вниз на одну позицию
+GEARUP - шасси вверх
+GEARDOWN - шасси вниз
+NAV_FREQ_XXX.YY - установить передатчик NAV1 на частоту XXX.YY
+SPEEDBRAKES_UP_ONE - воздушный тормоз на 1 позицию вверх
+SPEEDBRAKES_DOWN_ONE - воздушный тормоз на 1 позицию вниз
+VTRIM_UP_ONE - тример руля высоты вверх на 1 поз
+VTRIM_DOWN_ONE - тример руля высоты вниз на 1 поз
+
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
