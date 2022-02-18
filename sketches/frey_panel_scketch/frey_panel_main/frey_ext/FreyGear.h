@@ -81,6 +81,8 @@ class FreyGear {
         };
     };
 
+    void hardSendState() {};
+
 };
 
 #endif

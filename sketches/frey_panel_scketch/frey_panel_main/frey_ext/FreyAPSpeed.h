@@ -64,6 +64,8 @@ class FreyAPSpeed {
             };
         };
 
+        void hardSendState() {};
+
     private:
         bool _at_enabled;
         unsigned long _at_last_ms;

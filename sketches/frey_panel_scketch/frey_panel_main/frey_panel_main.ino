@@ -73,6 +73,11 @@ FreyAPHeading ap_heading;
 FreyAPAltitude ap_altitude;
 
 
+unsigned int lapNumber = 0;
+unsigned int moduleNumber = 0;
+const unsigned int EACHLAP = 100;
+
+
 void setup() {
     Serial.begin(9600);
     Serial.setTimeout(30);
@@ -94,9 +99,8 @@ void executeFullState() {
     if (Serial.available() > 0) {
         String message = Serial.readString();
         message.trim();
-        if (message == "") {
-            return;
-        };
+        if (message == "") {return;};
+
         if (message.startsWith("[frey-cmd-x] FULLSTATE")) {
             sendLog("Start handle command " + message);
             //gear.readFullState(message);
@@ -116,6 +120,8 @@ void executeFullState() {
 
 
 void loop() {
+    lapNumber += 1;
+
     // gear.lap();
     //flaps.lap();
     //sbrakes.lap();
@@ -128,4 +134,69 @@ void loop() {
     // ap_altitude.lap();
 
     executeFullState();
+
+    /*
+        Каждые N кругов, какой-нибудь модуль шлёт сообщение в xplane
+        с своим состоянием
+    */
+    if (lapNumber == EACHLAP) {
+        lapNumber = 0;
+        switch (moduleNumber) {
+            case 0:
+                ap_altitude.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send altitude");
+                break;
+            case 1:
+                ap_buttons.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send buttons");
+                break;
+            case 2:
+                ap_heading.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send heading");
+                break;
+            case 3:
+                ap_speed.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send speed");
+                break;
+            case 4:
+                course.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send course");
+                break;
+            case 5:
+                flaps.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send flaps");
+                break;
+            case 6:
+                gear.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send gear");
+                break;
+            case 7:
+                nav1.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send nav1");
+                break;
+            case 8:
+                sbrakes.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send sbrake");
+                break;
+            case 9:
+                vtrim.hardSendState();
+                moduleNumber += 1;
+                sendLog("Hard send vtrim");
+                break;
+            default:
+                moduleNumber = 0;
+                sendLog("Set module number 0");
+                break;
+        };
+    };
+
 };

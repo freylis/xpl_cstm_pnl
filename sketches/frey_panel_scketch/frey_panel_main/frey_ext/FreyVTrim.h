@@ -87,6 +87,9 @@ class FreyVTrim {
          vTrimDisplay.display(3, ((String)sVertTrim[2]).toInt());
        }
     };
+
+    void hardSendState() {};
+
 };
 
 #endif

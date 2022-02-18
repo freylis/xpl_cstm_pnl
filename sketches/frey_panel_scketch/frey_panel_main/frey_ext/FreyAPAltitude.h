@@ -75,6 +75,8 @@ class FreyAPAltitude {
         };
     };
 
+    void hardSendState() {};
+
     private:
         unsigned int _altitudeValue;
 

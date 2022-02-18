@@ -117,6 +117,9 @@ class FreyFlaps {
           break;
       };
     };
+
+    void hardSendState() {};
+
 };
 
 #endif

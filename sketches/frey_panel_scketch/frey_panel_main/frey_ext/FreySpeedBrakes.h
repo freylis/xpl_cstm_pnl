@@ -77,6 +77,9 @@ class FreySpeedBrakes {
           break;
       };
     };
+
+    void hardSendState() {};
+
 };
 
 #endif

@@ -178,8 +178,9 @@ class FreyNav {
 
         };
 
-        void readFullState(String fullState) {
-        }
+        void readFullState(String fullState) {};
+
+        void hardSendState() {};
 
 };
 

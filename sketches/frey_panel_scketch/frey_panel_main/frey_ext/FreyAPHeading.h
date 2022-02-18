@@ -81,6 +81,8 @@ class FreyAPHeading {
 
         };
 
+        void hardSendState() {};
+
     private:
         int _headingValue;
         void drawHeading() {

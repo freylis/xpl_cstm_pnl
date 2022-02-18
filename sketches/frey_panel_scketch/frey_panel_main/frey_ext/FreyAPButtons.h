@@ -110,6 +110,8 @@ class FreyAPButtons {
              else {digitalWrite(pinCWSEnabled, LOW);};
         };
 
+        void hardSendState() {};
+
     private:
         bool _ap_vnav_enabled;
         bool _ap_lnav_enabled;

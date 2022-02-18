@@ -103,6 +103,8 @@ class FreyCourse {
       courseValue = iCourseValue;
       _setCourseDisplay(iCourseValue);
     };
+
+    void hardSendState() {};
 };
 
 #endif
