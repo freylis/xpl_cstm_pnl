@@ -72,6 +72,9 @@ class PythonInterface:
                     command = frey_utils.CustomCommand(cmd)
                 elif isinstance(cmd, frey_utils.Command):
                     command = cmd
+                else:
+                    frey_utils.echo(f"Cant get command {cmd}")
+                    continue
                 commands.append(command)
                 good += 1
             callback = callback_cls(*commands)

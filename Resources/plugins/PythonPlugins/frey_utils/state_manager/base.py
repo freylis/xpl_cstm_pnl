@@ -24,6 +24,12 @@ class State:
         return val[:self.repr_length]
 
 
+class StateSmallInt(State):
+
+    def get_cmd_part(self):
+        return str(self.get_value())
+
+
 class StateInt(State):
 
     def get_value(self):
