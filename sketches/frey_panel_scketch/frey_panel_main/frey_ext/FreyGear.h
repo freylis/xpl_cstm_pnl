@@ -81,7 +81,10 @@ class FreyGear {
         };
     };
 
-    void hardSendState() {};
+    void hardSendState() {
+        if (_statePosition == FREY_GEAR_STATE_DOWN || _statePosition == FREY_GEAR_STATE_MIDDLE) {_gearDown();}
+         else {_gearUp();};
+    };
 
 };
 

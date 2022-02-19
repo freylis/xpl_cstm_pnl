@@ -101,7 +101,7 @@ class FreyNav {
             intStandByFreq = oldActiveInt;
             floatStandByFreq = oldActiveFloat;
 
-            sendPanelCommand("NAV_FREQ_" + (String)intActiveFreq + "." + (String)floatActiveFreq);
+            hardSendState();
             drawActiveFreq();
             drawStandByFreq();
         }
@@ -180,7 +180,9 @@ class FreyNav {
 
         void readFullState(String fullState) {};
 
-        void hardSendState() {};
+        void hardSendState() {
+            sendPanelCommand("NAV_FREQ_" + (String)intActiveFreq + "." + (String)floatActiveFreq);
+        };
 
 };
 

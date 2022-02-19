@@ -54,17 +54,20 @@ class FreyAPSpeed {
 
         void readFullState(String fullState) {
             char apSpeedStatus = fullState[44];
-            sendLog("APSPD: " + (String)apSpeedStatus);
             if (apSpeedStatus == '0') {
                 digitalWrite(pinAPSpeedEnabled, LOW);
-                sendLog("Draw low");
             } else if (apSpeedStatus == '1') {
                 digitalWrite(pinAPSpeedEnabled, HIGH);
-                sendLog("Draw high");
             };
         };
 
-        void hardSendState() {};
+        void hardSendState() {
+            sendPanelCommand("AP_SPEED_" + (String)_speedValue);
+            if (_at_enabled) {sendPanelCommand("AT_1");}
+                else {sendPanelCommand("AT_0");};
+            if (_fd_enabled) {sendPanelCommand("FD_1");}
+                else {sendPanelCommand("FD_0");};
+        };
 
     private:
         bool _at_enabled;

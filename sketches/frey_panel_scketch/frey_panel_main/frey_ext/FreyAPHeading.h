@@ -62,7 +62,7 @@ class FreyAPHeading {
                     _headingValue = 0;
                 };
                 drawHeading();
-                sendPanelCommand("AP_HEADING_" + (String)_headingValue);
+                hardSendState();
             };
 
             /* toggle heading */
@@ -81,7 +81,9 @@ class FreyAPHeading {
 
         };
 
-        void hardSendState() {};
+        void hardSendState() {
+            sendPanelCommand("AP_HEADING_" + (String)_headingValue);
+        };
 
     private:
         int _headingValue;

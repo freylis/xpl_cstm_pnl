@@ -10,6 +10,6 @@ void sendLog(String msg) {
     #ifdef DEBUG
     Serial.println("[frey-log-a]:" + msg);
     #endif
-}
+};
 
 #endif

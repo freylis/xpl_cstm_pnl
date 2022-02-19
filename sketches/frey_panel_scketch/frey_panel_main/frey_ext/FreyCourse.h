@@ -91,7 +91,7 @@ class FreyCourse {
            };
            if (courseValue < 0) {courseValue = 360;}
            else if (courseValue > 360) {courseValue = 0;};
-           sendPanelCommand("SET_COURSE_" + (String)courseValue);
+           hardSendState();
            _setCourseDisplay(courseValue);
        };
     };
@@ -104,7 +104,9 @@ class FreyCourse {
       _setCourseDisplay(iCourseValue);
     };
 
-    void hardSendState() {};
+    void hardSendState() {
+        sendPanelCommand("SET_COURSE_" + (String)courseValue);
+    };
 };
 
 #endif

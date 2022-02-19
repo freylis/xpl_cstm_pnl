@@ -48,7 +48,7 @@ VTRIM_DOWN_ONE - тример руля высоты вниз на 1 поз
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
 #define SEND_HARD_STATE true
-#define DEBUG true
+//#define DEBUG true
 
 #include "frey_ext/FreyGear.h"
 #include "frey_ext/FreyFlaps.h"
@@ -83,16 +83,16 @@ void setup() {
     Serial.begin(9600);
     Serial.setTimeout(30);
 
-    //gear.prepare();
-    //flaps.prepare();
-    //sbrakes.prepare();
-    //vtrim.prepare();
-    //course.prepare();
-    //nav1.prepare();
-    //ap_speed.prepare();
-    // ap_buttons.prepare();
+    gear.prepare();
+    flaps.prepare();
+    sbrakes.prepare();
+    vtrim.prepare();
+    course.prepare();
+    nav1.prepare();
+    ap_speed.prepare();
+    ap_buttons.prepare();
     ap_heading.prepare();
-    //ap_altitude.prepare();
+    ap_altitude.prepare();
 }
 
 void executeFullState() {
@@ -104,34 +104,34 @@ void executeFullState() {
 
         if (message.startsWith("[frey-cmd-x] FULLSTATE")) {
             sendLog("Start handle command " + message);
-            //gear.readFullState(message);
-            //flaps.readFullState(message);
-            //sbrakes.readFullState(message);
-            //vtrim.readFullState(message);
-            //course.readFullState(message);
-            //nav1.readFullState(message);
-            //ap_speed.readFullState(message);
-            //ap_buttons.readFullState(message);
+            gear.readFullState(message);
+            flaps.readFullState(message);
+            sbrakes.readFullState(message);
+            vtrim.readFullState(message);
+            course.readFullState(message);
+            nav1.readFullState(message);
+            ap_speed.readFullState(message);
+            ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
-            //ap_altitude.readFullState(message);
+            ap_altitude.readFullState(message);
         };
-    }
+    };
 
 }
 
 
 void loop() {
 
-    // gear.lap();
-    //flaps.lap();
-    //sbrakes.lap();
-    //vtrim.lap();
-    //course.lap();
-    //nav1.lap();
-    //ap_speed.lap();
-    //ap_buttons.lap();
+    gear.lap();
+    flaps.lap();
+    sbrakes.lap();
+    vtrim.lap();
+    course.lap();
+    nav1.lap();
+    ap_speed.lap();
+    ap_buttons.lap();
     ap_heading.lap();
-    //ap_altitude.lap();
+    ap_altitude.lap();
 
     executeFullState();
 

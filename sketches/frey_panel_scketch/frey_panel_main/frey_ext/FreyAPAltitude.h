@@ -56,7 +56,7 @@ class FreyAPAltitude {
                     };
                 };
                 _altitudeValue = min(max(100, _altitudeValue), 500);
-                sendPanelCommand("AP_ALTITUDE_" + (String)(_altitudeValue * 100));
+                hardSendState();
                 drawAltitude();
             };
 
@@ -75,7 +75,9 @@ class FreyAPAltitude {
         };
     };
 
-    void hardSendState() {};
+    void hardSendState() {
+        sendPanelCommand("AP_ALTITUDE_" + (String)(_altitudeValue * 100));
+    };
 
     private:
         unsigned int _altitudeValue;
