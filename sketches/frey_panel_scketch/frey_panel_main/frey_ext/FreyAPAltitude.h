@@ -5,10 +5,10 @@
 #include "FreyCommand.h"
 #include <EncButton.h>
 
-const unsigned char pinAPAltitudeEncoderCLK = 2;
-const unsigned char pinAPAltitudeEncoderDIO = 3;
-const unsigned char pinAPAltitudeDisplayCLK = 4;
-const unsigned char pinAPAltitudeDisplayDIO = 5;
+const unsigned char pinAPAltitudeEncoderCLK = 4;
+const unsigned char pinAPAltitudeEncoderDIO = 5;
+const unsigned char pinAPAltitudeDisplayCLK = 2;
+const unsigned char pinAPAltitudeDisplayDIO = 3;
 const unsigned char pinAPAltitudeButton = 10;
 const unsigned char pinAPAltitudeEnabled = A0;
 
@@ -55,8 +55,8 @@ class FreyAPAltitude {
                         _altitudeValue += 1;
                     };
                 };
-                _altitudeValue = min(max(0, _altitudeValue), 500);
-                sendPanelCommand("AP_ALTITUDE_" + (String)_altitudeValue * 100);
+                _altitudeValue = min(max(100, _altitudeValue), 500);
+                sendPanelCommand("AP_ALTITUDE_" + (String)(_altitudeValue * 100));
                 drawAltitude();
             };
 

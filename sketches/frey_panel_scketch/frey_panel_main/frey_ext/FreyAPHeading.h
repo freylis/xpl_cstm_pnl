@@ -1,20 +1,20 @@
-#ifndef FreyAPButtons_h
-#define FreyAPButtons_h
+#ifndef FreyAPHeading_h
+#define FreyAPHeading_h
 
 #include "Arduino.h"
 #include "FreyCommand.h"
 #include <EncButton.h>
 
-const unsigned char pinAPHeadingEncoderCLK = 2;
-const unsigned char pinAPHeadingEncoderDIO = 3;
-const unsigned char pinAPHeadingDisplayCLK = 4;
-const unsigned char pinAPHeadingDisplayDIO = 5;
+const unsigned char pinAPHeadingEncoderCLK = 4;
+const unsigned char pinAPHeadingEncoderDIO = 5;
+const unsigned char pinAPHeadingDisplayCLK = 2;
+const unsigned char pinAPHeadingDisplayDIO = 3;
 const unsigned char pinAPHeadingButton = 10;
-const unsigned char pinAPHeadingEnabled = 11;
+const unsigned char pinAPHeadingEnabled = A4;
 
 
 GyverTM1637 apHeadingDisplay(pinAPHeadingDisplayCLK, pinAPHeadingDisplayDIO);
-EncButton<EB_TICK, pinAPHeadingEncoderCLK, pinAPHeadingDisplayDIO> apHeadingEncoder;
+EncButton<EB_TICK, pinAPHeadingEncoderCLK, pinAPHeadingEncoderDIO> apHeadingEncoder;
 EncButton<EB_TICK, pinAPHeadingButton> apHeadingButton;
 
 

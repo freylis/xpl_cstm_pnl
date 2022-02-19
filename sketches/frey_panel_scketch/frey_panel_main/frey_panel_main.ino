@@ -47,6 +47,7 @@ VTRIM_DOWN_ONE - тример руля высоты вниз на 1 поз
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
+#define SEND_HARD_STATE true
 #define DEBUG true
 
 #include "frey_ext/FreyGear.h"
@@ -75,7 +76,7 @@ FreyAPAltitude ap_altitude;
 
 unsigned int lapNumber = 0;
 unsigned int moduleNumber = 0;
-const unsigned int EACHLAP = 100;
+int EACHLAP = 100;
 
 
 void setup() {
@@ -91,7 +92,7 @@ void setup() {
     //ap_speed.prepare();
     // ap_buttons.prepare();
     ap_heading.prepare();
-    // ap_altitude.prepare();
+    //ap_altitude.prepare();
 }
 
 void executeFullState() {
@@ -112,7 +113,7 @@ void executeFullState() {
             //ap_speed.readFullState(message);
             //ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
-            // ap_altitude.readFullState(message);
+            //ap_altitude.readFullState(message);
         };
     }
 
@@ -120,7 +121,6 @@ void executeFullState() {
 
 
 void loop() {
-    lapNumber += 1;
 
     // gear.lap();
     //flaps.lap();
@@ -131,7 +131,7 @@ void loop() {
     //ap_speed.lap();
     //ap_buttons.lap();
     ap_heading.lap();
-    // ap_altitude.lap();
+    //ap_altitude.lap();
 
     executeFullState();
 
@@ -139,6 +139,8 @@ void loop() {
         Каждые N кругов, какой-нибудь модуль шлёт сообщение в xplane
         с своим состоянием
     */
+    #ifdef SEND_HARD_STATE
+    lapNumber += 1;
     if (lapNumber == EACHLAP) {
         lapNumber = 0;
         switch (moduleNumber) {
@@ -198,5 +200,6 @@ void loop() {
                 break;
         };
     };
+    #endif
 
 };
