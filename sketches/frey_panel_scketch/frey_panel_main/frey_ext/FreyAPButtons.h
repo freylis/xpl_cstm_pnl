@@ -12,6 +12,7 @@ const unsigned char pinButtonAPPROACH = 12;
 const unsigned char pinButtonCMD = 12;
 const unsigned char pinButtonCWS = 12;
 const unsigned char pinButtonDisengage = 12;
+const unsigned char pinButtonLevelChanged = 12;
 
 const unsigned char pinVNAVEnabled = A4;
 const unsigned char pinLNAVEnabled = 2;
@@ -19,6 +20,7 @@ const unsigned char pinVORLOCKEnabled = 3;
 const unsigned char pinAPPROACHEnabled = 3;
 const unsigned char pinCMDEnabled = 3;
 const unsigned char pinCWSEnabled = 3;
+const unsigned char pinLevelChangedEnabled = 3;
 
 
 EncButton<EB_TICK, pinButtonVNAV> apVNAVButton;
@@ -28,6 +30,7 @@ EncButton<EB_TICK, pinButtonAPPROACH> apAPPROACHButton;
 EncButton<EB_TICK, pinButtonCMD> apCMDButton;
 EncButton<EB_TICK, pinButtonCWS> apCWSButton;
 EncButton<EB_TICK, pinButtonCWS> apDisengageButton;
+EncButton<EB_TICK, pinButtonLevelChanged> apLvlChangedButton;
 
 
 class FreyAPButtons {
@@ -43,12 +46,14 @@ class FreyAPButtons {
             pinMode(pinButtonCMD, INPUT_PULLUP);
             pinMode(pinButtonCWS, INPUT_PULLUP);
             pinMode(pinButtonDisengage, INPUT_PULLUP);
+            pinMode(pinButtonLevelChanged, INPUT_PULLUP);
             pinMode(pinLNAVEnabled, OUTPUT);
             pinMode(pinVNAVEnabled, OUTPUT);
             pinMode(pinAPPROACHEnabled, OUTPUT);
             pinMode(pinVORLOCKEnabled, OUTPUT);
             pinMode(pinCMDEnabled, OUTPUT);
             pinMode(pinCWSEnabled, OUTPUT);
+            pinMode(pinLevelChangedEnabled, OUTPUT);
         };
 
         void lap() {
@@ -87,6 +92,11 @@ class FreyAPButtons {
                 sendPanelCommand("DISENGAGE_TOGGLE");
             };
 
+            apLvlChangedButton.tick();
+            if (apLvlChangedButton.release()) {
+                sendPanelCommand("LEVEL_CHANGED");
+            };
+
         };
 
         void readFullState(String fullState) {
@@ -108,15 +118,13 @@ class FreyAPButtons {
 
             if (fullState[62] == '1') {digitalWrite(pinCWSEnabled, HIGH);}
              else {digitalWrite(pinCWSEnabled, LOW);};
+
+            if (fullState[71] == '1') {digitalWrite(pinLevelChangedEnabled, HIGH);}
+             else {digitalWrite(pinLevelChangedEnabled, LOW);};
         };
 
         void hardSendState() {};
 
-    private:
-        bool _ap_vnav_enabled;
-        bool _ap_lnav_enabled;
-        bool _ap_vorlock_enabled;
-        bool _ap_approach_enabled;
 };
 
 #endif
