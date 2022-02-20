@@ -1,5 +1,7 @@
 import xp
 
+from .. import utils
+
 
 class State:
     ref = NotImplemented
@@ -24,20 +26,24 @@ class State:
         return val[:self.repr_length]
 
 
-class StateSmallInt(State):
-
-    def get_cmd_part(self):
-        return str(self.get_value())
-
-
 class StateInt(State):
 
     def get_value(self):
-        val = xp.getDatai(self.data_ref)
+        try:
+            val = xp.getDatai(self.data_ref)
+        except Exception as exc:
+            utils.echo(f'Catn get valueI for dataref {self.ref} / {self.data_ref}: {exc}')
+            return '0'
         return val
 
     def get_percent_value(self):
         return min(self.get_value() * 100, 100)
+
+
+class StateSmallInt(StateInt):
+
+    def get_cmd_part(self):
+        return str(self.get_value())
 
 
 class StateFloat(State):

@@ -4,10 +4,10 @@ from . import base
 class StateSpeedBrakes(base.StateFloat):
     ref = 'sim/cockpit2/controls/speedbrake_ratio'
     mapping = {
-        '000': 0,
-        '-50': 1,
-        '098': 2,
-        '100': 3,
+        '000': '0',
+        '-50': '1',
+        '098': '2',
+        '100': '3',
     }
 
     def get_cmd_part(self):

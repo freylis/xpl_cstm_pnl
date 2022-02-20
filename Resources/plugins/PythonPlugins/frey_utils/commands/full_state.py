@@ -22,6 +22,7 @@ class CommandFullState(base.Command):
         state_manager.StateAPPROACH,
         state_manager.StateHeading,
         state_manager.StateAltitude,
+        state_manager.StateTest,
     )
     cmd = 'frey/command/send_full_state'
 

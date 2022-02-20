@@ -2,44 +2,53 @@ import xp
 from . import base
 
 
+class StateAPState(base.State):
+    ref = 'sim/cockpit/autopilot/autopilot_state'
+    possible_indices = []
+
+    def get_cmd_part(self):
+        dec_ap_state = xp.getDatai(self.data_ref)
+        bin_data = bin(dec_ap_state)
+        for pi in self.possible_indices:
+            if len(bin_data) - 2 >= abs(pi) and bin_data[pi] == '1':
+                return '1'
+        return '0'
+
+
 class StateCourse(base.StateSmallInt):
     ref = 'sim/cockpit/gps/course'
 
 
 class StateAPSpeed(base.StateSmallInt):
-    ref = 'sim/cockpit/autopilot/speed_status'
-
-    def get_cmd_part(self):
-        val = super().get_cmd_part()
-        return '1' if val in ['1', '2'] else '0'
+    ref = 'sim/cockpit/autopilot/airspeed'
 
 
-class StateVNAV(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/fms_vnav'
+class StateVNAV(StateAPState):
+    possible_indices = [-13, -14]
 
 
-class StateLNAV(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/gpss_status'
+class StateLNAV(StateAPState):
+    possible_indices = [-17, -18]
 
 
-class StateVORLOCK(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/dead_reckoning'
+class StateVORLOCK(StateAPState):
+    possible_indices = [-9, -10]
 
 
-class StateAPPROACH(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/approach_status'
+class StateAPPROACH(StateAPState):
+    possible_indices = [-11, -12]
 
 
 class StateCMD(base.StateSmallInt):
     ref = 'sim/cockpit2/autopilot/autopilot_on'
 
 
-class StateHeading(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/heading_status'
+class StateHeading(StateAPState):
+    possible_indices = [-2]
 
 
-class StateAltitude(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/altitude_hold_status'
+class StateAltitude(StateAPState):
+    possible_indices = [-15]
 
 
 class StateCWS(base.State):
@@ -52,3 +61,11 @@ class StateCWS(base.State):
             return '0'
         cws_enabled = str(xp.getDatai(self.data_ref))
         return cws_enabled
+
+
+class StateTest(base.State):
+    ref = 'sim/cockpit/autopilot/autopilot_state'
+
+    def get_cmd_part(self):
+        val = xp.getDatai(self.data_ref)
+        return str(val)
