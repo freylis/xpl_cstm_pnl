@@ -10,19 +10,21 @@ class CommandFullState(base.Command):
     Полное состояние самолета обрабатывается данным объектом
     """
     positions = (
-        state_manager.StateGear,
-        state_manager.StateFlaps,
-        state_manager.StateSpeedBrakes,
-        state_manager.StateVerticalTrim,
+        state_manager.StateGear,    # ok
+        state_manager.StateFlaps,   # ok
+        state_manager.StateSpeedBrakes, # ok
+        state_manager.StateVerticalTrim,    # ok
         state_manager.StateCourse,
-        state_manager.StateAPSpeed,
-        state_manager.StateVNAV,
-        state_manager.StateLNAV,
-        state_manager.StateVORLOCK,
-        state_manager.StateAPPROACH,
-        state_manager.StateHeading,
-        state_manager.StateAltitude,
-        state_manager.StateTest,
+        state_manager.StateAPSpeed,  # ok
+        state_manager.StateVNAV,    # ok
+        state_manager.StateLNAV,    # ok
+        state_manager.StateVORLOCK, # ok
+        state_manager.StateAPPROACH,    # ok
+        state_manager.StateCMD, # ok
+        state_manager.StateCWS, # ok
+        state_manager.StateHeading, # ok
+        state_manager.StateAltitude,    # ok
+        state_manager.StateLevelChanged,    # ok
     )
     cmd = 'frey/command/send_full_state'
 
@@ -33,21 +35,7 @@ class CommandFullState(base.Command):
     def get_command(self):
         """
         Команда отправки состояния всего что можно в панельку
-        Соглашение по формату следующее:
-            [frey-cmd-x] FULLSTATE 001__002__003__004
-            1 - состояние шасси
-                0 - убрано
-                1 - выпущено
-            002 - состояние закрылков в %
-                001 - выпущены на 1%
-                060 - выпущены на 60%
-                100 - выпущены на 100%
-            003 - состояние воздушных тормозов.
-                0 - убраны
-                1 - armed
-                2 - flight detent
-                3 - UP
-            004 - состояние тримера руля высоты. УТОЧНИТЬ
+        Соглашение по формату https://github.com/freylis/xpl_cstm_pnl#events
         """
         parts = []
         for state_cls in self.positions:

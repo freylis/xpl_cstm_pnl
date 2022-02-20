@@ -20,47 +20,43 @@ class StateCourse(base.StateSmallInt):
 
 
 class StateAPSpeed(base.StateSmallInt):
-    ref = 'sim/cockpit/autopilot/airspeed'
+    ref = 'laminar/B738/autopilot/speed_status1'
 
 
-class StateVNAV(StateAPState):
-    possible_indices = [-13, -14]
+class StateVNAV(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/vnav_status1'
 
 
-class StateLNAV(StateAPState):
-    possible_indices = [-17, -18]
+class StateLNAV(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/lnav_status'
 
 
-class StateVORLOCK(StateAPState):
-    possible_indices = [-9, -10]
+class StateVORLOCK(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/vorloc_status'
 
 
-class StateAPPROACH(StateAPState):
-    possible_indices = [-11, -12]
+class StateAPPROACH(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/app_status'
 
 
 class StateCMD(base.StateSmallInt):
-    ref = 'sim/cockpit2/autopilot/autopilot_on'
+    ref = 'laminar/B738/autopilot/cmd_a_status'
 
 
-class StateHeading(StateAPState):
-    possible_indices = [-2]
+class StateCWS(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/cws_p_status'
+
+
+class StateHeading(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/hdg_sel_status'
 
 
 class StateAltitude(StateAPState):
     possible_indices = [-15]
 
 
-class StateCWS(base.State):
-    ref = 'sim/cockpit2/autopilot/autopilot_on_or_cws'
-
-    def get_cmd_part(self):
-        state_cmd = StateCMD()
-        cmd_enabled = str(xp.getDatai(state_cmd.data_ref))
-        if cmd_enabled:
-            return '0'
-        cws_enabled = str(xp.getDatai(self.data_ref))
-        return cws_enabled
+class StateLevelChanged(base.StateSmallInt):
+    ref = 'laminar/B738/autopilot/lvl_chg_status'
 
 
 class StateTest(base.State):

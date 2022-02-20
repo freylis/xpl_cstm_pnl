@@ -33,7 +33,7 @@ class Command:
         return f'[frey-cmd-x] {self.short_cmd}'
 
     def __str__(self):
-        return f'<cmd {self.cmd!r}>'
+        return f'<cmd {self.cmd!r} / {self.__class__.__name__}>'
 
     def __repr__(self):
         return self.__str__()
@@ -44,3 +44,22 @@ class CustomCommand(Command):
     def __init__(self, cmd):
         super().__init__()
         self.cmd = cmd
+
+
+class CommandDataRefValue(Command):
+
+    def set_value(self, value):
+        dref = xp.findDataRef(self.cmd)
+        if not dref:
+            utils.echo(f'Unknown dataref={self.cmd} for execute command {self}', error=True)
+            return
+
+        if isinstance(value, int):
+            xp.setDatai(dref, value)
+        elif isinstance(value, float):
+            xp.setDataf(dref, value)
+        elif isinstance(value, str):
+            xp.setDatas(value, value)
+        else:
+            utils.echo(f'Unknown dataref setter for {value!r} (type {type(value)})')
+            return

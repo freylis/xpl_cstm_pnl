@@ -2,9 +2,16 @@
 
 This is my implementation interface between
 my arduino-based custom panel and xplane.
+It works only with zibo737.
+
 This plugin [xppython3](https://xppython3.readthedocs.io/en/stable/index.html) based
 
 ### How to install
+0. Install XPPython plugin https://xppython3.readthedocs.io/
+1. Copy `./Resources/plugins/PythonPlugins/frey_utils` and `./Resources/plugins/PythonPlugins/PI_xplCstmPnlFreylis.py`
+to `X-Plane/Resources/plugins/PythonPlugins/.` directory
+2. Write `sketches/frey_panel_scketch/frey_panel_main/frey_panel_main.ino` to Arduino MEGA
+3. Run `watcher/watcher.py` with `python3`
 
 ### Events
 ```

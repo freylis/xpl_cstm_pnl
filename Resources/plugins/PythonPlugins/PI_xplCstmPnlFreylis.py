@@ -44,8 +44,7 @@ class PythonInterface:
         log('Check plugin is disabled')
 
     def XPluginReceiveMessage(self, inFromWho, inMessage, inParam):
-        msg = f'Send message fh:{inFromWho} / m:{inMessage} / p:{inParam}'
-        log(msg)
+        pass
 
     @frey_utils.error_log
     def _config_handle(self):
