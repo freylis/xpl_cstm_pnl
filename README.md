@@ -9,7 +9,7 @@ This plugin [xppython3](https://xppython3.readthedocs.io/en/stable/index.html) b
 ### Events
 ```
 FULLSTATE message format:
-    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9__1__2
+    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9__1__2__3
         1 - [23] - GEAR
         100 - [26..28] - FLAPS
         2 - [31] - SPEED BRAKES
@@ -24,6 +24,7 @@ FULLSTATE message format:
         9 - [62] - CWS
         1 - [65] - HEADING enabled\disabled
         2 - [68] - ALTITUDE enabled\disabled
+        3 - [71] - Level changed
 ```
 
 Сообщения, отправляемые панелью в сторону xplane:
@@ -56,4 +57,5 @@ AT_1 - A/T ON
 AT_0 - A/T OFF
 FD_1 - F/D ON
 FD_0 - F/D OFF
+LEVEL_CHANGED - 0/1
 ```
