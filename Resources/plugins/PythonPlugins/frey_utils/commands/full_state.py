@@ -2,6 +2,7 @@ import xp
 
 from . import base
 from .. import state_manager
+from .. import utils
 
 
 class CommandFullState(base.Command):
@@ -50,6 +51,11 @@ class CommandFullState(base.Command):
         parts = []
         for state_cls in self.positions:
             state = state_cls()
-            parts.append(state.get_cmd_part())
+
+            state_value = state.get_cmd_part()
+            if not isinstance(state_value, str):
+                utils.echo(f'Unknown result format ({state_value}, {type(state_value)} for {state}')
+                state_value = '0'
+            parts.append(state_value)
         result_str = '__'.join(parts)
         return f'[frey-cmd-x] STATEFULL {result_str}'

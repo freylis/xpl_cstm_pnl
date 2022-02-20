@@ -12,3 +12,4 @@ from .ap import StateCMD
 from .ap import StateCWS
 from .ap import StateHeading
 from .ap import StateAltitude
+from .ap import StateTest

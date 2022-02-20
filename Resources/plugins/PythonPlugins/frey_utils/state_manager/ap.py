@@ -47,8 +47,8 @@ class StateCWS(base.State):
 
     def get_cmd_part(self):
         state_cmd = StateCMD()
-        cmd_enabled = xp.getDatai(state_cmd.data_ref)
+        cmd_enabled = str(xp.getDatai(state_cmd.data_ref))
         if cmd_enabled:
             return '0'
-        cws_enabled = xp.getDatai(self.data_ref)
+        cws_enabled = str(xp.getDatai(self.data_ref))
         return cws_enabled
