@@ -55,14 +55,16 @@ FLAPS_UP_ONE - переключить закрылки вверх на одну 
 FLAPS_DOWN_ONE - переключить закрылки вниз на одну позицию
 GEARUP - шасси вверх
 GEARDOWN - шасси вниз
-NAV_FREQ_XXX.YY - установить передатчик NAV1 на частоту XXX.YY
+NAV_FREQ_XXX.YY_ZZZ.KK - установить передатчик NAV1
+    Active на частоту XXX.YY
+    Standby на частоту ZZZ.KK
 SPEEDBRAKES_UP_ONE - воздушный тормоз на 1 позицию вверх
 SPEEDBRAKES_DOWN_ONE - воздушный тормоз на 1 позицию вниз
 VTRIM_UP_ONE - тример руля высоты вверх на 1 поз
 VTRIM_DOWN_ONE - тример руля высоты вниз на 1 поз
-AT_1 - A/T ON
-AT_0 - A/T OFF
-FD_1 - F/D ON
-FD_0 - F/D OFF
+AUTO_THROTTLE_1 - A/T ON
+AUTO_THROTTLE_0 - A/T OFF
+FLIGHT_DIRECTOR_1 - F/D ON
+FLIGHT_DIRECTOR_0 - F/D OFF
 LEVEL_CHANGED - 0/1
 ```

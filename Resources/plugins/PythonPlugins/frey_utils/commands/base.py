@@ -1,3 +1,5 @@
+import re
+
 import xp
 
 from .. import utils
@@ -47,6 +49,7 @@ class CustomCommand(Command):
 
 
 class CommandDataRefValue(Command):
+    i_rexp = re.compile(r'.+(\d+)$')
 
     def set_value(self, value):
         dref = xp.findDataRef(self.cmd)
@@ -61,5 +64,26 @@ class CommandDataRefValue(Command):
         elif isinstance(value, str):
             xp.setDatas(value, value)
         else:
-            utils.echo(f'Unknown dataref setter for {value!r} (type {type(value)})')
+            utils.echo(f'Unknown dataref setter for {value!r} (type {type(value)})', error=True)
             return
+
+    def set_last_int(self, value):
+        match = self.i_rexp.search(value)
+        if not match:
+            utils.echo(f'Cant get ...int from {value!r}')
+            return
+        self.set_value(match.groups()[0])
+
+
+class CommandDataRefIntegerValue(CommandDataRefValue):
+
+    def set_value(self, value):
+        dref = xp.findDataRef(self.cmd)
+        if not dref:
+            utils.echo(f'Unknown dataref={self.cmd} for execute command {self}', error=True)
+            return
+        match = self.i_rexp.search(value)
+        if not match:
+            utils.echo(f'Cant get ...int from {value!r}')
+            return
+        xp.setDatai(dref, value)

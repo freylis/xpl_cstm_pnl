@@ -1,3 +1,6 @@
+import re
+
+from .. import utils
 from . import base
 
 
@@ -6,7 +9,7 @@ class CommandAltitudeToggle(base.Command):
     cmd = 'laminar/B738/autopilot/alt_hld_press'
 
 
-class CommandSetAltitude(base.CommandDataRefValue):
+class CommandSetAltitude(base.CommandDataRefIntegerValue):
     short_cmd = 'AP_ALTITUDE_'
     cmd = 'laminar/B738/autopilot/mcp_alt_dial'
 
@@ -16,7 +19,7 @@ class CommandHeadingToggle(base.Command):
     cmd = 'laminar/B738/autopilot/hdg_sel_press'
 
 
-class CommandSetHeading(base.CommandDataRefValue):
+class CommandSetHeading(base.CommandDataRefIntegerValue):
     short_cmd = 'AP_HEADING_'
     cmd = 'laminar/B738/autopilot/mcp_hdg_dial'
 
@@ -26,7 +29,7 @@ class CommandSpeedToggle(base.Command):
     cmd = 'laminar/B738/autopilot/speed_press'
 
 
-class CommandSetSpeed(base.CommandDataRefValue):
+class CommandSetSpeed(base.CommandDataRefIntegerValue):
     short_cmd = 'AP_SPEED_'
     cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts_mach'
 
@@ -66,7 +69,12 @@ class CommandVNAVToggle(base.Command):
     cmd = 'laminar/B738/autopilot/vnav_press'
 
 
-class CommandSetCourse(base.CommandDataRefValue):
+class _COPilotCourse(base.CommandDataRefIntegerValue):
+    short_cmd = 'SET_COURSE'
+    cmd = 'laminar/B738/autopilot/course_copilot'
+
+
+class CommandSetCourse(base.CommandDataRefIntegerValue):
     short_cmd = 'SET_COURSE_'
     cmd = 'laminar/B738/autopilot/course_pilot'
 
@@ -76,6 +84,51 @@ class CommandSetCourse(base.CommandDataRefValue):
         copilot_command.set_value(value)
 
 
-class _COPilotCourse(base.CommandDataRefValue):
-    short_cmd = 'SET_COURSE'
-    cmd = 'laminar/B738/autopilot/course_copilot'
+class CommandNavActiveMhz(base.CommandDataRefIntegerValue):
+    cmd = 'sim/cockpit2/radios/actuators/nav1_frequency_Mhz'
+
+
+class CommandNavActiveKhz(base.CommandDataRefIntegerValue):
+    cmd = 'sim/cockpit2/radios/actuators/nav1_frequency_khz'
+
+
+class CommandNavStandByMhz(base.CommandDataRefIntegerValue):
+    cmd = 'sim/cockpit2/radios/actuators/nav1_standby_frequency_Mhz'
+
+
+class CommandNavStandByKhz(base.CommandDataRefIntegerValue):
+    cmd = 'sim/cockpit2/radios/actuators/nav1_standby_frequency_khz'
+
+
+class CommandSetNav(base.CommandDataRefValue):
+    rexp = re.compile(
+        r'NAV_FREQ_(?P<active_mhz>\d{3})\.(?P<active_khz>\d{2})_(?P<standby_mhz>\d{3})\.(?P<standby_khz>\d{2})'
+    )
+    short_cmd = 'NAV_FREQ_'
+
+    def set_value(self, value):
+        match = self.rexp.search(value)
+        if not match:
+            utils.echo(f'Command {value!r} not matched to nav-regexp')
+            return
+
+        freq = match.groupdict()
+        CommandNavActiveMhz().set_value(int(freq['active_mhz']))
+        CommandNavActiveKhz().set_value(int(freq['active_khz']))
+        CommandNavStandByMhz().set_value(int(freq['standby_mhz']))
+        CommandNavStandByKhz().set_value(int(freq['standby_khz']))
+
+
+class CommandAutoThrottle(base.CommandDataRefIntegerValue):
+    short_cmd = 'AUTO_THROTTLE_'
+    cmd = 'laminar/B738/switches/autopilot/at_arm'
+
+
+class CommandFlightDirector(base.CommandDataRefIntegerValue):
+    short_cmd = 'FLIGHT_DIRECTOR_'
+    cmd = 'laminar/B738/switches/autopilot/fd_ca'
+
+
+class CommandLevelChanged(base.Command):
+    short_cmd = 'LEVEL_CHANGED'
+    cmd = 'laminar/B738/autopilot/lvl_chg_press'

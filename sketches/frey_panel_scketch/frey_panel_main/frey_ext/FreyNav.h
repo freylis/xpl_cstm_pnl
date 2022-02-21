@@ -148,9 +148,9 @@ class FreyNav {
                     intStandByFreq += 1;
                 };
                 if (intStandByFreq < 108) {
-                    intStandByFreq = 120;
+                    intStandByFreq = 117;
                 }
-                else if (intStandByFreq > 120) {
+                else if (intStandByFreq > 117) {
                     intStandByFreq = 108;
                 };
                 sendLog("Draw nav1i " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
@@ -181,7 +181,12 @@ class FreyNav {
         void readFullState(String fullState) {};
 
         void hardSendState() {
-            sendPanelCommand("NAV_FREQ_" + (String)intActiveFreq + "." + (String)floatActiveFreq);
+            sendPanelCommand(
+                "NAV_FREQ_"
+                    + (String)intActiveFreq + "." + (String)floatActiveFreq
+                    + "_"
+                    + (String)intStandByFreq + "." + (String)floatStandByFreq
+            );
         };
 
 };

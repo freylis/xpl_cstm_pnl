@@ -87,10 +87,10 @@ class FreyAPSpeed {
 
                 int at_current = !digitalRead(pinATEnabled);
                 if (at_current == 1 && !_at_enabled) {
-                    sendPanelCommand("AT_1");
+                    sendPanelCommand("AUTO_THROTTLE_1");
                     _at_enabled = true;
                 } else if (at_current == 0 && _at_enabled) {
-                    sendPanelCommand("AT_0");
+                    sendPanelCommand("AUTO_THROTTLE_0");
                     _at_enabled = false;
                 };
 
@@ -108,10 +108,10 @@ class FreyAPSpeed {
 
                 int fd_current = !digitalRead(pinFDEnabled);
                 if (fd_current == 1 && !_fd_enabled) {
-                    sendPanelCommand("FD_1");
+                    sendPanelCommand("FLIGHT_DIRECTOR_1");
                     _fd_enabled = true;
                 } else if (fd_current == 0 && _fd_enabled) {
-                    sendPanelCommand("FD_0");
+                    sendPanelCommand("FLIGHT_DIRECTOR_0");
                     _fd_enabled = false;
                 };
 
