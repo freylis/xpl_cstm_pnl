@@ -14,6 +14,7 @@ to `X-Plane/Resources/plugins/PythonPlugins/.` directory
 3. Run `watcher/watcher.py` with `python3`
 
 ### Events
+##### Events from xplane to panel
 ```
 FULLSTATE message format:
     [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9__1__2__3
@@ -33,6 +34,9 @@ FULLSTATE message format:
         2 - [68] - ALTITUDE enabled\disabled
         3 - [71] - Level changed
 ```
+
+##### Events from panel to xplane
+Каждое сообщение начинается с подстроки `[frey-cmd-a] `, т.о. эвент выглядит примерно `[frey-cmd-a] AP_SPEED_TOGGLE`
 
 Сообщения, отправляемые панелью в сторону xplane:
 ```
@@ -67,4 +71,153 @@ AUTO_THROTTLE_0 - A/T OFF
 FLIGHT_DIRECTOR_1 - F/D ON
 FLIGHT_DIRECTOR_0 - F/D OFF
 LEVEL_CHANGED - 0/1
+```
+
+### Pin numbers
+
+###### KD2-22 Button pins order
+```
+HEADING TOGGLE
+    TOGGLE - 1
+    LIGHT - 2
+
+ALTITUDE TOGGLE
+    TOGGLE - 3
+    LIGHT - 4
+
+AUTOPILOT CMD
+    TOGGLE - 5
+    LIGHT - 6
+
+AUTOPILOT CWS
+    TOGGLE - 7
+    LIGHT - 8
+
+AUTOPILOT DISSENGAGE
+    TOGGLE - 9
+    LIGHT - 10
+
+AUTOPILOT LEVEL CHANGED
+    TOGGLE - 11
+    LIGHT - 12
+
+AUTOPILOT LNAV
+    TOGGLE - 13
+    LIGHT - 14
+
+AUTOPILOT VNAV
+    TOGGLE - 15
+    LIGHT - 16
+
+AUTOPILOT VOR LOC
+    TOGGLE - 17
+    LIGHT - 18
+
+AUTOPILOT APPROACH
+    TOGGLE - 19
+    LIGHT - 20
+
+AUTOPILOT SPEED TOGGLE
+    TOGGLE - 21
+    LIGHT - 22
+```
+
+##### Encoder pins order
+```
+HEADING
+    CLK - 23
+    DIO - 24
+
+ALTITUDE
+    CLK - 25
+    DIO - 26
+
+SPEED
+    CLK - 27
+    DIO - 28
+
+COURSE
+    CLK - 29
+    DIO - 30
+
+NAV1 MHz (Int)
+    CLK - 31
+    DIO - 32
+
+NAV1 khz (Float)
+    CLK - 33
+    DIO - 34
+    TOGGLE - 35
+
+FLAPS
+    CLK - 36
+    DIO - 37
+
+SPEED BRAKES
+    CLK - 38
+    DIO - 39
+
+VERTICAL TRIMER
+    CLK - 40
+    DIO - 41
+```
+
+##### Display pins order
+
+```
+HEADING
+    CLK - 42
+    DIO - 43
+
+ALTITUDE
+    CLK - 44
+    DIO - 45
+
+SPEED
+    CLK - 46
+    DIO - 47
+
+COURSE
+    CLK - 48
+    DIO - 49
+
+NAV1 ACTIVE
+    CLK - 50
+    DIO - 51
+
+NAV1 STANDBY
+    CLK - 52
+    DIO - 53
+
+FLAPS
+    CLK - A15
+    DIO - A14
+
+SPEED BRAKES
+    CLK - A13
+    DIO - A12
+
+VERTICAL TRIM
+    CLK - A11
+    DIO - A10
+```
+
+##### ON[-OFF]-ON Button pin orders
+```
+GEAR ON-OFF-ON
+    ON - A9
+    OFF - A8
+
+AUTO THROTTLE
+    ON - A7
+
+FLIGHT DIRECTOR
+    ON - A6
+```
+
+##### Light pin orders
+```
+GEAR
+    RED - A5
+    GREEN - A4
 ```
