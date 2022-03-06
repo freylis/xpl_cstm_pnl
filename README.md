@@ -147,7 +147,7 @@ NAV1 MHz (Int)
 NAV1 khz (Float)
     CLK - 33
     DIO - 34
-    TOGGLE - 35
+    TOGGLE - 35 // Возможно, перекачует в отдельную кнопку
 
 FLAPS
     CLK - 36
