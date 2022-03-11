@@ -6,10 +6,10 @@
 #include <EncButton.h>
 #include "FreyCommand.h"
 
-const unsigned int pinFlapsEncoderCLK = 4;
-const unsigned int pinFlapsEncoderDIO = 5;
-const unsigned int pinFlapsDisplayCLK = 2;
-const unsigned int pinFlapsDisplayDIO = 3;
+const unsigned int pinFlapsEncoderCLK = 36;
+const unsigned int pinFlapsEncoderDIO = 37;
+const unsigned int pinFlapsDisplayCLK = A15;
+const unsigned int pinFlapsDisplayDIO = A14;
 
 
 GyverTM1637 flapsDisplay(pinFlapsDisplayCLK, pinFlapsDisplayDIO);
@@ -32,6 +32,12 @@ class FreyFlaps {
         pinMode(pinFlapsDisplayDIO, OUTPUT);
         flapsDisplay.clear();
         flapsDisplay.brightness(5);
+        delay(500);
+
+        flapsDisplay.displayByte(0, _b);
+        flapsDisplay.display(1, 7);
+        flapsDisplay.display(2, 3);
+        flapsDisplay.display(3, 7);
 
     };
     /* call it each loop and relax */
@@ -47,6 +53,7 @@ class FreyFlaps {
       unsigned int dFlaps = fullState.substring(26, 29).toInt();
       sendLog("Found " + (String)dFlaps + " flaps");
       switch (dFlaps) {
+        // oldstyle. raw value from dataref(flaps)
         case 0:
           sendLog("Draw flaps 0");
           flapsDisplay.displayByte(0, _empty);
@@ -54,62 +61,55 @@ class FreyFlaps {
           flapsDisplay.displayByte(2, _empty);
           flapsDisplay.display(3, 0);
           break;
-        case 1:
-          sendLog("Draw flaps 1");
+        case 12:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.displayByte(2, _empty);
           flapsDisplay.display(3, 1);
           break;
-        case 2:
-          sendLog("Draw flaps 2");
+        case 25:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.displayByte(2, _empty);
           flapsDisplay.display(3, 2);
           break;
-        case 5:
-          sendLog("Draw flaps 5");
+        case 37:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.displayByte(2, _empty);
           flapsDisplay.display(3, 5);
           break;
-        case 10:
-          sendLog("Draw flaps 10");
+        case 50:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.display(2, 1);
           flapsDisplay.display(3, 0);
           break;
-        case 15:
-          sendLog("Draw flaps 15");
+        case 62:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.display(2, 1);
           flapsDisplay.display(3, 5);
           break;
-        case 25:
-          sendLog("Draw flaps 25");
+        case 75:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.display(2, 2);
           flapsDisplay.display(3, 5);
           break;
-        case 30:
-          sendLog("Draw flaps 30");
+        case 87:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.display(2, 3);
           flapsDisplay.display(3, 0);
           break;
-        case 40:
-          sendLog("Draw flaps 40");
+        case 100:
           flapsDisplay.displayByte(0, _empty);
           flapsDisplay.displayByte(1, _empty);
           flapsDisplay.display(2, 4);
           flapsDisplay.display(3, 0);
           break;
+
         default:
           sendLog("Draw flaps xz: " + (String)dFlaps);
           flapsDisplay.displayInt(dFlaps);

@@ -13,5 +13,4 @@ from .ap import StateCWS
 from .ap import StateHeading
 from .ap import StateAltitude
 from .ap import StateLevelChanged
-from .ap import StateNav
 from .ap import StateTest

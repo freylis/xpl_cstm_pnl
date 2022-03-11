@@ -1,4 +1,5 @@
 import re
+import random
 
 import xp
 from .. import utils
@@ -81,5 +82,7 @@ def scheduled_callback(sinceLast, elapsedTime, counter, refCon):
         with open(CMD_PATH, 'w', encoding='utf-8') as f:
             f.truncate()
 
-    commands.CommandFullState().send_command()
+    rnd = random.randint(0, 2)
+    if rnd == 1:
+        commands.CommandFullState().send_command()
     return 1

@@ -7,10 +7,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinVertTrimEncoderCLK = 4;
-const unsigned int pinVertTrimEncoderDIO = 5;
-const unsigned int pinVertTrimDisplayCLK = 2;
-const unsigned int pinVertTrimDisplayDIO = 3;
+const unsigned int pinVertTrimEncoderCLK = 40;
+const unsigned int pinVertTrimEncoderDIO = 41;
+const unsigned int pinVertTrimDisplayCLK = A13;
+const unsigned int pinVertTrimDisplayDIO = A12;
 
 
 GyverTM1637 vTrimDisplay(pinVertTrimDisplayCLK, pinVertTrimDisplayDIO);
@@ -28,6 +28,15 @@ class FreyVTrim {
         pinMode(pinVertTrimEncoderDIO, INPUT_PULLUP);
         pinMode(pinVertTrimDisplayCLK, OUTPUT);
         pinMode(pinVertTrimDisplayDIO, OUTPUT);
+        vTrimDisplay.clear();
+        vTrimDisplay.brightness(5);
+        delay(500);
+
+        vTrimDisplay.displayByte(0, _b);
+        vTrimDisplay.display(1, 7);
+        vTrimDisplay.display(2, 3);
+        vTrimDisplay.display(3, 7);
+
     };
 
     /* call it each loop and relax */
@@ -41,25 +50,28 @@ class FreyVTrim {
     };
 
     void readFullState(String fullState) {
-      String sVertTrim = fullState.substring(34, 37);
+      String sVertTrim = fullState.substring(34, 38);
       sendLog("Got vtrim: " + sVertTrim);
       int iVertTrim = sVertTrim.toInt();
       if (iVertTrim < -9) {
           // -63 .. -10
+          sendLog("Draw vtrim -0xx");
           vTrimDisplay.displayByte(0, _empty);
           vTrimDisplay.displayByte(1, _dash);
-          vTrimDisplay.display(2, ((String)sVertTrim[1]).toInt());
-          vTrimDisplay.display(3, ((String)sVertTrim[2]).toInt());
+          vTrimDisplay.display(2, ((String)sVertTrim.substring(2, 3)).toInt());
+          vTrimDisplay.display(3, ((String)sVertTrim.substring(3, 4)).toInt());
 
        } else if (iVertTrim < 0) {
           // -9..-1
+          sendLog("Draw vtrim -00x");
           vTrimDisplay.displayByte(0, _empty);
           vTrimDisplay.displayByte(1, _empty);
           vTrimDisplay.displayByte(2, _dash);
-          vTrimDisplay.display(3, ((String)sVertTrim[1]).toInt());
+          vTrimDisplay.display(3, ((String)sVertTrim.substring(3, 4)).toInt());
 
        } else if (iVertTrim == 0) {
           // 0
+          sendLog("Draw vtrim 0");
           vTrimDisplay.displayByte(0, _empty);
           vTrimDisplay.displayByte(1, _empty);
           vTrimDisplay.displayByte(2, _empty);
@@ -67,24 +79,27 @@ class FreyVTrim {
 
        } else if (iVertTrim < 10) {
          // 1..9
+          sendLog("Draw vtrim x");
          vTrimDisplay.displayByte(0, _empty);
          vTrimDisplay.displayByte(1, _empty);
          vTrimDisplay.displayByte(2, _empty);
-         vTrimDisplay.display(3, ((String)sVertTrim[0]).toInt());
+         vTrimDisplay.display(3, ((String)sVertTrim.substring(3, 4)).toInt());
 
        } else if (iVertTrim < 100) {
          // 11..99
+          sendLog("Draw vtrim xx");
          vTrimDisplay.displayByte(0, _empty);
          vTrimDisplay.displayByte(1, _empty);
-         vTrimDisplay.display(2, ((String)sVertTrim[0]).toInt());
-         vTrimDisplay.display(3, ((String)sVertTrim[1]).toInt());
+         vTrimDisplay.display(2, ((String)sVertTrim.substring(2, 3)).toInt());
+         vTrimDisplay.display(3, ((String)sVertTrim.substring(3, 4)).toInt());
 
        } else {
          // 100..999
+          sendLog("Draw vtrim xxx");
          vTrimDisplay.displayByte(0, _empty);
-         vTrimDisplay.display(1, ((String)sVertTrim[0]).toInt());
-         vTrimDisplay.display(2, ((String)sVertTrim[1]).toInt());
-         vTrimDisplay.display(3, ((String)sVertTrim[2]).toInt());
+         vTrimDisplay.display(1, ((String)sVertTrim.substring(1, 2)).toInt());
+         vTrimDisplay.display(2, ((String)sVertTrim.substring(2, 3)).toInt());
+         vTrimDisplay.display(3, ((String)sVertTrim.substring(3, 4)).toInt());
        }
     };
 

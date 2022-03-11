@@ -3,15 +3,20 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
+#include <EncButton.h>
 
-const unsigned char pinGearUp = A1;
-const unsigned char pinGearDown = A2;
-const unsigned char pinGearLightUp = A3;
+const unsigned char pinGearUp = A8;
+const unsigned char pinGearDown = A9;
+const unsigned char pinGearLightUp = A5;
 const unsigned char pinGearLightDown = A4;
 
 const unsigned char FREY_GEAR_STATE_UP = 1;
 const unsigned char FREY_GEAR_STATE_MIDDLE = 2;
 const unsigned char FREY_GEAR_STATE_DOWN = 3;
+
+
+EncButton<EB_TICK, pinGearUp> gearButtonUp;
+EncButton<EB_TICK, pinGearDown> gearButtonDown;
 
 
 class FreyGear {
@@ -46,33 +51,45 @@ class FreyGear {
         pinMode(pinGearLightUp, OUTPUT);
         pinMode(pinGearLightDown, OUTPUT);
     };
+
     /* call it each loop and relax */
     void lap() {
         /* проверяем какое состояние у переключателя шасси сейчас */
+        //sendLog((String)!digitalRead(pinGearDown) + " | " + (String)!digitalRead(pinGearUp) + " | " + (String)_statePosition);
 
+        bool is_up = !digitalRead(pinGearUp);
+        bool is_down = !digitalRead(pinGearDown);
+
+        gearButtonUp.tick();
+        gearButtonDown.tick();
         // если если включено и последний статус не включен, то отправить эвент
-        if (!digitalRead(pinGearDown) && _statePosition != FREY_GEAR_STATE_DOWN) {
+        //if (is_down && _statePosition != FREY_GEAR_STATE_DOWN) {
+        if (gearButtonUp.press()) {
             _statePosition = FREY_GEAR_STATE_DOWN;
             _gearDown();
         }
-        // если положение верхнее, нужно отправлять эвент только если ещё не отправляли
-        else if (!digitalRead(pinGearUp)) {
-            if (_statePosition != FREY_GEAR_STATE_UP) {
+        // если положение среднее, значит ничего не включено. отправить эвент единожды
+        //else if (!is_down && !is_up && _statePosition != FREY_GEAR_STATE_MIDDLE) {
+        else if (gearButtonUp.release() || gearButtonDown.release()) {
+            if (_statePosition == FREY_GEAR_STATE_DOWN) {
                 _gearUp();
+            } else {
+                _gearDown();
             };
-            _statePosition = FREY_GEAR_STATE_UP;
-        }
-        // ничего не включено. для 737 это среднее положение, для других, по сути, верхнее
-        else {
-            if (_statePosition == FREY_GEAR_STATE_UP) {_gearDown();}
-            else {_gearUp();}
             _statePosition = FREY_GEAR_STATE_MIDDLE;
+        }
+        // шасси вверх
+        // else if (is_up && _statePosition != FREY_GEAR_STATE_UP) {
+        else if (gearButtonUp.press()) {
+            _gearUp();
+            _statePosition = FREY_GEAR_STATE_UP;
         };
     };
 
     void readFullState(String fullState) {
-        unsigned char currentState = fullState[23];
-        if (currentState == '1') {
+        int currentState = fullState.substring(23, 24).toInt();
+        sendLog("Fullstate gear=" + (String)currentState);
+        if (currentState == 1) {
             digitalWrite(pinGearLightDown, HIGH);
             digitalWrite(pinGearLightUp, LOW);
         } else {

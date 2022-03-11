@@ -49,7 +49,7 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
-#define SEND_HARD_STATE true
+//#define SEND_HARD_STATE false
 //#define DEBUG true
 
 #include "frey_ext/FreyGear.h"
@@ -68,12 +68,14 @@ FreyGear gear;
 FreyFlaps flaps;
 FreySpeedBrakes sbrakes;
 FreyVTrim vtrim;
+/*
 FreyCourse course;
 FreyNav nav1;
 FreyAPSpeed ap_speed;
 FreyAPButtons ap_buttons;
 FreyAPHeading ap_heading;
 FreyAPAltitude ap_altitude;
+*/
 
 
 unsigned int lapNumber = 0;
@@ -89,12 +91,14 @@ void setup() {
     flaps.prepare();
     sbrakes.prepare();
     vtrim.prepare();
+    /*
     course.prepare();
     nav1.prepare();
     ap_speed.prepare();
     ap_buttons.prepare();
     ap_heading.prepare();
     ap_altitude.prepare();
+    */
 }
 
 void executeFullState() {
@@ -104,18 +108,20 @@ void executeFullState() {
         message.trim();
         if (message == "") {return;};
 
-        if (message.startsWith("[frey-cmd-x] FULLSTATE")) {
+        if (message.startsWith("[frey-cmd-x] FULLSTATE") || message.startsWith("[frey-cmd-x] STATEFULL")) {
             sendLog("Start handle command " + message);
             gear.readFullState(message);
             flaps.readFullState(message);
             sbrakes.readFullState(message);
             vtrim.readFullState(message);
+            /*
             course.readFullState(message);
             nav1.readFullState(message);
             ap_speed.readFullState(message);
             ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
             ap_altitude.readFullState(message);
+            */
         };
     };
 
@@ -128,12 +134,14 @@ void loop() {
     flaps.lap();
     sbrakes.lap();
     vtrim.lap();
+    /*
     course.lap();
     nav1.lap();
     ap_speed.lap();
     ap_buttons.lap();
     ap_heading.lap();
     ap_altitude.lap();
+    */
 
     executeFullState();
 

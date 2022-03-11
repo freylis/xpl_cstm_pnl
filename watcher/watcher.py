@@ -116,8 +116,13 @@ class XplaneToArduino(Race):
 
     def lap(self):
         super().lap()
-        with open(self.command_path, 'r', encoding='utf-8') as f:
-            msg_lines = f.readlines()
+        try:
+            with open(self.command_path, 'r', encoding='utf-8') as f:
+                msg_lines = f.readlines()
+        except FileNotFoundError:
+            with open(self.command_path, 'w', encoding='utf-8') as f:
+                msg_lines = []
+
         if not msg_lines:
             return
 

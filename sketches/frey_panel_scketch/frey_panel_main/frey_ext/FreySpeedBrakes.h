@@ -5,10 +5,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned char pinEncCLK = 4;
-const unsigned char pinEncDIO = 5;
-const unsigned char pinDisplayCLK = 2;
-const unsigned char pinDisplayDIO = 3;
+const unsigned char pinEncCLK = 38;
+const unsigned char pinEncDIO = 39;
+const unsigned char pinDisplayCLK = A11;
+const unsigned char pinDisplayDIO = A10;
 
 
 GyverTM1637 speedBrakesDisplay(pinDisplayCLK, pinDisplayDIO);
@@ -30,6 +30,14 @@ class FreySpeedBrakes {
         pinMode(pinEncDIO, INPUT_PULLUP);
         pinMode(pinDisplayCLK, OUTPUT);
         pinMode(pinDisplayDIO, OUTPUT);
+        speedBrakesDisplay.clear();
+        speedBrakesDisplay.brightness(5);
+        delay(500);
+
+        speedBrakesDisplay.displayByte(0, _b);
+        speedBrakesDisplay.display(1, 7);
+        speedBrakesDisplay.display(2, 3);
+        speedBrakesDisplay.display(3, 7);
     };
     /* call it each loop and relax */
     void lap() {
