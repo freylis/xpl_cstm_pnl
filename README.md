@@ -147,7 +147,6 @@ NAV1 MHz (Int)
 NAV1 khz (Float)
     CLK - 33
     DIO - 34
-    TOGGLE - 35 // Возможно, перекачует в отдельную кнопку
 
 FLAPS
     CLK - 36
@@ -194,12 +193,12 @@ FLAPS
     DIO - A14
 
 SPEED BRAKES
-    CLK - A13
-    DIO - A12
-
-VERTICAL TRIM
     CLK - A11
     DIO - A10
+
+VERTICAL TRIM
+    CLK - A13
+    DIO - A12
 ```
 
 ##### ON[-OFF]-ON Button pin orders
@@ -213,6 +212,9 @@ AUTO THROTTLE
 
 FLIGHT DIRECTOR
     ON - A6
+
+NAV1
+    TOGGLE - 35
 ```
 
 ##### Light pin orders

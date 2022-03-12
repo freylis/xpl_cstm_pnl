@@ -49,7 +49,7 @@ class CustomCommand(Command):
 
 
 class CommandDataRefValue(Command):
-    i_rexp = re.compile(r'.+(\d+)$')
+    i_rexp = re.compile(r'[^\d]*(\d+)$')
 
     def set_value(self, value):
         dref = xp.findDataRef(self.cmd)
@@ -86,4 +86,4 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
         if not match:
             utils.echo(f'Cant get ...int from {value!r}')
             return
-        xp.setDatai(dref, value)
+        xp.setDatai(dref, int(match.groups()[0]))

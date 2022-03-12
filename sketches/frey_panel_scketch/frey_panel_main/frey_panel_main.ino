@@ -68,9 +68,10 @@ FreyGear gear;
 FreyFlaps flaps;
 FreySpeedBrakes sbrakes;
 FreyVTrim vtrim;
-/*
-FreyCourse course;
 FreyNav nav1;
+FreyCourse course;
+
+/*
 FreyAPSpeed ap_speed;
 FreyAPButtons ap_buttons;
 FreyAPHeading ap_heading;
@@ -91,9 +92,10 @@ void setup() {
     flaps.prepare();
     sbrakes.prepare();
     vtrim.prepare();
-    /*
-    course.prepare();
     nav1.prepare();
+    course.prepare();
+
+    /*
     ap_speed.prepare();
     ap_buttons.prepare();
     ap_heading.prepare();
@@ -114,9 +116,10 @@ void executeFullState() {
             flaps.readFullState(message);
             sbrakes.readFullState(message);
             vtrim.readFullState(message);
-            /*
-            course.readFullState(message);
             nav1.readFullState(message);
+            course.readFullState(message);
+
+            /*
             ap_speed.readFullState(message);
             ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
@@ -134,9 +137,10 @@ void loop() {
     flaps.lap();
     sbrakes.lap();
     vtrim.lap();
-    /*
-    course.lap();
     nav1.lap();
+    course.lap();
+
+    /*
     ap_speed.lap();
     ap_buttons.lap();
     ap_heading.lap();

@@ -7,10 +7,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinCourseEncoderCLK = 4;
-const unsigned int pinCourseEncoderDIO = 5;
-const unsigned int pinCourseDisplayCLK = 2;
-const unsigned int pinCourseDisplayDIO = 3;
+const unsigned int pinCourseEncoderCLK = 30;
+const unsigned int pinCourseEncoderDIO = 29;
+const unsigned int pinCourseDisplayCLK = 48;
+const unsigned int pinCourseDisplayDIO = 49;
 
 
 EncButton<EB_TICK, pinCourseEncoderCLK, pinCourseEncoderDIO> courseEncoder;
@@ -23,40 +23,40 @@ class FreyCourse {
     void _setCourseDisplay(unsigned int courseValue) {
       if (courseValue > 360 || courseValue < 0) {
         sendLog("Invalid course: " + (String)courseValue);
-        vTrimDisplay.displayByte(0, _empty);
-        vTrimDisplay.displayByte(1, _E);
-        vTrimDisplay.displayByte(2, _r);
-        vTrimDisplay.displayByte(3, _r);
+        courseDisplay.displayByte(0, _empty);
+        courseDisplay.displayByte(1, _E);
+        courseDisplay.displayByte(2, _r);
+        courseDisplay.displayByte(3, _r);
         return;
       };
 
       String sCourseValue = (String)courseValue;
       if (courseValue == 0) {
-          vTrimDisplay.displayByte(0, _empty);
-          vTrimDisplay.displayByte(1, _empty);
-          vTrimDisplay.displayByte(2, _empty);
-          vTrimDisplay.display(3, 0);
+          courseDisplay.displayByte(0, _empty);
+          courseDisplay.displayByte(1, _empty);
+          courseDisplay.displayByte(2, _empty);
+          courseDisplay.display(3, 0);
 
       } else if (courseValue < 10) {
           // 1..9
-          vTrimDisplay.displayByte(0, _empty);
-          vTrimDisplay.displayByte(1, _empty);
-          vTrimDisplay.displayByte(2, _empty);
-          vTrimDisplay.display(3, ((String)sCourseValue[0]).toInt());
+          courseDisplay.displayByte(0, _empty);
+          courseDisplay.displayByte(1, _empty);
+          courseDisplay.displayByte(2, _empty);
+          courseDisplay.display(3, ((String)sCourseValue[0]).toInt());
 
       } else if (courseValue < 100) {
           // 10..99
-          vTrimDisplay.displayByte(0, _empty);
-          vTrimDisplay.displayByte(1, _empty);
-          vTrimDisplay.display(2, ((String)sCourseValue[0]).toInt());
-          vTrimDisplay.display(3, ((String)sCourseValue[1]).toInt());
+          courseDisplay.displayByte(0, _empty);
+          courseDisplay.displayByte(1, _empty);
+          courseDisplay.display(2, ((String)sCourseValue[0]).toInt());
+          courseDisplay.display(3, ((String)sCourseValue[1]).toInt());
 
       } else {
           // 100..360
-          vTrimDisplay.displayByte(0, _empty);
-          vTrimDisplay.display(1, ((String)sCourseValue[0]).toInt());
-          vTrimDisplay.display(2, ((String)sCourseValue[1]).toInt());
-          vTrimDisplay.display(3, ((String)sCourseValue[2]).toInt());
+          courseDisplay.displayByte(0, _empty);
+          courseDisplay.display(1, ((String)sCourseValue[0]).toInt());
+          courseDisplay.display(2, ((String)sCourseValue[1]).toInt());
+          courseDisplay.display(3, ((String)sCourseValue[2]).toInt());
       };
     };
 
@@ -70,6 +70,18 @@ class FreyCourse {
         pinMode(pinCourseEncoderDIO, INPUT_PULLUP);
         pinMode(pinCourseDisplayCLK, OUTPUT);
         pinMode(pinCourseDisplayDIO, OUTPUT);
+
+        courseDisplay.clear();
+        courseDisplay.brightness(5);
+        delay(500);
+
+        courseDisplay.displayByte(0, _b);
+        courseDisplay.display(1, 7);
+        courseDisplay.display(2, 3);
+        courseDisplay.display(3, 7);
+        delay(500);
+
+        _setCourseDisplay(courseValue);
     };
 
     /* call it each loop and relax */
@@ -97,11 +109,11 @@ class FreyCourse {
     };
 
     void readFullState(String fullState) {
-      String sCourse = fullState.substring(39, 42);
+      /*String sCourse = fullState.substring(39, 42);
       sendLog("Got course: " + sCourse);
       int iCourseValue = sCourse.toInt();
       courseValue = iCourseValue;
-      _setCourseDisplay(iCourseValue);
+      _setCourseDisplay(iCourseValue);*/
     };
 
     void hardSendState() {

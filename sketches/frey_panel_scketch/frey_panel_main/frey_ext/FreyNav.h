@@ -6,19 +6,24 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinNav1EncoderIntCLK = 5;
-const unsigned int pinNav1EncoderIntDIO = 4;
-const unsigned int pinNav1EncoderFloatCLK = 8;
-const unsigned int pinNav1EncoderFloatDIO = 9;
-const unsigned int pinNav1ActiveDisplayCLK = 6;
-const unsigned int pinNav1ActiveDisplayDIO = 7;
-const unsigned int pinNav1StandbyDisplayCLK = 2;
-const unsigned int pinNav1StandbyDisplayDIO = 3;
-const unsigned int pinNav1SwitchStation = 10;
+const unsigned int pinNav1EncoderIntCLK = 32;
+const unsigned int pinNav1EncoderIntDIO = 31;
+
+const unsigned int pinNav1EncoderFloatCLK = 34;
+const unsigned int pinNav1EncoderFloatDIO = 33;
+
+const unsigned int pinNav1ActiveDisplayCLK = 50;
+const unsigned int pinNav1ActiveDisplayDIO = 51;
+
+const unsigned int pinNav1StandbyDisplayCLK = 52;
+const unsigned int pinNav1StandbyDisplayDIO = 53;
+
+const unsigned int pinNav1SwitchStation = 35;
 
 
 EncButton<EB_TICK, pinNav1EncoderIntCLK, pinNav1EncoderIntDIO> navIntEncoder;
 EncButton<EB_TICK, pinNav1EncoderFloatCLK, pinNav1EncoderFloatDIO, pinNav1SwitchStation> navFloatEncoder;
+EncButton<EB_TICK, pinNav1SwitchStation> navSwitchButton;
 
 GyverTM1637 navActiveDisplay(pinNav1ActiveDisplayCLK, pinNav1ActiveDisplayDIO);
 GyverTM1637 navStandByDisplay(pinNav1StandbyDisplayCLK, pinNav1StandbyDisplayDIO);
@@ -58,7 +63,8 @@ class FreyNav {
             sendLog("Draw standby __:" + ((String)sFloatStandByFreq[0]) + ((String)sFloatStandByFreq[1]));
             navStandByDisplay.display(2, ((String)sFloatStandByFreq[0]).toInt());
             navStandByDisplay.display(3, ((String)sFloatStandByFreq[1]).toInt());
-          }
+          };
+          hardSendState();
 
         };
 
@@ -89,7 +95,8 @@ class FreyNav {
             sendLog("Draw active __:" + ((String)sFloatActiveFreq[0]) + ((String)sFloatActiveFreq[1]));
             navActiveDisplay.display(2, ((String)sFloatActiveFreq[0]).toInt());
             navActiveDisplay.display(3, ((String)sFloatActiveFreq[1]).toInt());
-          }
+          };
+          hardSendState();
         };
 
         void switchFreq() {
@@ -112,8 +119,8 @@ class FreyNav {
         void prepare() {
             intActiveFreq = 108;
             floatActiveFreq = 50;
-            intStandByFreq = 108;
-            floatStandByFreq = 50;
+            intStandByFreq = 120;
+            floatStandByFreq = 95;
 
             pinMode(pinNav1EncoderFloatCLK, INPUT_PULLUP);
             pinMode(pinNav1EncoderFloatDIO, INPUT_PULLUP);
@@ -129,10 +136,20 @@ class FreyNav {
             navActiveDisplay.clear();
             navStandByDisplay.brightness(5);
             navActiveDisplay.brightness(5);
-
             navStandByDisplay.point(true);
             navActiveDisplay.point(true);
+            delay(100);
 
+            navStandByDisplay.displayByte(0, _b);
+            navStandByDisplay.display(1, 7);
+            navStandByDisplay.display(2, 3);
+            navStandByDisplay.display(3, 7);
+            navStandByDisplay.displayByte(0, _b);
+            navStandByDisplay.display(1, 7);
+            navStandByDisplay.display(2, 3);
+            navStandByDisplay.display(3, 7);
+
+            delay(500);
             drawStandByFreq();
             drawActiveFreq();
         };
@@ -171,7 +188,8 @@ class FreyNav {
                 drawStandByFreq();
             };
 
-            if (navFloatEncoder.release()) {
+            navSwitchButton.tick();
+            if (navSwitchButton.press() || navSwitchButton.release()) {
                 sendLog("Switch standby <-> active");
                 switchFreq();
             };

@@ -113,10 +113,10 @@ class CommandSetNav(base.CommandDataRefValue):
             return
 
         freq = match.groupdict()
-        CommandNavActiveMhz().set_value(int(freq['active_mhz']))
-        CommandNavActiveKhz().set_value(int(freq['active_khz']))
-        CommandNavStandByMhz().set_value(int(freq['standby_mhz']))
-        CommandNavStandByKhz().set_value(int(freq['standby_khz']))
+        CommandNavActiveMhz().set_value(freq['active_mhz'])
+        CommandNavActiveKhz().set_value(freq['active_khz'])
+        CommandNavStandByMhz().set_value(freq['standby_mhz'])
+        CommandNavStandByKhz().set_value(freq['standby_khz'])
 
 
 class CommandAutoThrottle(base.CommandDataRefIntegerValue):
