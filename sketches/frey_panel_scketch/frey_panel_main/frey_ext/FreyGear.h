@@ -7,8 +7,8 @@
 
 const unsigned char pinGearUp = A12;
 const unsigned char pinGearDown = A13;
-const unsigned char pinGearLightUp = A5;
-const unsigned char pinGearLightDown = A2;
+const unsigned char pinGearLightUp = A14;
+const unsigned char pinGearLightDown = A15;
 
 const unsigned char FREY_GEAR_STATE_UP = 1;
 const unsigned char FREY_GEAR_STATE_MIDDLE = 2;
