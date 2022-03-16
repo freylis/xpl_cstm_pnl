@@ -78,148 +78,160 @@ LEVEL_CHANGED - 0/1
 ###### KD2-22 Button pins order
 ```
 HEADING TOGGLE
-    TOGGLE - 1
-    LIGHT - 2
+    TOGGLE - 13
+    LIGHT - A0
 
 ALTITUDE TOGGLE
-    TOGGLE - 3
-    LIGHT - 4
+    TOGGLE - 12
+    LIGHT - A1
 
 AUTOPILOT CMD
-    TOGGLE - 5
-    LIGHT - 6
+    TOGGLE - 11
+    LIGHT - A2
 
+/*
+ОТКЛЮЧАЮ, жду пины
 AUTOPILOT CWS
-    TOGGLE - 7
-    LIGHT - 8
+    TOGGLE - 10
+    LIGHT - A3
+*/
 
 AUTOPILOT DISSENGAGE
     TOGGLE - 9
-    LIGHT - 10
 
 AUTOPILOT LEVEL CHANGED
-    TOGGLE - 11
-    LIGHT - 12
+    TOGGLE - 8
+    LIGHT - A5
 
 AUTOPILOT LNAV
-    TOGGLE - 13
-    LIGHT - 14
+    TOGGLE - 7
+    LIGHT - A6
 
 AUTOPILOT VNAV
-    TOGGLE - 15
-    LIGHT - 16
+    TOGGLE - 6
+    LIGHT - A7
 
 AUTOPILOT VOR LOC
-    TOGGLE - 17
-    LIGHT - 18
+    TOGGLE - 5
+    LIGHT - A8
 
 AUTOPILOT APPROACH
-    TOGGLE - 19
-    LIGHT - 20
+    TOGGLE - 4
+    LIGHT - A9
 
 AUTOPILOT SPEED TOGGLE
-    TOGGLE - 21
-    LIGHT - 22
+    TOGGLE - 3
+    LIGHT - A10
 ```
 
 ##### Encoder pins order
 ```
 HEADING
-    CLK - 23
-    DIO - 24
+    CLK - 22
+    DIO - 23
 
 ALTITUDE
-    CLK - 25
-    DIO - 26
+    CLK - 24
+    DIO - 25
 
 SPEED
-    CLK - 27
-    DIO - 28
+    CLK - 26
+    DIO - 27
 
 COURSE
-    CLK - 29
-    DIO - 30
+    CLK - 28
+    DIO - 29
 
 NAV1 MHz (Int)
-    CLK - 31
-    DIO - 32
+    CLK - 30
+    DIO - 31
 
 NAV1 khz (Float)
-    CLK - 33
-    DIO - 34
+    CLK - 32
+    DIO - 33
 
 FLAPS
+    CLK - 34
+    DIO - 35
+
+SPEED BRAKES
     CLK - 36
     DIO - 37
 
-SPEED BRAKES
-    CLK - 38
-    DIO - 39
-
+/*
+!!!!!! отключаю ввиду отсутствия пинов
 VERTICAL TRIMER
-    CLK - 40
-    DIO - 41
+    CLK - 36
+    DIO - 37
+*/
 ```
 
 ##### Display pins order
 
 ```
 HEADING
+    CLK - 38
+    DIO - 39
+
+ALTITUDE
+    CLK - 40
+    DIO - 41
+
+SPEED
     CLK - 42
     DIO - 43
 
-ALTITUDE
+COURSE
     CLK - 44
     DIO - 45
 
-SPEED
+NAV1 ACTIVE
     CLK - 46
     DIO - 47
 
-COURSE
+NAV1 STANDBY
     CLK - 48
     DIO - 49
 
-NAV1 ACTIVE
+FLAPS
     CLK - 50
     DIO - 51
 
-NAV1 STANDBY
+SPEED BRAKES
     CLK - 52
     DIO - 53
 
-FLAPS
+/*
+Отключаю, не пользуемся за ненадобностью
+VERTICAL TRIM
     CLK - A15
     DIO - A14
-
-SPEED BRAKES
-    CLK - A11
-    DIO - A10
-
-VERTICAL TRIM
-    CLK - A13
-    DIO - A12
+*/
 ```
 
 ##### ON[-OFF]-ON Button pin orders
 ```
 GEAR ON-OFF-ON
-    ON - A9
-    OFF - A8
+    ON - A13
+    OFF - A12
 
 AUTO THROTTLE
-    ON - A7
+    ON - A11
 
 FLIGHT DIRECTOR
-    ON - A6
+    ON - A3
 
 NAV1
-    TOGGLE - 35
+    TOGGLE - 10
 ```
 
 ##### Light pin orders
 ```
 GEAR
+    /*
+    Пока некуда подключать
     RED - A5
-    GREEN - A4
+    */
+
+    GREEN - 2
 ```

@@ -30,7 +30,7 @@ class FreyVTrim {
         pinMode(pinVertTrimDisplayDIO, OUTPUT);
         vTrimDisplay.clear();
         vTrimDisplay.brightness(5);
-        delay(500);
+        delay(100);
 
         vTrimDisplay.displayByte(0, _b);
         vTrimDisplay.display(1, 7);

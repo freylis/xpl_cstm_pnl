@@ -5,12 +5,12 @@
 #include "FreyCommand.h"
 #include <EncButton.h>
 
-const unsigned char pinAPAltitudeEncoderCLK = 4;
-const unsigned char pinAPAltitudeEncoderDIO = 5;
-const unsigned char pinAPAltitudeDisplayCLK = 2;
-const unsigned char pinAPAltitudeDisplayDIO = 3;
-const unsigned char pinAPAltitudeButton = 10;
-const unsigned char pinAPAltitudeEnabled = A0;
+const unsigned char pinAPAltitudeEncoderCLK = 24;
+const unsigned char pinAPAltitudeEncoderDIO = 25;
+const unsigned char pinAPAltitudeDisplayCLK = 40;
+const unsigned char pinAPAltitudeDisplayDIO = 41;
+const unsigned char pinAPAltitudeButton = 12;
+const unsigned char pinAPAltitudeEnabled = A1;
 
 
 GyverTM1637 apAltitudeDisplay(pinAPAltitudeDisplayCLK, pinAPAltitudeDisplayDIO);
@@ -23,6 +23,8 @@ class FreyAPAltitude {
         FreyAPAltitude() {};
 
         void prepare() {
+            lastSended = millis();
+            valueChanged = false;
             pinMode(pinAPAltitudeEncoderCLK, INPUT_PULLUP);
             pinMode(pinAPAltitudeEncoderDIO, INPUT_PULLUP);
             pinMode(pinAPAltitudeButton, INPUT_PULLUP);
@@ -31,7 +33,7 @@ class FreyAPAltitude {
             pinMode(pinAPAltitudeEnabled, OUTPUT);
 
             apAltitudeDisplay.clear();
-            apAltitudeDisplay.brightness(5);
+            apAltitudeDisplay.brightness(3);
 
             _altitudeValue = 100;
 
@@ -42,6 +44,7 @@ class FreyAPAltitude {
             /* set altitude with encoder */
             apAltitudeEncoder.tick();
             if (apAltitudeEncoder.turn()) {
+                valueChanged = true;
                 if (apAltitudeEncoder.left()) {
                     if (apAltitudeEncoder.fast()) {
                         _altitudeValue -= 10;
@@ -56,8 +59,13 @@ class FreyAPAltitude {
                     };
                 };
                 _altitudeValue = min(max(100, _altitudeValue), 500);
-                hardSendState();
                 drawAltitude();
+            };
+
+            // если прошло достаточно времени, отправим сообщение с новым значением
+            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+                hardSendState();
+                lastSended = false;
             };
 
             /* toggle altitude */
@@ -81,6 +89,8 @@ class FreyAPAltitude {
 
     private:
         unsigned int _altitudeValue;
+        unsigned long lastSended;
+        bool valueChanged;
 
         void drawAltitude() {
             String sAltitude = (String)_altitudeValue;

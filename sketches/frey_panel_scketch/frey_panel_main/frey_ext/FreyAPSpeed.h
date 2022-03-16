@@ -6,14 +6,14 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinATEnabled = A0;
-const unsigned int pinFDEnabled = A1;
-const unsigned int pinAPSpeedDisplayCLK = 2;
-const unsigned int pinAPSpeedDisplayDIO = 3;
-const unsigned int pintAPSpeedEncoderCLK = 4;
-const unsigned int pintAPSpeedEncoderDIO = 5;
-const unsigned int pinAPSpeedButton = 10;
-const unsigned int pinAPSpeedEnabled = A4;
+const unsigned int pinATEnabled = A11;
+const unsigned int pinFDEnabled = A3;
+const unsigned int pinAPSpeedDisplayCLK = 42;
+const unsigned int pinAPSpeedDisplayDIO = 43;
+const unsigned int pintAPSpeedEncoderCLK = 26;
+const unsigned int pintAPSpeedEncoderDIO = 27;
+const unsigned int pinAPSpeedButton = 3;
+const unsigned int pinAPSpeedEnabled = A10;
 
 
 GyverTM1637 apSpeedDisplay(pinAPSpeedDisplayCLK, pinAPSpeedDisplayDIO);
@@ -25,6 +25,8 @@ class FreyAPSpeed {
         FreyAPSpeed() {};
 
         void prepare() {
+            lastSended = millis();
+            valueChanged = false;
             pinMode(pinATEnabled, INPUT_PULLUP);
             pinMode(pinFDEnabled, INPUT_PULLUP);
             pinMode(pintAPSpeedEncoderCLK, INPUT_PULLUP);
@@ -32,32 +34,35 @@ class FreyAPSpeed {
             pinMode(pinAPSpeedDisplayCLK, OUTPUT);
             pinMode(pinAPSpeedDisplayDIO, OUTPUT);
             pinMode(pinAPSpeedEnabled, OUTPUT);
+            pinMode(pinAPSpeedButton, INPUT_PULLUP);
             _at_enabled = false;
-            _at_last_ms = 0;
-            _fd_last_ms = 0;
-            _current_ms = 0;
             _speedValue = 100;
 
             apSpeedDisplay.clear();
             apSpeedDisplay.brightness(5);
 
+            delay(10);
+            apSpeedDisplay.displayByte(0, _b);
+            apSpeedDisplay.display(1, 7);
+            apSpeedDisplay.display(2, 3);
+            apSpeedDisplay.display(3, 7);
+            delay(100);
+
             drawSpeed();
         };
 
         void lap() {
-            _current_ms = millis();
             handleATToggle();
             handleFDToggle();
             handleEncoder();
-
         };
 
         void readFullState(String fullState) {
             char apSpeedStatus = fullState[44];
-            if (apSpeedStatus == '0') {
-                digitalWrite(pinAPSpeedEnabled, LOW);
-            } else if (apSpeedStatus == '1') {
+            if (apSpeedStatus == '1') {
                 digitalWrite(pinAPSpeedEnabled, HIGH);
+            } else {
+                digitalWrite(pinAPSpeedEnabled, LOW);
             };
         };
 
@@ -71,57 +76,43 @@ class FreyAPSpeed {
 
     private:
         bool _at_enabled;
-        unsigned long _at_last_ms;
-        unsigned long _fd_last_ms;
-        unsigned long _current_ms;
         bool _fd_enabled;
         bool _ap_spd_enabled;
         int _speedValue;
+        bool valueChanged;
+        int lastSended;
 
         void handleATToggle() {
             /*
                 AutoThrottle
                 Check it once per 10ms
             */
-            if (_current_ms >= _at_last_ms + 50) {
-
-                int at_current = !digitalRead(pinATEnabled);
-                if (at_current == 1 && !_at_enabled) {
-                    sendPanelCommand("AUTO_THROTTLE_1");
-                    _at_enabled = true;
-                } else if (at_current == 0 && _at_enabled) {
-                    sendPanelCommand("AUTO_THROTTLE_0");
-                    _at_enabled = false;
-                };
-
-                _at_last_ms = _current_ms;
+            int at_current = !digitalRead(pinATEnabled);
+            if (at_current == 1 && !_at_enabled) {
+                sendPanelCommand("AUTO_THROTTLE_1");
+                _at_enabled = true;
+            } else if (at_current == 0 && _at_enabled) {
+                sendPanelCommand("AUTO_THROTTLE_0");
+                _at_enabled = false;
             };
 
         };
 
         void handleFDToggle() {
-            /*
-                Flight Director
-                Check it once per 50ms
-            */
-            if (_current_ms >= _fd_last_ms + 50) {
-
-                int fd_current = !digitalRead(pinFDEnabled);
-                if (fd_current == 1 && !_fd_enabled) {
-                    sendPanelCommand("FLIGHT_DIRECTOR_1");
-                    _fd_enabled = true;
-                } else if (fd_current == 0 && _fd_enabled) {
-                    sendPanelCommand("FLIGHT_DIRECTOR_0");
-                    _fd_enabled = false;
-                };
-
-                _fd_last_ms = _current_ms;
+            int fd_current = !digitalRead(pinFDEnabled);
+            if (fd_current == 1 && !_fd_enabled) {
+                sendPanelCommand("FLIGHT_DIRECTOR_0");
+                _fd_enabled = true;
+            } else if (fd_current == 0 && _fd_enabled) {
+                sendPanelCommand("FLIGHT_DIRECTOR_1");
+                _fd_enabled = false;
             };
         };
 
         void handleEncoder() {
             apSpeedEncoder.tick();
             if (apSpeedEncoder.turn()) {
+                valueChanged = true;
                 if (apSpeedEncoder.left()) {
                     if (apSpeedEncoder.fast()) {
                         _speedValue -= 10;
@@ -133,10 +124,15 @@ class FreyAPSpeed {
                         _speedValue += 10;
                     } else {
                         _speedValue += 1;
-                    }
+                    };
                 };
                 _speedValue = min(500, max(100, _speedValue));
                 drawSpeed();
+            };
+
+            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+                sendPanelCommand("AP_SPEED_" + (String)_speedValue);
+                valueChanged = false;
             };
 
             if (apSpeedEncoder.release()) {
@@ -147,11 +143,10 @@ class FreyAPSpeed {
 
         void drawSpeed() {
           String sSpeed = (String)_speedValue;
-          sendPanelCommand("AP_SPEED_" + sSpeed);
-          flapsDisplay.displayByte(0, _empty);
-          flapsDisplay.display(1, sSpeed.substring(0, 1).toInt());
-          flapsDisplay.display(2, sSpeed.substring(1, 2).toInt());
-          flapsDisplay.display(3, sSpeed.substring(2, 3).toInt());
+          apSpeedDisplay.displayByte(0, _empty);
+          apSpeedDisplay.display(1, sSpeed.substring(0, 1).toInt());
+          apSpeedDisplay.display(2, sSpeed.substring(1, 2).toInt());
+          apSpeedDisplay.display(3, sSpeed.substring(2, 3).toInt());
         };
 
 };

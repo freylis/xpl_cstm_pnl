@@ -6,10 +6,10 @@
 #include <EncButton.h>
 #include "FreyCommand.h"
 
-const unsigned int pinFlapsEncoderCLK = 36;
-const unsigned int pinFlapsEncoderDIO = 37;
-const unsigned int pinFlapsDisplayCLK = A15;
-const unsigned int pinFlapsDisplayDIO = A14;
+const unsigned int pinFlapsEncoderCLK = 34;
+const unsigned int pinFlapsEncoderDIO = 35;
+const unsigned int pinFlapsDisplayCLK = 50;
+const unsigned int pinFlapsDisplayDIO = 51;
 
 
 GyverTM1637 flapsDisplay(pinFlapsDisplayCLK, pinFlapsDisplayDIO);
@@ -32,7 +32,7 @@ class FreyFlaps {
         pinMode(pinFlapsDisplayDIO, OUTPUT);
         flapsDisplay.clear();
         flapsDisplay.brightness(5);
-        delay(500);
+        delay(100);
 
         flapsDisplay.displayByte(0, _b);
         flapsDisplay.display(1, 7);

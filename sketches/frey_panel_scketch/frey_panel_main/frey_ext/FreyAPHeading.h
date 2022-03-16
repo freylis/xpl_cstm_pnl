@@ -5,12 +5,12 @@
 #include "FreyCommand.h"
 #include <EncButton.h>
 
-const unsigned char pinAPHeadingEncoderCLK = 4;
-const unsigned char pinAPHeadingEncoderDIO = 5;
-const unsigned char pinAPHeadingDisplayCLK = 2;
-const unsigned char pinAPHeadingDisplayDIO = 3;
-const unsigned char pinAPHeadingButton = 10;
-const unsigned char pinAPHeadingEnabled = A4;
+const unsigned char pinAPHeadingEncoderCLK = 22;
+const unsigned char pinAPHeadingEncoderDIO = 23;
+const unsigned char pinAPHeadingDisplayCLK = 38;
+const unsigned char pinAPHeadingDisplayDIO = 39;
+const unsigned char pinAPHeadingButton = 13;
+const unsigned char pinAPHeadingEnabled = A0;
 
 
 GyverTM1637 apHeadingDisplay(pinAPHeadingDisplayCLK, pinAPHeadingDisplayDIO);
@@ -24,6 +24,8 @@ class FreyAPHeading {
         FreyAPHeading() {};
 
         void prepare() {
+            valueChanged = false;
+            lastSended = millis();
             pinMode(pinAPHeadingEncoderCLK, INPUT_PULLUP);
             pinMode(pinAPHeadingEncoderDIO, INPUT_PULLUP);
             pinMode(pinAPHeadingButton, INPUT_PULLUP);
@@ -32,17 +34,19 @@ class FreyAPHeading {
             pinMode(pinAPHeadingEnabled, OUTPUT);
 
             apHeadingDisplay.clear();
-            apHeadingDisplay.brightness(5);
+            apHeadingDisplay.brightness(3);
 
             _headingValue = 0;
 
             drawHeading();
+            hardSendState();
         };
 
         void lap() {
 
             apHeadingEncoder.tick();
             if (apHeadingEncoder.turn()) {
+                valueChanged = true;
                 if (apHeadingEncoder.left()) {
                     if (apHeadingEncoder.fast()) {
                         _headingValue -= 10;
@@ -63,6 +67,12 @@ class FreyAPHeading {
                 };
                 drawHeading();
                 hardSendState();
+            };
+
+
+            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+                hardSendState();
+                lastSended = false;
             };
 
             /* toggle heading */
@@ -87,6 +97,8 @@ class FreyAPHeading {
 
     private:
         int _headingValue;
+        bool valueChanged;
+        int lastSended;
         void drawHeading() {
           String sHeading = (String)_headingValue;
           apHeadingDisplay.displayByte(0, _empty);

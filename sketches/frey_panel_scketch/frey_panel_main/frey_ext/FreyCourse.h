@@ -7,10 +7,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned int pinCourseEncoderCLK = 30;
+const unsigned int pinCourseEncoderCLK = 28;
 const unsigned int pinCourseEncoderDIO = 29;
-const unsigned int pinCourseDisplayCLK = 48;
-const unsigned int pinCourseDisplayDIO = 49;
+const unsigned int pinCourseDisplayCLK = 44;
+const unsigned int pinCourseDisplayDIO = 45;
 
 
 EncButton<EB_TICK, pinCourseEncoderCLK, pinCourseEncoderDIO> courseEncoder;
@@ -20,6 +20,9 @@ GyverTM1637 courseDisplay(pinCourseDisplayCLK, pinCourseDisplayDIO);
 class FreyCourse {
 
   private:
+    int courseValue = 0;
+    bool valueChanged;
+    int lastSended;
     void _setCourseDisplay(unsigned int courseValue) {
       if (courseValue > 360 || courseValue < 0) {
         sendLog("Invalid course: " + (String)courseValue);
@@ -62,10 +65,11 @@ class FreyCourse {
 
   public:
     FreyCourse() {};
-    int courseValue = 0;
 
     /* call it once in setup func */
     void prepare() {
+        valueChanged = false;
+        lastSended = millis();
         pinMode(pinCourseEncoderCLK, INPUT_PULLUP);
         pinMode(pinCourseEncoderDIO, INPUT_PULLUP);
         pinMode(pinCourseDisplayCLK, OUTPUT);
@@ -86,35 +90,34 @@ class FreyCourse {
 
     /* call it each loop and relax */
     void lap() {
-       courseEncoder.tick();
-       if (courseEncoder.turn()) {
-           if (courseEncoder.left()) {
-             if (courseEncoder.fast()) {
+        courseEncoder.tick();
+        if (courseEncoder.turn()) {
+          valueChanged = true;
+          if (courseEncoder.left()) {
+            if (courseEncoder.fast()) {
                 courseValue -= 10;
-             } else {
+            } else {
                 courseValue -= 1;
-             }
-           } else if (courseEncoder.right()) {
-             if (courseEncoder.fast()) {
+            }
+          } else if (courseEncoder.right()) {
+            if (courseEncoder.fast()) {
                 courseValue += 10;
-             } else {
+            } else {
                 courseValue += 1;
-             };
-           };
-           if (courseValue < 0) {courseValue = 360;}
-           else if (courseValue > 360) {courseValue = 0;};
-           hardSendState();
-           _setCourseDisplay(courseValue);
-       };
+            };
+          };
+          if (courseValue < 0) {courseValue = 360;}
+          else if (courseValue > 360) {courseValue = 0;};
+          _setCourseDisplay(courseValue);
+        };
+
+        if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+          hardSendState();
+          valueChanged = false;
+        };
     };
 
-    void readFullState(String fullState) {
-      /*String sCourse = fullState.substring(39, 42);
-      sendLog("Got course: " + sCourse);
-      int iCourseValue = sCourse.toInt();
-      courseValue = iCourseValue;
-      _setCourseDisplay(iCourseValue);*/
-    };
+    void readFullState(String fullState) {};
 
     void hardSendState() {
         sendPanelCommand("SET_COURSE_" + (String)courseValue);

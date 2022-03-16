@@ -50,12 +50,12 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
 //#define SEND_HARD_STATE false
-//#define DEBUG true
+#define DEBUG true
 
 #include "frey_ext/FreyGear.h"
 #include "frey_ext/FreyFlaps.h"
 #include "frey_ext/FreySpeedBrakes.h"
-#include "frey_ext/FreyVTrim.h"
+//#include "frey_ext/FreyVTrim.h"
 #include "frey_ext/FreyCourse.h"
 #include "frey_ext/FreyNav.h"
 #include "frey_ext/FreyAPSpeed.h"
@@ -63,16 +63,15 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 #include "frey_ext/FreyAPHeading.h"
 #include "frey_ext/FreyAPAltitude.h"
 
-
-FreyGear gear;
 FreyFlaps flaps;
+//FreyVTrim vtrim;
+FreyGear gear;
 FreySpeedBrakes sbrakes;
-FreyVTrim vtrim;
 FreyNav nav1;
 FreyCourse course;
+FreyAPSpeed ap_speed;
 
 /*
-FreyAPSpeed ap_speed;
 FreyAPButtons ap_buttons;
 FreyAPHeading ap_heading;
 FreyAPAltitude ap_altitude;
@@ -88,15 +87,15 @@ void setup() {
     Serial.begin(9600);
     Serial.setTimeout(30);
 
-    gear.prepare();
     flaps.prepare();
+    //vtrim.prepare();
+    gear.prepare();
     sbrakes.prepare();
-    vtrim.prepare();
     nav1.prepare();
     course.prepare();
+    ap_speed.prepare();
 
     /*
-    ap_speed.prepare();
     ap_buttons.prepare();
     ap_heading.prepare();
     ap_altitude.prepare();
@@ -115,12 +114,12 @@ void executeFullState() {
             gear.readFullState(message);
             flaps.readFullState(message);
             sbrakes.readFullState(message);
-            vtrim.readFullState(message);
+            //vtrim.readFullState(message);
             nav1.readFullState(message);
             course.readFullState(message);
+            ap_speed.readFullState(message);
 
             /*
-            ap_speed.readFullState(message);
             ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
             ap_altitude.readFullState(message);
@@ -132,16 +131,15 @@ void executeFullState() {
 
 
 void loop() {
-
-    gear.lap();
     flaps.lap();
+    //vtrim.lap();
+    gear.lap();
     sbrakes.lap();
-    vtrim.lap();
     nav1.lap();
     course.lap();
+    ap_speed.lap();
 
     /*
-    ap_speed.lap();
     ap_buttons.lap();
     ap_heading.lap();
     ap_altitude.lap();

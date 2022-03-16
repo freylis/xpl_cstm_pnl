@@ -5,10 +5,10 @@
 #include <GyverTM1637.h>
 #include <EncButton.h>
 
-const unsigned char pinEncCLK = 38;
-const unsigned char pinEncDIO = 39;
-const unsigned char pinDisplayCLK = A11;
-const unsigned char pinDisplayDIO = A10;
+const unsigned char pinEncCLK = 36;
+const unsigned char pinEncDIO = 37;
+const unsigned char pinDisplayCLK = 52;
+const unsigned char pinDisplayDIO = 53;
 
 
 GyverTM1637 speedBrakesDisplay(pinDisplayCLK, pinDisplayDIO);
@@ -32,7 +32,7 @@ class FreySpeedBrakes {
         pinMode(pinDisplayDIO, OUTPUT);
         speedBrakesDisplay.clear();
         speedBrakesDisplay.brightness(5);
-        delay(500);
+        delay(100);
 
         speedBrakesDisplay.displayByte(0, _b);
         speedBrakesDisplay.display(1, 7);
