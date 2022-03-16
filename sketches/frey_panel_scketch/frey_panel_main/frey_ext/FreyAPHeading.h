@@ -84,9 +84,9 @@ class FreyAPHeading {
         };
         void readFullState(String fullState) {
             if (fullState[65] == '1') {
-                pinMode(pinAPHeadingEnabled, HIGH);
+                analogWrite(pinAPHeadingEnabled, KD2_LIGHT);
             } else {
-                pinMode(pinAPHeadingEnabled, LOW);
+                analogWrite(pinAPHeadingEnabled, LOW);
             };
 
         };

@@ -60,9 +60,9 @@ class FreyAPSpeed {
         void readFullState(String fullState) {
             char apSpeedStatus = fullState[44];
             if (apSpeedStatus == '1') {
-                digitalWrite(pinAPSpeedEnabled, HIGH);
+                analogWrite(pinAPSpeedEnabled, KD2_LIGHT);
             } else {
-                digitalWrite(pinAPSpeedEnabled, LOW);
+                analogWrite(pinAPSpeedEnabled, LOW);
             };
         };
 

@@ -103,26 +103,28 @@ class FreyAPButtons {
 
         void readFullState(String fullState) {
 
-            if (fullState[47] == '1') {digitalWrite(pinVNAVEnabled, HIGH);}
-             else {digitalWrite(pinVNAVEnabled, LOW);};
+            if (fullState[47] == '1') {analogWrite(pinVNAVEnabled, KD2_LIGHT);}
+             else {analogWrite(pinVNAVEnabled, LOW);};
 
-            if (fullState[50] == '1') {digitalWrite(pinLNAVEnabled, HIGH);}
-             else {digitalWrite(pinLNAVEnabled, LOW);};
+            if (fullState[50] == '1') {analogWrite(pinLNAVEnabled, KD2_LIGHT);}
+             else {analogWrite(pinLNAVEnabled, LOW);};
 
-            if (fullState[53] == '1') {digitalWrite(pinVORLOCKEnabled, HIGH);}
-             else {digitalWrite(pinVORLOCKEnabled, LOW);};
+            if (fullState[53] == '1') {analogWrite(pinVORLOCKEnabled, KD2_LIGHT);}
+             else {analogWrite(pinVORLOCKEnabled, LOW);};
 
-            if (fullState[56] == '1') {digitalWrite(pinAPPROACHEnabled, HIGH);}
-             else {digitalWrite(pinAPPROACHEnabled, LOW);};
+            if (fullState[56] == '1') {analogWrite(pinAPPROACHEnabled, KD2_LIGHT);}
+             else {analogWrite(pinAPPROACHEnabled, LOW);};
 
-            if (fullState[59] == '1') {digitalWrite(pinCMDEnabled, HIGH);}
-             else {digitalWrite(pinCMDEnabled, LOW);};
+            if (fullState[59] == '1') {analogWrite(pinCMDEnabled, KD2_LIGHT);}
+             else {analogWrite(pinCMDEnabled, LOW);};
 
-            if (fullState[62] == '1') {digitalWrite(pinCWSEnabled, HIGH);}
-             else {digitalWrite(pinCWSEnabled, LOW);};
+            /*
+            if (fullState[62] == '1') {analogWrite(pinCWSEnabled, KD2_LIGHT);}
+             else {analogWrite(pinCWSEnabled, LOW);};
+             */
 
-            if (fullState[71] == '1') {digitalWrite(pinLevelChangedEnabled, HIGH);}
-             else {digitalWrite(pinLevelChangedEnabled, LOW);};
+            if (fullState[71] == '1') {analogWrite(pinLevelChangedEnabled, KD2_LIGHT);}
+             else {analogWrite(pinLevelChangedEnabled, LOW);};
         };
 
         void hardSendState() {};

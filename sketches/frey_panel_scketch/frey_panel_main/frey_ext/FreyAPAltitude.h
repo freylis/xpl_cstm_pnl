@@ -77,9 +77,9 @@ class FreyAPAltitude {
 
     void readFullState(String fullState) {
         if (fullState[68] == '1') {
-            pinMode(pinAPAltitudeEnabled, HIGH);
+            analogWrite(pinAPAltitudeEnabled, KD2_LIGHT);
         } else {
-            pinMode(pinAPAltitudeEnabled, LOW);
+            analogWrite(pinAPAltitudeEnabled, LOW);
         };
     };
 
