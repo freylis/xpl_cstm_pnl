@@ -70,9 +70,9 @@ FreySpeedBrakes sbrakes;
 FreyNav nav1;
 FreyCourse course;
 FreyAPSpeed ap_speed;
+FreyAPButtons ap_buttons;
 
 /*
-FreyAPButtons ap_buttons;
 FreyAPHeading ap_heading;
 FreyAPAltitude ap_altitude;
 */
@@ -94,9 +94,9 @@ void setup() {
     nav1.prepare();
     course.prepare();
     ap_speed.prepare();
+    ap_buttons.prepare();
 
     /*
-    ap_buttons.prepare();
     ap_heading.prepare();
     ap_altitude.prepare();
     */
@@ -118,9 +118,9 @@ void executeFullState() {
             nav1.readFullState(message);
             course.readFullState(message);
             ap_speed.readFullState(message);
+            ap_buttons.readFullState(message);
 
             /*
-            ap_buttons.readFullState(message);
             ap_heading.readFullState(message);
             ap_altitude.readFullState(message);
             */
@@ -138,9 +138,9 @@ void loop() {
     nav1.lap();
     course.lap();
     ap_speed.lap();
+    ap_buttons.lap();
 
     /*
-    ap_buttons.lap();
     ap_heading.lap();
     ap_altitude.lap();
     */

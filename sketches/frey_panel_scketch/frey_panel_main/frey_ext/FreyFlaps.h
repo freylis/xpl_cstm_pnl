@@ -40,6 +40,7 @@ class FreyFlaps {
         flapsDisplay.display(3, 7);
 
     };
+
     /* call it each loop and relax */
     void lap() {
         flapsEncoder.tick();
@@ -49,6 +50,7 @@ class FreyFlaps {
             sendPanelCommand("FLAPS_UP_ONE");
         };
     };
+
     void readFullState(String fullState) {
       unsigned int dFlaps = fullState.substring(26, 29).toInt();
       sendLog("Found " + (String)dFlaps + " flaps");

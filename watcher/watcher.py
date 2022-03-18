@@ -29,7 +29,7 @@ logger.addHandler(c_handler)
 
 
 try:
-    pipe = serial.Serial('COM8', baudrate=9600, timeout=0)
+    pipe = serial.Serial('COM8', baudrate=9600, timeout=30)
 except serial.SerialException as exc:
     logger.error(str(exc))
     logger.error('Exit with status 0')
@@ -69,7 +69,12 @@ class ArduinoToXplane(Race):
     def lap(self):
         super().lap()
 
-        cmd = pipe.readline().decode('utf-8').strip()
+        try:
+            cmd = pipe.readline().decode('utf-8').strip()
+        except Exception as exc:
+            logger.error(f'Error read message: {exc}')
+            return
+
         if cmd:
             self.log(cmd)
             self.handle_message(cmd)
@@ -139,7 +144,11 @@ class XplaneToArduino(Race):
         # если остались непрочитанные сообщения - их нужно отправить опять в arduino
         if self.future_commands:
             for msg in self.future_commands:
-                pipe.write(msg.encode('utf-8'))
+                try:
+                    pipe.write(msg.encode('utf-8'))
+                except Exception as exc:
+                    logger.error(f'Error send message: {exc}')
+                    return
         self.future_commands = []
 
     def handle_message(self, msg):
@@ -154,7 +163,11 @@ class XplaneToArduino(Race):
 
     def handle_command(self, cmd):
         self.log(f'send command {cmd} to arduino')
-        pipe.write((cmd + '\n').encode('utf-8'))
+        bdata = (cmd + '\n').encode('utf-8')
+        try:
+            pipe.write(bdata)
+        except Exception as exc:
+            logger.error(f'Error send message {bdata!r}: {exc}')
         self.log_cmd(cmd)
         time.sleep(0.11)
 
@@ -169,6 +182,9 @@ class XplaneToArduino(Race):
 ar = ArduinoToXplane()
 xp = XplaneToArduino()
 
+logger.info('ready to show?')
+time.sleep(5)
+logger.info('lets fly')
 
 while True:
     xp.lap()

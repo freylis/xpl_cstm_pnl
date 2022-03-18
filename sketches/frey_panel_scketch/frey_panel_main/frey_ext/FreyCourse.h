@@ -109,18 +109,15 @@ class FreyCourse {
           if (courseValue < 0) {courseValue = 360;}
           else if (courseValue > 360) {courseValue = 0;};
           _setCourseDisplay(courseValue);
+          hardSendState();
         };
 
-        if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
-          hardSendState();
-          valueChanged = false;
-        };
     };
 
     void readFullState(String fullState) {};
 
     void hardSendState() {
-        sendPanelCommand("SET_COURSE_" + (String)courseValue);
+        sendPanelCommand("CURRENT_VALUE_" + (String)courseValue);
     };
 };
 

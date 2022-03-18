@@ -128,12 +128,18 @@ class FreyAPSpeed {
                 };
                 _speedValue = min(500, max(100, _speedValue));
                 drawSpeed();
+                sendPanelCommand("AP_SPEED_" + (String)_speedValue);
             };
 
-            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+            /*
+            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 sendPanelCommand("AP_SPEED_" + (String)_speedValue);
                 valueChanged = false;
+                lastSended = millis();
+            } else if (valueChanged) {
+                sendPanelCommand("WAIT SPEED: " + (String)millis() + " | " + (String)(lastSended + SEND_COMMAND_EVERY_MS));
             };
+            */
 
             if (apSpeedEncoder.release()) {
                 sendPanelCommand("AP_SPEED_TOGGLE");

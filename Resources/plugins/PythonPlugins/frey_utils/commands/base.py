@@ -86,4 +86,5 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
         if not match:
             utils.echo(f'Cant get ...int from {value!r}')
             return
+        utils.echo(f'Set {self.cmd} = {match.groups()[0]}')
         xp.setDatai(dref, int(match.groups()[0]))

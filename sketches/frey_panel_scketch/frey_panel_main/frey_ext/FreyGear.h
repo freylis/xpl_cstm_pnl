@@ -90,11 +90,11 @@ class FreyGear {
         int currentState = fullState.substring(23, 24).toInt();
         sendLog("Fullstate gear=" + (String)currentState);
         if (currentState == 1) {
-            digitalWrite(pinGearLightDown, HIGH);
+            analogWrite(pinGearLightDown, KD2_LIGHT);
             digitalWrite(pinGearLightUp, LOW);
         } else {
             digitalWrite(pinGearLightDown, LOW);
-            digitalWrite(pinGearLightUp, HIGH);
+            analogWrite(pinGearLightUp, KD2_LIGHT);
         };
     };
 

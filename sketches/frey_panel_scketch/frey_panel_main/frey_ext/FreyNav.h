@@ -164,7 +164,7 @@ class FreyNav {
                     intStandByFreq = 108;
                 };
                 sendLog("Draw nav1i " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
-                hardSendState();
+                drawStandByFreq();
             };
             if (navFloatEncoder.turn()) {
                 valueChanged = true;
@@ -182,9 +182,10 @@ class FreyNav {
                 drawStandByFreq();
             };
 
-            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
+            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 hardSendState();
                 valueChanged = false;
+                lastSended = millis();
             };
 
             navSwitchButton.tick();
