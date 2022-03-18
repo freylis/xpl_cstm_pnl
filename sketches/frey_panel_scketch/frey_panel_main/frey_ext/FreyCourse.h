@@ -3,9 +3,9 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
+#include "FreyEncoder.h"
 
 #include <GyverTM1637.h>
-#include <EncButton.h>
 
 const unsigned int pinCourseEncoderCLK = 28;
 const unsigned int pinCourseEncoderDIO = 29;
@@ -13,7 +13,6 @@ const unsigned int pinCourseDisplayCLK = 44;
 const unsigned int pinCourseDisplayDIO = 45;
 
 
-EncButton<EB_TICK, pinCourseEncoderCLK, pinCourseEncoderDIO> courseEncoder;
 GyverTM1637 courseDisplay(pinCourseDisplayCLK, pinCourseDisplayDIO);
 
 
@@ -69,7 +68,6 @@ class FreyCourse {
     /* call it once in setup func */
     void prepare() {
         valueChanged = false;
-        lastSended = millis();
         pinMode(pinCourseEncoderCLK, INPUT_PULLUP);
         pinMode(pinCourseEncoderDIO, INPUT_PULLUP);
         pinMode(pinCourseDisplayCLK, OUTPUT);
@@ -90,16 +88,16 @@ class FreyCourse {
 
     /* call it each loop and relax */
     void lap() {
-        courseEncoder.tick();
-        if (courseEncoder.turn()) {
-          if (courseEncoder.left()) {
-            if (courseEncoder.fast()) {
+        encoders[2].tick();
+        if (encoders[2].turn()) {
+          if (encoders[2].left()) {
+            if (encoders[2].fast()) {
                 courseValue -= 10;
             } else {
                 courseValue -= 1;
             }
           } else {
-            if (courseEncoder.fast()) {
+            if (encoders[2].fast()) {
                 courseValue += 10;
             } else {
                 courseValue += 1;

@@ -3,7 +3,6 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
-#include <EncButton.h>
 
 const unsigned char pinButtonVNAV = 6;
 const unsigned char pinButtonLNAV = 7;
@@ -23,14 +22,14 @@ const unsigned char pinCWSEnabled = A4;
 const unsigned char pinLevelChangedEnabled = A5;
 
 
-EncButton<EB_TICK, pinButtonVNAV> apVNAVButton;
-EncButton<EB_TICK, pinButtonLNAV> apLNAVButton;
-EncButton<EB_TICK, pinButtonVORLOCK> apVORLOCKButton;
-EncButton<EB_TICK, pinButtonAPPROACH> apAPPROACHButton;
-EncButton<EB_TICK, pinButtonCMD> apCMDButton;
-EncButton<EB_TICK, pinButtonCWS> apCWSButton;
-EncButton<EB_TICK, pinButtonDisengage> apDisengageButton;
-EncButton<EB_TICK, pinButtonLevelChanged> apLvlChangedButton;
+EncButton2<EB_BTN> apVNAVButton(INPUT, pinButtonVNAV);;
+EncButton2<EB_BTN> apLNAVButton(INPUT, pinButtonLNAV);;
+EncButton2<EB_BTN> apVORLOCKButton(INPUT, pinButtonVORLOCK);;
+EncButton2<EB_BTN> apAPPROACHButton(INPUT, pinButtonAPPROACH);;
+EncButton2<EB_BTN> apCMDButton(INPUT, pinButtonCMD);;
+EncButton2<EB_BTN> apCWSButton(INPUT, pinButtonCWS);;
+EncButton2<EB_BTN> apDisengageButton(INPUT, pinButtonDisengage);;
+EncButton2<EB_BTN> apLvlChangedButton(INPUT, pinButtonLevelChanged);;
 
 
 class FreyAPButtons {

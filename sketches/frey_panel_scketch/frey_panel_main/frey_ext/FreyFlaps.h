@@ -3,8 +3,8 @@
 
 #include "Arduino.h"
 #include <GyverTM1637.h>
-#include <EncButton.h>
 #include "FreyCommand.h"
+#include "FreyEncoder.h"
 
 const unsigned int pinFlapsEncoderCLK = 34;
 const unsigned int pinFlapsEncoderDIO = 35;
@@ -13,7 +13,6 @@ const unsigned int pinFlapsDisplayDIO = 51;
 
 
 GyverTM1637 flapsDisplay(pinFlapsDisplayCLK, pinFlapsDisplayDIO);
-EncButton<EB_TICK, pinFlapsEncoderCLK, pinFlapsEncoderDIO> flapsEncoder;
 
 
 class FreyFlaps {
@@ -43,10 +42,10 @@ class FreyFlaps {
 
     /* call it each loop and relax */
     void lap() {
-        flapsEncoder.tick();
-        if (flapsEncoder.left()) {
+        encoders[1].tick();
+        if (encoders[1].left()) {
             sendPanelCommand("FLAPS_DOWN_ONE");
-        } else if (flapsEncoder.right()) {
+        } else if (encoders[1].right()) {
             sendPanelCommand("FLAPS_UP_ONE");
         };
     };

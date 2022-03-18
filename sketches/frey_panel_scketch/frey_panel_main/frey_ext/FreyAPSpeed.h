@@ -3,8 +3,8 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
+#include "FreyEncoder.h"
 #include <GyverTM1637.h>
-#include <EncButton.h>
 
 const unsigned int pinATEnabled = A11;
 const unsigned int pinFDEnabled = A3;
@@ -17,10 +17,10 @@ const unsigned int pinAPSpeedEnabled = A10;
 
 
 GyverTM1637 apSpeedDisplay(pinAPSpeedDisplayCLK, pinAPSpeedDisplayDIO);
-EncButton<EB_TICK, pintAPSpeedEncoderCLK, pintAPSpeedEncoderDIO, pinAPSpeedButton> apSpeedEncoder;
 
 
 class FreyAPSpeed {
+
     public:
         FreyAPSpeed() {};
 
@@ -110,17 +110,17 @@ class FreyAPSpeed {
         };
 
         void handleEncoder() {
-            apSpeedEncoder.tick();
-            if (apSpeedEncoder.turn()) {
+            encoders[5].tick();
+            if (encoders[5].turn()) {
                 valueChanged = true;
-                if (apSpeedEncoder.right()) {
-                    if (apSpeedEncoder.fast()) {
+                if (encoders[5].right()) {
+                    if (encoders[5].fast()) {
                         _speedValue -= 10;
                     } else {
                         _speedValue -= 1;
                     };
                 } else {
-                    if (apSpeedEncoder.fast()) {
+                    if (encoders[5].fast()) {
                         _speedValue += 10;
                     } else {
                         _speedValue += 1;
@@ -131,7 +131,7 @@ class FreyAPSpeed {
                 sendPanelCommand("AP_SPEED_" + (String)_speedValue);
             };
 
-            if (apSpeedEncoder.release()) {
+            if (encoders[5].release()) {
                 sendPanelCommand("AP_SPEED_TOGGLE");
             };
 

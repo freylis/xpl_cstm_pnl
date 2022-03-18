@@ -3,7 +3,8 @@
 
 #include "Arduino.h"
 #include <GyverTM1637.h>
-#include <EncButton.h>
+#include "FreyCommand.h"
+#include "FreyEncoder.h"
 
 const unsigned char pinEncCLK = 36;
 const unsigned char pinEncDIO = 37;
@@ -12,7 +13,6 @@ const unsigned char pinDisplayDIO = 53;
 
 
 GyverTM1637 speedBrakesDisplay(pinDisplayCLK, pinDisplayDIO);
-EncButton<EB_TICK, pinEncCLK, pinEncDIO> speedBrakesEncoder;
 
 
 class FreySpeedBrakes {
@@ -41,10 +41,10 @@ class FreySpeedBrakes {
     };
     /* call it each loop and relax */
     void lap() {
-        speedBrakesEncoder.tick();
-        if (speedBrakesEncoder.left()) {
+        encoders[0].tick();
+        if (encoders[0].left()) {
             sendPanelCommand("SPEEDBRAKES_DOWN_ONE");
-        } else if (speedBrakesEncoder.right()) {
+        } else if (encoders[0].right()) {
             sendPanelCommand("SPEEDBRAKES_UP_ONE");
         };
     };

@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
-#include <EncButton.h>
+#include "EncButton2.h"
 
 const unsigned char pinGearUp = A12;
 const unsigned char pinGearDown = A13;
@@ -15,8 +15,8 @@ const unsigned char FREY_GEAR_STATE_MIDDLE = 2;
 const unsigned char FREY_GEAR_STATE_DOWN = 3;
 
 
-EncButton<EB_TICK, pinGearUp> gearButtonUp;
-EncButton<EB_TICK, pinGearDown> gearButtonDown;
+EncButton2<EB_BTN> gearButtonUp(INPUT, pinGearUp);;
+EncButton2<EB_BTN> gearButtonDown(INPUT, pinGearDown);;
 
 
 class FreyGear {

@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
-#include <EncButton.h>
+#include "FreyEncoder.h"
 
 const unsigned char pinAPAltitudeEncoderCLK = 24;
 const unsigned char pinAPAltitudeEncoderDIO = 25;
@@ -14,8 +14,7 @@ const unsigned char pinAPAltitudeEnabled = A1;
 
 
 GyverTM1637 apAltitudeDisplay(pinAPAltitudeDisplayCLK, pinAPAltitudeDisplayDIO);
-EncButton<EB_TICK, pinAPAltitudeEncoderCLK, pinAPAltitudeEncoderDIO> apAltitudeEncoder;
-EncButton<EB_TICK, pinAPAltitudeButton> apAltitudeButton;
+EncButton2<EB_BTN> apAltitudeButton(INPUT, pinAPAltitudeButton);;
 
 
 class FreyAPAltitude {
@@ -49,17 +48,17 @@ class FreyAPAltitude {
         void lap() {
 
             /* set altitude with encoder */
-            apAltitudeEncoder.tick();
-            if (apAltitudeEncoder.turn()) {
+            encoders[7].tick();
+            if (encoders[7].turn()) {
                 valueChanged = true;
-                if (apAltitudeEncoder.left()) {
-                    if (apAltitudeEncoder.fast()) {
+                if (encoders[7].left()) {
+                    if (encoders[7].fast()) {
                         _altitudeValue -= 10;
                     } else {
                         _altitudeValue -= 1;
                     };
                 } else {
-                    if (apAltitudeEncoder.fast()) {
+                    if (encoders[7].fast()) {
                         _altitudeValue += 10;
                     } else {
                         _altitudeValue += 1;

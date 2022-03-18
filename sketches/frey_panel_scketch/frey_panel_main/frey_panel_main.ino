@@ -84,6 +84,31 @@ void setup() {
     Serial.begin(9600);
     Serial.setTimeout(30);
 
+    // speed brakes
+    encoders[0].setPins(INPUT_PULLUP, 36, 37);
+    
+    // flaps
+    encoders[1].setPins(INPUT_PULLUP, 34, 35);
+    
+    // course
+    encoders[2].setPins(INPUT_PULLUP, 28, 29);
+    
+    // nav1 mhz
+    encoders[3].setPins(INPUT_PULLUP, 30, 31);
+    
+    // nav1 khz
+    encoders[4].setPins(INPUT_PULLUP, 32, 33);
+    
+    // speed
+    encoders[5].setPins(INPUT_PULLUP, 26, 27);
+    
+    // heading
+    encoders[6].setPins(INPUT_PULLUP, 22, 23);
+    
+    // altitude
+    encoders[7].setPins(INPUT_PULLUP, 24, 25);
+
+
     flaps.prepare();
     //vtrim.prepare();
     gear.prepare();

@@ -4,7 +4,6 @@
 #include "Arduino.h"
 #include "FreyCommand.h"
 #include <GyverTM1637.h>
-#include <EncButton.h>
 
 const unsigned int pinNav1EncoderIntCLK = 30;
 const unsigned int pinNav1EncoderIntDIO = 31;
@@ -21,9 +20,7 @@ const unsigned int pinNav1StandbyDisplayDIO = 49;
 const unsigned int pinNav1SwitchStation = 10;
 
 
-EncButton<EB_TICK, pinNav1EncoderIntCLK, pinNav1EncoderIntDIO> navIntEncoder;
-EncButton<EB_TICK, pinNav1EncoderFloatCLK, pinNav1EncoderFloatDIO, pinNav1SwitchStation> navFloatEncoder;
-EncButton<EB_TICK, pinNav1SwitchStation> navSwitchButton;
+EncButton2<EB_BTN> navSwitchButton(INPUT, pinNav1SwitchStation);;
 
 GyverTM1637 navActiveDisplay(pinNav1ActiveDisplayCLK, pinNav1ActiveDisplayDIO);
 GyverTM1637 navStandByDisplay(pinNav1StandbyDisplayCLK, pinNav1StandbyDisplayDIO);
@@ -147,10 +144,10 @@ class FreyNav {
         };
 
         void lap() {
-            navIntEncoder.tick();
-            navFloatEncoder.tick();
-            if (navIntEncoder.turn()) {
-                if (navIntEncoder.right()) {
+            encoders[3].tick();
+            encoders[4].tick();
+            if (encoders[3].turn()) {
+                if (encoders[3].right()) {
                     intStandByFreq -= 1;
                 }
                 else {
@@ -166,8 +163,8 @@ class FreyNav {
                 drawStandByFreq();
                 hardSendState();
             };
-            if (navFloatEncoder.turn()) {
-                if (navFloatEncoder.right()) {
+            if (encoders[4].turn()) {
+                if (encoders[4].right()) {
                     floatStandByFreq -= 5;
                 } else {
                     floatStandByFreq += 5;

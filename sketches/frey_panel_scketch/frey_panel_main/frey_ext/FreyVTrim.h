@@ -5,16 +5,13 @@
 #include "FreyCommand.h"
 
 #include <GyverTM1637.h>
-#include <EncButton.h>
 
 const unsigned int pinVertTrimEncoderCLK = 40;
 const unsigned int pinVertTrimEncoderDIO = 41;
 const unsigned int pinVertTrimDisplayCLK = A13;
 const unsigned int pinVertTrimDisplayDIO = A12;
 
-
 GyverTM1637 vTrimDisplay(pinVertTrimDisplayCLK, pinVertTrimDisplayDIO);
-EncButton<EB_TICK, pinVertTrimEncoderCLK, pinVertTrimEncoderDIO> vTrimEncoder;
 
 
 class FreyVTrim {

@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "FreyCommand.h"
-#include <EncButton.h>
+#include "FreyEncoder.h"
 
 const unsigned char pinAPHeadingEncoderCLK = 22;
 const unsigned char pinAPHeadingEncoderDIO = 23;
@@ -14,8 +14,7 @@ const unsigned char pinAPHeadingEnabled = A0;
 
 
 GyverTM1637 apHeadingDisplay(pinAPHeadingDisplayCLK, pinAPHeadingDisplayDIO);
-EncButton<EB_TICK, pinAPHeadingEncoderCLK, pinAPHeadingEncoderDIO> apHeadingEncoder;
-EncButton<EB_TICK, pinAPHeadingButton> apHeadingButton;
+EncButton2<EB_BTN> apHeadingButton(INPUT, pinAPHeadingButton);;
 
 
 class FreyAPHeading {
@@ -25,7 +24,6 @@ class FreyAPHeading {
 
         void prepare() {
             valueChanged = false;
-            lastSended = millis();
             pinMode(pinAPHeadingEncoderCLK, INPUT_PULLUP);
             pinMode(pinAPHeadingEncoderDIO, INPUT_PULLUP);
             pinMode(pinAPHeadingButton, INPUT_PULLUP);
@@ -51,17 +49,17 @@ class FreyAPHeading {
 
         void lap() {
 
-            apHeadingEncoder.tick();
-            if (apHeadingEncoder.turn()) {
+            encoders[6].tick();
+            if (encoders[6].turn()) {
                 valueChanged = true;
-                if (apHeadingEncoder.left()) {
-                    if (apHeadingEncoder.fast()) {
+                if (encoders[6].left()) {
+                    if (encoders[6].fast()) {
                         _headingValue -= 10;
                     } else {
                         _headingValue -= 1;
                     };
                 } else {
-                    if (apHeadingEncoder.fast()) {
+                    if (encoders[6].fast()) {
                         _headingValue += 10;
                     } else {
                         _headingValue += 1;
@@ -99,7 +97,6 @@ class FreyAPHeading {
     private:
         int _headingValue;
         bool valueChanged;
-        int lastSended;
         void drawHeading() {
           String sHeading = (String)_headingValue;
           apHeadingDisplay.displayByte(0, _empty);
