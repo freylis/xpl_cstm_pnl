@@ -35,6 +35,13 @@ class FreyAPAltitude {
             apAltitudeDisplay.clear();
             apAltitudeDisplay.brightness(3);
 
+            delay(100);
+            apAltitudeDisplay.displayByte(0, _b);
+            apAltitudeDisplay.display(1, 7);
+            apAltitudeDisplay.display(2, 3);
+            apAltitudeDisplay.display(3, 7);
+            delay(100);
+
             _altitudeValue = 100;
 
             drawAltitude();
@@ -58,14 +65,13 @@ class FreyAPAltitude {
                         _altitudeValue += 1;
                     };
                 };
-                _altitudeValue = min(max(100, _altitudeValue), 500);
+                if (_altitudeValue < 1) {
+                    _altitudeValue = 1;
+                } else if (_altitudeValue > 500) {
+                    _altitudeValue = 500;
+                };
                 drawAltitude();
-            };
-
-            // если прошло достаточно времени, отправим сообщение с новым значением
-            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
                 hardSendState();
-                lastSended = false;
             };
 
             /* toggle altitude */

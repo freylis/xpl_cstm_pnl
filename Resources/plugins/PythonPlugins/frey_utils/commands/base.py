@@ -15,7 +15,6 @@ class Command:
         self.command_sender = self.sender(command=self)
 
     def execute(self):
-        utils.echo(f'Execute command {self}')
         xp.commandOnce(self.command)
 
     @property
@@ -27,7 +26,6 @@ class Command:
 
     def send_command(self):
         command_text = self.get_command()
-        utils.echo(f'Send command {command_text!r} to arduino')
         with open('D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_x.log', 'a') as f:
             f.write(command_text + '\n')
 
@@ -86,5 +84,13 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
         if not match:
             utils.echo(f'Cant get ...int from {value!r}')
             return
-        utils.echo(f'Set {self.cmd} = {match.groups()[0]}')
-        xp.setDatai(dref, int(match.groups()[0]))
+        self._set_value(dref, int(match.groups()[0]))
+
+    def _set_value(self, dataref, value):
+        xp.setDatai(dataref, value)
+
+
+class CommandDataRefFloatValue(CommandDataRefIntegerValue):
+
+    def _set_value(self, dataref, value):
+        v = xp.setDataf(dataref, value)

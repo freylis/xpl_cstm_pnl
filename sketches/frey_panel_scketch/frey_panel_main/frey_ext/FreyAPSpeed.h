@@ -58,7 +58,7 @@ class FreyAPSpeed {
         };
 
         void readFullState(String fullState) {
-            char apSpeedStatus = fullState[44];
+            char apSpeedStatus = fullState[43];
             if (apSpeedStatus == '1') {
                 analogWrite(pinAPSpeedEnabled, KD2_LIGHT);
             } else {
@@ -113,7 +113,7 @@ class FreyAPSpeed {
             apSpeedEncoder.tick();
             if (apSpeedEncoder.turn()) {
                 valueChanged = true;
-                if (apSpeedEncoder.left()) {
+                if (apSpeedEncoder.right()) {
                     if (apSpeedEncoder.fast()) {
                         _speedValue -= 10;
                     } else {
@@ -130,16 +130,6 @@ class FreyAPSpeed {
                 drawSpeed();
                 sendPanelCommand("AP_SPEED_" + (String)_speedValue);
             };
-
-            /*
-            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
-                sendPanelCommand("AP_SPEED_" + (String)_speedValue);
-                valueChanged = false;
-                lastSended = millis();
-            } else if (valueChanged) {
-                sendPanelCommand("WAIT SPEED: " + (String)millis() + " | " + (String)(lastSended + SEND_COMMAND_EVERY_MS));
-            };
-            */
 
             if (apSpeedEncoder.release()) {
                 sendPanelCommand("AP_SPEED_TOGGLE");

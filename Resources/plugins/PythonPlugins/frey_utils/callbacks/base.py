@@ -20,7 +20,6 @@ class Callback:
                     raise
                 continue
             success_commands.append(cmd)
-        utils.echo(f'Subscribed {success_commands!r} for {self}')
 
     @classmethod
     def callback(cls, commandRef, phase, refCon):

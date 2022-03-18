@@ -49,8 +49,8 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
-//#define SEND_HARD_STATE false
-#define DEBUG true
+#define SEND_HARD_STATE true
+//#define DEBUG true
 
 #include "frey_ext/FreyGear.h"
 #include "frey_ext/FreyFlaps.h"
@@ -71,16 +71,13 @@ FreyNav nav1;
 FreyCourse course;
 FreyAPSpeed ap_speed;
 FreyAPButtons ap_buttons;
-
-/*
 FreyAPHeading ap_heading;
 FreyAPAltitude ap_altitude;
-*/
 
 
 unsigned int lapNumber = 0;
 unsigned int moduleNumber = 0;
-int EACHLAP = 100;
+long EACHLAP = 100000;
 
 
 void setup() {
@@ -95,11 +92,8 @@ void setup() {
     course.prepare();
     ap_speed.prepare();
     ap_buttons.prepare();
-
-    /*
     ap_heading.prepare();
     ap_altitude.prepare();
-    */
 }
 
 void executeFullState() {
@@ -119,11 +113,8 @@ void executeFullState() {
             course.readFullState(message);
             ap_speed.readFullState(message);
             ap_buttons.readFullState(message);
-
-            /*
             ap_heading.readFullState(message);
             ap_altitude.readFullState(message);
-            */
         };
     };
 
@@ -139,11 +130,8 @@ void loop() {
     course.lap();
     ap_speed.lap();
     ap_buttons.lap();
-
-    /*
     ap_heading.lap();
     ap_altitude.lap();
-    */
 
     executeFullState();
 
@@ -202,9 +190,9 @@ void loop() {
                 sendLog("Hard send sbrake");
                 break;
             case 9:
-                vtrim.hardSendState();
+                //vtrim.hardSendState();
                 moduleNumber += 1;
-                sendLog("Hard send vtrim");
+                //sendLog("Hard send vtrim");
                 break;
             default:
                 moduleNumber = 0;

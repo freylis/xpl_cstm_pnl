@@ -179,14 +179,23 @@ class XplaneToArduino(Race):
         return super().log('[x->a] ' + msg)
 
 
-ar = ArduinoToXplane()
-xp = XplaneToArduino()
+class Command:
 
-logger.info('ready to show?')
-time.sleep(5)
-logger.info('lets fly')
+    def __init__(self, cmd):
+        if cmd.startswith('[frey-cmd-x] ') or cmd.startswith('[frey_cmd-a] '):
+            cmd = cmd.replace('[frey-cmd-x] ', '').replace('[frey-cmd-a] ', '')
+        self.cmd = cmd
 
-while True:
-    xp.lap()
-    time.sleep(0.5)
-    ar.lap()
+
+if __name__ == '__main__':
+    ar = ArduinoToXplane()
+    xp = XplaneToArduino()
+
+    logger.info('ready to show?')
+    time.sleep(5)
+    logger.info('lets fly')
+
+    while True:
+        xp.lap()
+        time.sleep(0.5)
+        ar.lap()

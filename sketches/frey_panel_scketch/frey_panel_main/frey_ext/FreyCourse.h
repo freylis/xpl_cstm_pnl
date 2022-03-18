@@ -77,13 +77,13 @@ class FreyCourse {
 
         courseDisplay.clear();
         courseDisplay.brightness(5);
-        delay(500);
+        delay(100);
 
         courseDisplay.displayByte(0, _b);
         courseDisplay.display(1, 7);
         courseDisplay.display(2, 3);
         courseDisplay.display(3, 7);
-        delay(500);
+        delay(100);
 
         _setCourseDisplay(courseValue);
     };
@@ -92,14 +92,13 @@ class FreyCourse {
     void lap() {
         courseEncoder.tick();
         if (courseEncoder.turn()) {
-          valueChanged = true;
           if (courseEncoder.left()) {
             if (courseEncoder.fast()) {
                 courseValue -= 10;
             } else {
                 courseValue -= 1;
             }
-          } else if (courseEncoder.right()) {
+          } else {
             if (courseEncoder.fast()) {
                 courseValue += 10;
             } else {
@@ -117,7 +116,7 @@ class FreyCourse {
     void readFullState(String fullState) {};
 
     void hardSendState() {
-        sendPanelCommand("CURRENT_VALUE_" + (String)courseValue);
+        sendPanelCommand("SET_COURSE_" + (String)courseValue);
     };
 };
 

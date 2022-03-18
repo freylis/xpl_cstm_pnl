@@ -38,6 +38,13 @@ class FreyAPHeading {
 
             _headingValue = 0;
 
+            delay(100);
+            apHeadingDisplay.displayByte(0, _b);
+            apHeadingDisplay.display(1, 7);
+            apHeadingDisplay.display(2, 3);
+            apHeadingDisplay.display(3, 7);
+            delay(100);
+
             drawHeading();
             hardSendState();
         };
@@ -67,12 +74,6 @@ class FreyAPHeading {
                 };
                 drawHeading();
                 hardSendState();
-            };
-
-
-            if (valueChanged && (lastSended + SEND_COMMAND_EVERY_MS) > millis()) {
-                hardSendState();
-                lastSended = false;
             };
 
             /* toggle heading */

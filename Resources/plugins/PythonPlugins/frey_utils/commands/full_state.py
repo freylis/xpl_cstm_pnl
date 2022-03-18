@@ -13,8 +13,7 @@ class CommandFullState(base.Command):
         state_manager.StateGear,    # ok
         state_manager.StateFlaps,   # ok
         state_manager.StateSpeedBrakes, # ok
-        state_manager.StateVerticalTrim,    # ok
-        state_manager.StateCourse,
+        # state_manager.StateVerticalTrim,    # ok
         state_manager.StateAPSpeed,  # ok
         state_manager.StateVNAV,    # ok
         state_manager.StateLNAV,    # ok

@@ -150,8 +150,7 @@ class FreyNav {
             navIntEncoder.tick();
             navFloatEncoder.tick();
             if (navIntEncoder.turn()) {
-                valueChanged = true;
-                if (navIntEncoder.left()) {
+                if (navIntEncoder.right()) {
                     intStandByFreq -= 1;
                 }
                 else {
@@ -165,10 +164,10 @@ class FreyNav {
                 };
                 sendLog("Draw nav1i " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
                 drawStandByFreq();
+                hardSendState();
             };
             if (navFloatEncoder.turn()) {
-                valueChanged = true;
-                if (navFloatEncoder.left()) {
+                if (navFloatEncoder.right()) {
                     floatStandByFreq -= 5;
                 } else {
                     floatStandByFreq += 5;
@@ -180,12 +179,7 @@ class FreyNav {
                 };
                 sendLog("Draw nav1 " + (String)intStandByFreq + ":" + (String)floatStandByFreq);
                 drawStandByFreq();
-            };
-
-            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 hardSendState();
-                valueChanged = false;
-                lastSended = millis();
             };
 
             navSwitchButton.tick();

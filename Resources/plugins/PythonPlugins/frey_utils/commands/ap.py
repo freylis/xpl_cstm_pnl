@@ -29,9 +29,10 @@ class CommandSpeedToggle(base.Command):
     cmd = 'laminar/B738/autopilot/speed_press'
 
 
-class CommandSetSpeed(base.CommandDataRefIntegerValue):
+class CommandSetSpeed(base.CommandDataRefFloatValue):
     short_cmd = 'AP_SPEED_'
     cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts_mach'
+    # cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts'
 
 
 class CommandDisengage(base.Command):

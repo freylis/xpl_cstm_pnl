@@ -52,7 +52,6 @@ class PythonInterface:
         for cmd in [
             frey_utils.CommandFullState,
         ]:
-            frey_utils.echo(f'Register custom command {cmd}')
             cmd.register()
 
         # subscribe callbacks to commands

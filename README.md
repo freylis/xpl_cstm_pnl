@@ -301,3 +301,10 @@ A15 - LED GEAR DOWN
 52 - DISPLAY SPEED BRAKES CLK
 53 - DISPLAY SPEED BRAKES DIO
 ```
+
+Список проблем
+```
+1. Speed не устанавливается в MCP
+2. Кнопки имеют не правильные индексы
+3. 
+```

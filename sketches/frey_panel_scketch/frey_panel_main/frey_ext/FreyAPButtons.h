@@ -10,7 +10,7 @@ const unsigned char pinButtonLNAV = 7;
 const unsigned char pinButtonVORLOCK = 5;
 const unsigned char pinButtonAPPROACH = 4;
 const unsigned char pinButtonCMD = 11;
-//const unsigned char pinButtonCWS = 7;
+const unsigned char pinButtonCWS = 2;
 const unsigned char pinButtonDisengage = 9;
 const unsigned char pinButtonLevelChanged = 8;
 
@@ -19,7 +19,7 @@ const unsigned char pinLNAVEnabled = A6;
 const unsigned char pinVORLOCKEnabled = A8;
 const unsigned char pinAPPROACHEnabled = A9;
 const unsigned char pinCMDEnabled = A2;
-//const unsigned char pinCWSEnabled = 8;
+const unsigned char pinCWSEnabled = A4;
 const unsigned char pinLevelChangedEnabled = A5;
 
 
@@ -28,7 +28,7 @@ EncButton<EB_TICK, pinButtonLNAV> apLNAVButton;
 EncButton<EB_TICK, pinButtonVORLOCK> apVORLOCKButton;
 EncButton<EB_TICK, pinButtonAPPROACH> apAPPROACHButton;
 EncButton<EB_TICK, pinButtonCMD> apCMDButton;
-//EncButton<EB_TICK, pinButtonCWS> apCWSButton;
+EncButton<EB_TICK, pinButtonCWS> apCWSButton;
 EncButton<EB_TICK, pinButtonDisengage> apDisengageButton;
 EncButton<EB_TICK, pinButtonLevelChanged> apLvlChangedButton;
 
@@ -44,7 +44,7 @@ class FreyAPButtons {
             pinMode(pinButtonVORLOCK, INPUT_PULLUP);
             pinMode(pinButtonAPPROACH, INPUT_PULLUP);
             pinMode(pinButtonCMD, INPUT_PULLUP);
-            //pinMode(pinButtonCWS, INPUT_PULLUP);
+            pinMode(pinButtonCWS, INPUT_PULLUP);
             pinMode(pinButtonDisengage, INPUT_PULLUP);
             pinMode(pinButtonLevelChanged, INPUT_PULLUP);
             pinMode(pinLNAVEnabled, OUTPUT);
@@ -52,7 +52,7 @@ class FreyAPButtons {
             pinMode(pinAPPROACHEnabled, OUTPUT);
             pinMode(pinVORLOCKEnabled, OUTPUT);
             pinMode(pinCMDEnabled, OUTPUT);
-            //pinMode(pinCWSEnabled, OUTPUT);
+            pinMode(pinCWSEnabled, OUTPUT);
             pinMode(pinLevelChangedEnabled, OUTPUT);
         };
 
@@ -82,12 +82,10 @@ class FreyAPButtons {
                 sendPanelCommand("CMD_TOGGLE");
             };
 
-            /*
             apCWSButton.tick();
             if (apCWSButton.release()) {
                 sendPanelCommand("CWS_TOGGLE");
             };
-            */
 
             apDisengageButton.tick();
             if (apDisengageButton.release()) {
@@ -118,10 +116,8 @@ class FreyAPButtons {
             if (fullState[58] == '1') {analogWrite(pinCMDEnabled, KD2_LIGHT);}
              else {analogWrite(pinCMDEnabled, LOW);};
 
-            /*
             if (fullState[62] == '1') {analogWrite(pinCWSEnabled, KD2_LIGHT);}
              else {analogWrite(pinCWSEnabled, LOW);};
-             */
 
             if (fullState[70] == '1') {analogWrite(pinLevelChangedEnabled, KD2_LIGHT);}
              else {analogWrite(pinLevelChangedEnabled, LOW);};
