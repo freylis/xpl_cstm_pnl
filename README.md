@@ -17,22 +17,20 @@ to `X-Plane/Resources/plugins/PythonPlugins/.` directory
 ##### Events from xplane to panel
 ```
 FULLSTATE message format:
-    [frey-cmd-x] FULLSTATE 1__100__2__101__102__3__4__5__6__7__8__9__1__2__3
+    [frey-cmd-x] FULLSTATE 1__012__0__0__0__0__0__0__0__0__0__1__0
         1 - [23] - GEAR
         100 - [26..28] - FLAPS
         2 - [31] - SPEED BRAKES
-        101 - [34..37] - VTRIM
-        102 - [39..42] - COURSE
-        3 - [44] - AP SPEED enabed/disabled
-        4 - [47] - VNAV
-        5 - [50] - LNAV
-        6 - [53] - VORLOCK
-        7 - [56] - APPROACH
-        8 - [59] - CMD
-        9 - [62] - CWS
-        1 - [65] - HEADING enabled\disabled
-        2 - [68] - ALTITUDE enabled\disabled
-        3 - [71] - Level changed
+        3 - [34] - AP SPEED enabed/disabled
+        4 - [37] - VNAV
+        5 - [40] - LNAV
+        6 - [43] - VORLOCK
+        7 - [46] - APPROACH
+        8 - [49] - CMD
+        9 - [52] - CWS
+        1 - [55] - HEADING enabled\disabled
+        2 - [58] - ALTITUDE enabled\disabled
+        3 - [61] - Level changed
 ```
 
 ##### Events from panel to xplane
@@ -304,7 +302,5 @@ A15 - LED GEAR DOWN
 
 Список проблем
 ```
-1. Speed не устанавливается в MCP
-2. Кнопки имеют не правильные индексы
-3. 
+1. Speed не устанавливается в MCP 
 ```

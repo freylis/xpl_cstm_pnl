@@ -68,6 +68,7 @@ class FreyCourse {
     /* call it once in setup func */
     void prepare() {
         valueChanged = false;
+        lastSended = millis();
         pinMode(pinCourseEncoderCLK, INPUT_PULLUP);
         pinMode(pinCourseEncoderDIO, INPUT_PULLUP);
         pinMode(pinCourseDisplayCLK, OUTPUT);
@@ -90,6 +91,7 @@ class FreyCourse {
     void lap() {
         encoders[2].tick();
         if (encoders[2].turn()) {
+          valueChanged = true;
           if (encoders[2].left()) {
             if (encoders[2].fast()) {
                 courseValue -= 10;
@@ -106,7 +108,12 @@ class FreyCourse {
           if (courseValue < 0) {courseValue = 360;}
           else if (courseValue > 360) {courseValue = 0;};
           _setCourseDisplay(courseValue);
+        };
+
+        if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
           hardSendState();
+          lastSended = millis();
+          valueChanged = false;
         };
 
     };

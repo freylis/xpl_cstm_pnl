@@ -24,6 +24,7 @@ class FreyAPHeading {
 
         void prepare() {
             valueChanged = false;
+            lastSended = millis();
             pinMode(pinAPHeadingEncoderCLK, INPUT_PULLUP);
             pinMode(pinAPHeadingEncoderDIO, INPUT_PULLUP);
             pinMode(pinAPHeadingButton, INPUT_PULLUP);
@@ -71,7 +72,12 @@ class FreyAPHeading {
                     _headingValue = 0;
                 };
                 drawHeading();
+            };
+
+            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 hardSendState();
+                lastSended = millis();
+                valueChanged = false;
             };
 
             /* toggle heading */
@@ -82,7 +88,7 @@ class FreyAPHeading {
 
         };
         void readFullState(String fullState) {
-            if (fullState[65] == '1') {
+            if (fullState[55] == '1') {
                 analogWrite(pinAPHeadingEnabled, KD2_LIGHT);
             } else {
                 analogWrite(pinAPHeadingEnabled, LOW);
@@ -97,6 +103,7 @@ class FreyAPHeading {
     private:
         int _headingValue;
         bool valueChanged;
+        unsigned long lastSended;
         void drawHeading() {
           String sHeading = (String)_headingValue;
           apHeadingDisplay.displayByte(0, _empty);

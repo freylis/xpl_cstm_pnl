@@ -31,7 +31,8 @@ class CommandSpeedToggle(base.Command):
 
 class CommandSetSpeed(base.CommandDataRefFloatValue):
     short_cmd = 'AP_SPEED_'
-    cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts_mach'
+    cmd = 'sim/cockpit/autopilot/airspeed'
+    # cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts_mach'
     # cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts'
 
 

@@ -100,25 +100,25 @@ class FreyAPButtons {
 
         void readFullState(String fullState) {
             // [frey-cmd-x] STATEFULL 1__000__1__0191__0__1__0__0__0__1__1__0__0__1__0
-            if (fullState[46] == '1') {analogWrite(pinVNAVEnabled, KD2_LIGHT);}
+            if (fullState[37] == '1') {analogWrite(pinVNAVEnabled, KD2_LIGHT);}
              else {analogWrite(pinVNAVEnabled, LOW);};
 
-            if (fullState[49] == '1') {analogWrite(pinLNAVEnabled, KD2_LIGHT);}
+            if (fullState[40] == '1') {analogWrite(pinLNAVEnabled, KD2_LIGHT);}
              else {analogWrite(pinLNAVEnabled, LOW);};
 
-            if (fullState[52] == '1') {analogWrite(pinVORLOCKEnabled, KD2_LIGHT);}
+            if (fullState[43] == '1') {analogWrite(pinVORLOCKEnabled, KD2_LIGHT);}
              else {analogWrite(pinVORLOCKEnabled, LOW);};
 
-            if (fullState[55] == '1') {analogWrite(pinAPPROACHEnabled, KD2_LIGHT);}
+            if (fullState[46] == '1') {analogWrite(pinAPPROACHEnabled, KD2_LIGHT);}
              else {analogWrite(pinAPPROACHEnabled, LOW);};
 
-            if (fullState[58] == '1') {analogWrite(pinCMDEnabled, KD2_LIGHT);}
+            if (fullState[49] == '1') {analogWrite(pinCMDEnabled, KD2_LIGHT);}
              else {analogWrite(pinCMDEnabled, LOW);};
 
-            if (fullState[62] == '1') {analogWrite(pinCWSEnabled, KD2_LIGHT);}
+            if (fullState[52] == '1') {analogWrite(pinCWSEnabled, KD2_LIGHT);}
              else {analogWrite(pinCWSEnabled, LOW);};
 
-            if (fullState[70] == '1') {analogWrite(pinLevelChangedEnabled, KD2_LIGHT);}
+            if (fullState[61] == '1') {analogWrite(pinLevelChangedEnabled, KD2_LIGHT);}
              else {analogWrite(pinLevelChangedEnabled, LOW);};
         };
 

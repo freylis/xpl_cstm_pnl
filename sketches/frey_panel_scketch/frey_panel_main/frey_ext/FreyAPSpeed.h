@@ -58,7 +58,7 @@ class FreyAPSpeed {
         };
 
         void readFullState(String fullState) {
-            char apSpeedStatus = fullState[43];
+            char apSpeedStatus = fullState[34];
             if (apSpeedStatus == '1') {
                 analogWrite(pinAPSpeedEnabled, KD2_LIGHT);
             } else {
@@ -80,7 +80,7 @@ class FreyAPSpeed {
         bool _ap_spd_enabled;
         int _speedValue;
         bool valueChanged;
-        int lastSended;
+        unsigned long lastSended;
 
         void handleATToggle() {
             /*
@@ -128,7 +128,12 @@ class FreyAPSpeed {
                 };
                 _speedValue = min(500, max(100, _speedValue));
                 drawSpeed();
+            };
+
+            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 sendPanelCommand("AP_SPEED_" + (String)_speedValue);
+                lastSended = millis();
+                valueChanged = false;
             };
 
             if (encoders[5].release()) {

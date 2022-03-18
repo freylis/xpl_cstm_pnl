@@ -42,9 +42,9 @@ class FreySpeedBrakes {
     /* call it each loop and relax */
     void lap() {
         encoders[0].tick();
-        if (encoders[0].left()) {
+        if (encoders[0].right()) {
             sendPanelCommand("SPEEDBRAKES_DOWN_ONE");
-        } else if (encoders[0].right()) {
+        } else if (encoders[0].left()) {
             sendPanelCommand("SPEEDBRAKES_UP_ONE");
         };
     };

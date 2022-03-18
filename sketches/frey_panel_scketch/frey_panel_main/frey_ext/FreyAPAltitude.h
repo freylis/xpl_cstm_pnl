@@ -70,7 +70,12 @@ class FreyAPAltitude {
                     _altitudeValue = 500;
                 };
                 drawAltitude();
+            };
+
+            if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
                 hardSendState();
+                lastSended = millis();
+                valueChanged = false;
             };
 
             /* toggle altitude */
@@ -81,7 +86,7 @@ class FreyAPAltitude {
         };
 
     void readFullState(String fullState) {
-        if (fullState[68] == '1') {
+        if (fullState[58] == '1') {
             analogWrite(pinAPAltitudeEnabled, KD2_LIGHT);
         } else {
             analogWrite(pinAPAltitudeEnabled, LOW);
