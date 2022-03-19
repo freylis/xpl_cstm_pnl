@@ -49,7 +49,7 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 */
 #define EB_BETTER_ENC true
 #define EB_HALFSTEP_ENC true
-#define SEND_HARD_STATE true
+//#define SEND_HARD_STATE true
 //#define DEBUG true
 
 #include "frey_ext/FreyGear.h"
@@ -62,6 +62,7 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 #include "frey_ext/FreyAPButtons.h"
 #include "frey_ext/FreyAPHeading.h"
 #include "frey_ext/FreyAPAltitude.h"
+#include "frey_ext/FreyEncoder.h"
 
 FreyFlaps flaps;
 //FreyVTrim vtrim;
@@ -77,7 +78,7 @@ FreyAPAltitude ap_altitude;
 
 unsigned int lapNumber = 0;
 unsigned int moduleNumber = 0;
-long EACHLAP = 100000;
+long EACHLAP = 10000;
 
 
 void setup() {
@@ -152,11 +153,11 @@ void loop() {
     gear.lap();
     sbrakes.lap();
     nav1.lap();
-    course.lap();
     ap_speed.lap();
     ap_buttons.lap();
     ap_heading.lap();
     ap_altitude.lap();
+    course.lap();
 
     executeFullState();
 

@@ -84,7 +84,9 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
         if not match:
             utils.echo(f'Cant get ...int from {value!r}')
             return
-        self._set_value(dref, int(match.groups()[0]))
+
+        new_value = match.groups()[0]
+        self._set_value(dref, int(new_value))
 
     def _set_value(self, dataref, value):
         xp.setDatai(dataref, value)
@@ -93,4 +95,5 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
 class CommandDataRefFloatValue(CommandDataRefIntegerValue):
 
     def _set_value(self, dataref, value):
-        v = xp.setDataf(dataref, value)
+        utils.echo(f'Set {self.cmd}={float(value)}')
+        xp.setDataf(dataref, float(value))

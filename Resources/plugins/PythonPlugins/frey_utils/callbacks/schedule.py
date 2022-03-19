@@ -82,7 +82,7 @@ def scheduled_callback(sinceLast, elapsedTime, counter, refCon):
         with open(CMD_PATH, 'w', encoding='utf-8') as f:
             f.truncate()
 
-    rnd = random.randint(0, 2)
+    rnd = random.randint(0, 1)
     if rnd == 1:
         commands.CommandFullState().send_command()
     return 1

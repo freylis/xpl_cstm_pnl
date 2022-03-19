@@ -21,7 +21,7 @@ class FreyCourse {
   private:
     int courseValue = 0;
     bool valueChanged;
-    int lastSended;
+    unsigned long lastSended;
     void _setCourseDisplay(unsigned int courseValue) {
       if (courseValue > 360 || courseValue < 0) {
         sendLog("Invalid course: " + (String)courseValue);
@@ -83,7 +83,7 @@ class FreyCourse {
         courseDisplay.display(2, 3);
         courseDisplay.display(3, 7);
         delay(100);
-
+        hardSendState();
         _setCourseDisplay(courseValue);
     };
 
@@ -107,14 +107,18 @@ class FreyCourse {
           };
           if (courseValue < 0) {courseValue = 360;}
           else if (courseValue > 360) {courseValue = 0;};
+          hardSendState();
           _setCourseDisplay(courseValue);
         };
-
+/*
         if (valueChanged && millis() > (lastSended + SEND_COMMAND_EVERY_MS)) {
           hardSendState();
           lastSended = millis();
           valueChanged = false;
+        } else if (valueChanged) {
+            sendPanelCommand("Course. WF: " + (String)millis() + " | " + (lastSended + SEND_COMMAND_EVERY_MS));
         };
+*/
 
     };
 

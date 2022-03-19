@@ -4,6 +4,9 @@ import serial
 import logging
 from logging import handlers
 
+from pipe import Pipe
+import watcher_utils
+
 
 # prepare logger
 logging.addLevelName(logging.WARNING - 1, 'XCMD')
@@ -17,7 +20,7 @@ setattr(logger, 'ACMD', logging.WARNING - 2)
 formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s')
 
 f_handler = handlers.TimedRotatingFileHandler(
-    'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log',
+    'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_watcher.log',
     when='D', encoding='utf-8'
 )
 f_handler.setFormatter(formatter)
@@ -29,7 +32,7 @@ logger.addHandler(c_handler)
 
 
 try:
-    pipe = serial.Serial('COM8', baudrate=9600, timeout=30)
+    pipe = Pipe()
 except serial.SerialException as exc:
     logger.error(str(exc))
     logger.error('Exit with status 0')
@@ -52,6 +55,15 @@ class Race:
     def log_cmd(self, msg):
         logger.log(self.CMD_LEVEL, msg)
 
+    def _clean_messages(self, messages):
+        cleaned_messages = []
+        last_message = None
+        for msg in messages:
+            if last_message != msg:
+                cleaned_messages.append(msg)
+                last_message = msg
+        return cleaned_messages
+
 
 class ArduinoToXplane(Race):
     """
@@ -66,18 +78,23 @@ class ArduinoToXplane(Race):
     def log(self, msg):
         return super().log('[a->x] ' + msg)
 
+    @watcher_utils.timer
     def lap(self):
         super().lap()
 
         try:
-            cmd = pipe.readline().decode('utf-8').strip()
+            commands = pipe.readlines()
         except Exception as exc:
             logger.error(f'Error read message: {exc}')
             return
+        else:
+            if not commands:
+                return
 
-        if cmd:
-            self.log(cmd)
-            self.handle_message(cmd)
+        for cmd in commands:
+            cmd = cmd.decode('utf-8').strip()
+            if cmd:
+                self.handle_message(cmd)
 
     def handle_message(self, msg):
         cmd = self.command_regexp.search(msg)
@@ -93,7 +110,6 @@ class ArduinoToXplane(Race):
         # если перехватили чужое сообщение, переотправим его обратно
         xp_match = XplaneToArduino.command_regexp.search(msg)
         if xp_match:
-            self.log(f'Send message {msg} again to ard')
             pipe.write(msg.encode('utf-8'))
             return
 
@@ -101,10 +117,12 @@ class ArduinoToXplane(Race):
 
     def handle_command(self, cmd):
         with open(self.command_path, 'a', encoding='utf-8') as f:
+            self.log_cmd(cmd)
             f.write(cmd + '\n')
 
     def handle_log(self, msg):
         with open(self.log_path, 'a', encoding='utf-8') as f:
+            self.log(msg)
             f.write(msg + '\n')
 
 
@@ -119,6 +137,7 @@ class XplaneToArduino(Race):
         super().__init__()
         self.future_commands = []
 
+    @watcher_utils.timer
     def lap(self):
         super().lap()
         try:
@@ -131,11 +150,11 @@ class XplaneToArduino(Race):
         if not msg_lines:
             return
 
+        msg_lines = self._clean_messages(messages=msg_lines)
         for line in msg_lines:
             if not line.strip():
                 continue
 
-            self.log(f'handling {line!r}')
             self.handle_message(line)
 
         with open(self.command_path, 'w', encoding='utf-8') as f:
@@ -162,7 +181,6 @@ class XplaneToArduino(Race):
         self.log(f'Непонятное сообщение: {msg!r}')
 
     def handle_command(self, cmd):
-        self.log(f'send command {cmd} to arduino')
         bdata = (cmd + '\n').encode('utf-8')
         try:
             pipe.write(bdata)
@@ -177,14 +195,6 @@ class XplaneToArduino(Race):
 
     def log(self, msg):
         return super().log('[x->a] ' + msg)
-
-
-class Command:
-
-    def __init__(self, cmd):
-        if cmd.startswith('[frey-cmd-x] ') or cmd.startswith('[frey_cmd-a] '):
-            cmd = cmd.replace('[frey-cmd-x] ', '').replace('[frey-cmd-a] ', '')
-        self.cmd = cmd
 
 
 if __name__ == '__main__':

@@ -31,9 +31,7 @@ class CommandSpeedToggle(base.Command):
 
 class CommandSetSpeed(base.CommandDataRefFloatValue):
     short_cmd = 'AP_SPEED_'
-    cmd = 'sim/cockpit/autopilot/airspeed'
-    # cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts_mach'
-    # cmd = 'sim/cockpit2/autopilot/airspeed_dial_kts'
+    cmd = "laminar/B738/autopilot/mcp_speed_dial_kts_mach"
 
 
 class CommandDisengage(base.Command):
@@ -104,7 +102,7 @@ class CommandNavStandByKhz(base.CommandDataRefIntegerValue):
 
 class CommandSetNav(base.CommandDataRefValue):
     rexp = re.compile(
-        r'NAV_FREQ_(?P<active_mhz>\d{3})\.(?P<active_khz>\d{2})_(?P<standby_mhz>\d{3})\.(?P<standby_khz>\d{2})'
+        r'NAV_FREQ_(?P<active_mhz>\d{3})\.(?P<active_khz>\d{1,2})_(?P<standby_mhz>\d{3})\.(?P<standby_khz>\d{1,2})'
     )
     short_cmd = 'NAV_FREQ_'
 
