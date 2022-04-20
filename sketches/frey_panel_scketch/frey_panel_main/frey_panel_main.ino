@@ -101,7 +101,7 @@ void setup() {
     encoders[4].setPins(INPUT_PULLUP, 32, 33);
     
     // speed
-    encoders[5].setPins(INPUT_PULLUP, 26, 27);
+    encoders[5].setPins(INPUT_PULLUP, 26, 27, 3);
     
     // heading
     encoders[6].setPins(INPUT_PULLUP, 22, 23);

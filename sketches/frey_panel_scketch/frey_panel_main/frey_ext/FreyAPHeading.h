@@ -42,7 +42,7 @@ class FreyAPHeading {
             apHeadingDisplay.display(1, 7);
             apHeadingDisplay.display(2, 3);
             apHeadingDisplay.display(3, 7);
-            delay(100);
+            delay(300);
 
             drawHeading();
             hardSendState();

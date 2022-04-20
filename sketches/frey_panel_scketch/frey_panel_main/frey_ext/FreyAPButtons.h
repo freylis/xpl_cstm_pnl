@@ -22,14 +22,14 @@ const unsigned char pinCWSEnabled = A4;
 const unsigned char pinLevelChangedEnabled = A5;
 
 
-EncButton2<EB_BTN> apVNAVButton(INPUT, pinButtonVNAV);;
-EncButton2<EB_BTN> apLNAVButton(INPUT, pinButtonLNAV);;
-EncButton2<EB_BTN> apVORLOCKButton(INPUT, pinButtonVORLOCK);;
-EncButton2<EB_BTN> apAPPROACHButton(INPUT, pinButtonAPPROACH);;
-EncButton2<EB_BTN> apCMDButton(INPUT, pinButtonCMD);;
-EncButton2<EB_BTN> apCWSButton(INPUT, pinButtonCWS);;
-EncButton2<EB_BTN> apDisengageButton(INPUT, pinButtonDisengage);;
-EncButton2<EB_BTN> apLvlChangedButton(INPUT, pinButtonLevelChanged);;
+EncButton2<EB_BTN> apVNAVButton(INPUT, pinButtonVNAV);
+EncButton2<EB_BTN> apLNAVButton(INPUT, pinButtonLNAV);
+EncButton2<EB_BTN> apVORLOCKButton(INPUT, pinButtonVORLOCK);
+EncButton2<EB_BTN> apAPPROACHButton(INPUT, pinButtonAPPROACH);
+EncButton2<EB_BTN> apCMDButton(INPUT, pinButtonCMD);
+EncButton2<EB_BTN> apCWSButton(INPUT, pinButtonCWS);
+EncButton2<EB_BTN> apDisengageButton(INPUT, pinButtonDisengage);
+EncButton2<EB_BTN> apLvlChangedButton(INPUT, pinButtonLevelChanged);
 
 
 class FreyAPButtons {

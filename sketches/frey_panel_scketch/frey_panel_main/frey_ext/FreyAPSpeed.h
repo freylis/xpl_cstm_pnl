@@ -17,6 +17,7 @@ const unsigned int pinAPSpeedEnabled = A10;
 
 
 GyverTM1637 apSpeedDisplay(pinAPSpeedDisplayCLK, pinAPSpeedDisplayDIO);
+EncButton2<EB_BTN> apSpeedButton(INPUT_PULLUP, pinAPSpeedButton);
 
 
 class FreyAPSpeed {
@@ -46,7 +47,7 @@ class FreyAPSpeed {
             apSpeedDisplay.display(1, 7);
             apSpeedDisplay.display(2, 3);
             apSpeedDisplay.display(3, 7);
-            delay(100);
+            delay(300);
 
             drawSpeed();
         };
@@ -136,7 +137,8 @@ class FreyAPSpeed {
                 valueChanged = false;
             };
 
-            if (encoders[5].release()) {
+            apSpeedButton.tick();
+            if (apSpeedButton.release()) {
                 sendPanelCommand("AP_SPEED_TOGGLE");
             };
 

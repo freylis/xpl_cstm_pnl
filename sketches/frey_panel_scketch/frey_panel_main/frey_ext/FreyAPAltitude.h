@@ -39,7 +39,7 @@ class FreyAPAltitude {
             apAltitudeDisplay.display(1, 7);
             apAltitudeDisplay.display(2, 3);
             apAltitudeDisplay.display(3, 7);
-            delay(100);
+            delay(300);
 
             _altitudeValue = 100;
 

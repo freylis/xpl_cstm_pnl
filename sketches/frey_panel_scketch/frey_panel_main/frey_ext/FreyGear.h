@@ -64,7 +64,7 @@ class FreyGear {
         gearButtonDown.tick();
         // если если включено и последний статус не включен, то отправить эвент
         //if (is_down && _statePosition != FREY_GEAR_STATE_DOWN) {
-        if (gearButtonUp.press()) {
+        if (gearButtonDown.press()) {
             _statePosition = FREY_GEAR_STATE_DOWN;
             _gearDown();
         }
@@ -84,6 +84,7 @@ class FreyGear {
             _gearUp();
             _statePosition = FREY_GEAR_STATE_UP;
         };
+
     };
 
     void readFullState(String fullState) {
