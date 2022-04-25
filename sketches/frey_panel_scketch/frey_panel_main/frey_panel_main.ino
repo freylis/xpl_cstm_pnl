@@ -63,6 +63,7 @@ LEVEL_CHANGED - вкл LEVELCHANGED для актуализации параме
 #include "frey_ext/FreyAPHeading.h"
 #include "frey_ext/FreyAPAltitude.h"
 #include "frey_ext/FreyEncoder.h"
+#include "frey_ext/FreyCommand.h"
 
 FreyFlaps flaps;
 //FreyVTrim vtrim;
@@ -86,10 +87,10 @@ void setup() {
     Serial.setTimeout(30);
 
     // speed brakes
-    encoders[0].setPins(INPUT_PULLUP, 36, 37);
+    encoders[0].setPins(INPUT_PULLUP, 37, 36);
     
     // flaps
-    encoders[1].setPins(INPUT_PULLUP, 34, 35);
+    encoders[1].setPins(INPUT_PULLUP, 35, 34);
     
     // course
     encoders[2].setPins(INPUT_PULLUP, 28, 29);
@@ -109,6 +110,7 @@ void setup() {
     // altitude
     encoders[7].setPins(INPUT_PULLUP, 24, 25);
 
+    sendPong();
 
     flaps.prepare();
     //vtrim.prepare();
@@ -122,12 +124,19 @@ void setup() {
     ap_altitude.prepare();
 }
 
-void executeFullState() {
+
+void executeExternalCommand() {
 
     if (Serial.available() > 0) {
         String message = Serial.readString();
         message.trim();
         if (message == "") {return;};
+
+        /* ping-pong for auto-determine COM-port */
+        if (message == "[frey-ping]") {
+            sendPong();
+            return;
+        };
 
         if (message.startsWith("[frey-cmd-x] FULLSTATE") || message.startsWith("[frey-cmd-x] STATEFULL")) {
             sendLog("Start handle command " + message);
@@ -147,25 +156,8 @@ void executeFullState() {
 }
 
 
-void loop() {
-    flaps.lap();
-    //vtrim.lap();
-    gear.lap();
-    sbrakes.lap();
-    nav1.lap();
-    ap_speed.lap();
-    ap_buttons.lap();
-    ap_heading.lap();
-    ap_altitude.lap();
-    course.lap();
-
-    executeFullState();
-
-    /*
-        Каждые N кругов, какой-нибудь модуль шлёт сообщение в xplane
-        с своим состоянием
-    */
-    #ifdef SEND_HARD_STATE
+#ifdef SEND_HARD_STATE
+void sendHardState() {
     lapNumber += 1;
     if (lapNumber == EACHLAP) {
         lapNumber = 0;
@@ -226,6 +218,30 @@ void loop() {
                 break;
         };
     };
+};
+#endif
+
+
+void loop() {
+    flaps.lap();
+    //vtrim.lap();
+    gear.lap();
+    sbrakes.lap();
+    nav1.lap();
+    ap_speed.lap();
+    ap_buttons.lap();
+    ap_heading.lap();
+    ap_altitude.lap();
+    course.lap();
+
+    executeExternalCommand();
+
+    /*
+        Каждые N кругов, какой-нибудь модуль шлёт сообщение в xplane
+        с своим состоянием
+    */
+    #ifdef SEND_HARD_STATE
+    sendHardState();
     #endif
 
 };

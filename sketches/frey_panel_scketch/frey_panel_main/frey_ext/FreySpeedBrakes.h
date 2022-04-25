@@ -6,8 +6,8 @@
 #include "FreyCommand.h"
 #include "FreyEncoder.h"
 
-const unsigned char pinEncCLK = 36;
-const unsigned char pinEncDIO = 37;
+const unsigned char pinEncCLK = 37;
+const unsigned char pinEncDIO = 36;
 const unsigned char pinDisplayCLK = 52;
 const unsigned char pinDisplayDIO = 53;
 

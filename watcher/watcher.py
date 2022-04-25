@@ -32,7 +32,7 @@ logger.addHandler(c_handler)
 
 
 try:
-    pipe = Pipe()
+    pipe = Pipe.init()
 except serial.SerialException as exc:
     logger.error(str(exc))
     logger.error('Exit with status 0')
@@ -111,6 +111,10 @@ class ArduinoToXplane(Race):
         xp_match = XplaneToArduino.command_regexp.search(msg)
         if xp_match:
             pipe.write(msg.encode('utf-8'))
+            return
+
+        if msg == pipe.EXPECT_ANSWER:
+            self.log('Ping-pong answer found')
             return
 
         self.log(f'Непонятное сообщение __{msg}__')

@@ -94,13 +94,13 @@ class FreyCourse {
           valueChanged = true;
           if (encoders[2].left()) {
             if (encoders[2].fast()) {
-                courseValue -= 10;
+                courseValue -= 3;
             } else {
                 courseValue -= 1;
             }
           } else {
             if (encoders[2].fast()) {
-                courseValue += 10;
+                courseValue += 3;;
             } else {
                 courseValue += 1;
             };
