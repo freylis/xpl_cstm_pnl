@@ -53,13 +53,13 @@ class FreyAPAltitude {
                 valueChanged = true;
                 if (encoders[7].left()) {
                     if (encoders[7].fast()) {
-                        _altitudeValue -= 3;
+                        _altitudeValue -= 5;
                     } else {
                         _altitudeValue -= 1;
                     };
                 } else {
                     if (encoders[7].fast()) {
-                        _altitudeValue += 3;;
+                        _altitudeValue += 5;;
                     } else {
                         _altitudeValue += 1;
                     };

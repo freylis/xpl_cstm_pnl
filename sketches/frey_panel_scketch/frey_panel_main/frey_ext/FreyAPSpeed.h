@@ -116,13 +116,13 @@ class FreyAPSpeed {
                 valueChanged = true;
                 if (encoders[5].right()) {
                     if (encoders[5].fast()) {
-                        _speedValue -= 3;
+                        _speedValue -= 5;
                     } else {
                         _speedValue -= 1;
                     };
                 } else {
                     if (encoders[5].fast()) {
-                        _speedValue += 3;;
+                        _speedValue += 5;;
                     } else {
                         _speedValue += 1;
                     };

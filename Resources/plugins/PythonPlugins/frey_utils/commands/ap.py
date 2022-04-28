@@ -65,7 +65,7 @@ class CommandLNAVToggle(base.Command):
 
 
 class CommandVNAVToggle(base.Command):
-    short_cmd = 'LNAV_TOGGLE'
+    short_cmd = 'VNAV_TOGGLE'
     cmd = 'laminar/B738/autopilot/vnav_press'
 
 

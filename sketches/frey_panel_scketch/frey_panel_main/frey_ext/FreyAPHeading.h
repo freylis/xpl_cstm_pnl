@@ -55,13 +55,13 @@ class FreyAPHeading {
                 valueChanged = true;
                 if (encoders[6].left()) {
                     if (encoders[6].fast()) {
-                        _headingValue -= 3;
+                        _headingValue -= 5;
                     } else {
                         _headingValue -= 1;
                     };
                 } else {
                     if (encoders[6].fast()) {
-                        _headingValue += 3;;
+                        _headingValue += 5;;
                     } else {
                         _headingValue += 1;
                     }
