@@ -10,8 +10,11 @@ This plugin [xppython3](https://xppython3.readthedocs.io/en/stable/index.html) b
 0. Install XPPython plugin https://xppython3.readthedocs.io/
 1. Copy `./Resources/plugins/PythonPlugins/frey_utils` and `./Resources/plugins/PythonPlugins/PI_xplCstmPnlFreylis.py`
 to `X-Plane/Resources/plugins/PythonPlugins/.` directory
-2. Write `sketches/frey_panel_scketch/frey_panel_main/frey_panel_main.ino` to Arduino MEGA
-3. Run `watcher/watcher.py` with `python3`
+2. Install 3rd-party libs in Arduino IDEA:
+   1. GyverTM1637 -- https://github.com/GyverLibs/GyverTM1637
+   2. EncButton -- https://github.com/GyverLibs/EncButton
+3. Write `sketches/frey_panel_scketch/frey_panel_main/frey_panel_main.ino` to Arduino MEGA
+4. Run `watcher/watcher.py` with `python3`
 
 ### Events
 ##### Events from xplane to panel

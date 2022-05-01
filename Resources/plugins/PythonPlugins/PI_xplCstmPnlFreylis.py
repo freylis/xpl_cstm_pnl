@@ -82,5 +82,5 @@ class PythonInterface:
     def _register_callbacks(self):
         # register scheduled callback
         schedule_loop_id = xp.createFlightLoop(frey_utils.scheduled_callback)
-        xp.scheduleFlightLoop(schedule_loop_id, interval=2)
+        xp.scheduleFlightLoop(schedule_loop_id, interval=0.3)
         xp.speakString("[frey] Run loop event")

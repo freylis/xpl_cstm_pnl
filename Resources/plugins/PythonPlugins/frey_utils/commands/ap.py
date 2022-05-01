@@ -69,7 +69,7 @@ class CommandVNAVToggle(base.Command):
     cmd = 'laminar/B738/autopilot/vnav_press'
 
 
-class _COPilotCourse(base.CommandDataRefIntegerValue):
+class COPilotCourse(base.CommandDataRefIntegerValue):
     short_cmd = 'SET_COURSE'
     cmd = 'laminar/B738/autopilot/course_copilot'
 
@@ -80,7 +80,7 @@ class CommandSetCourse(base.CommandDataRefIntegerValue):
 
     def set_value(self, value):
         super().set_value(value)
-        copilot_command = _COPilotCourse()
+        copilot_command = COPilotCourse()
         copilot_command.set_value(value)
 
 

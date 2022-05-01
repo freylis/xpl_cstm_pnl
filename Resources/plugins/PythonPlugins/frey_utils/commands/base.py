@@ -3,16 +3,11 @@ import re
 import xp
 
 from .. import utils
-from . import sender
 
 
 class Command:
     cmd = NotImplemented
     short_cmd = NotImplemented
-    sender = sender.CommandSender
-
-    def __init__(self):
-        self.command_sender = self.sender(command=self)
 
     def execute(self):
         xp.commandOnce(self.command)
