@@ -1,4 +1,5 @@
 import re
+import xp
 
 from .. import utils
 from . import base
@@ -127,6 +128,7 @@ class CommandAutoThrottle(base.CommandDataRefIntegerValue):
 class CommandFlightDirector(base.CommandDataRefIntegerValue):
     short_cmd = 'FLIGHT_DIRECTOR_'
     cmd = 'laminar/B738/switches/autopilot/fd_ca'
+    # cmd = 'sim/cockpit2/switches/landing_lights_switch'
 
 
 class CommandLevelChanged(base.Command):

@@ -10,6 +10,7 @@ class Command:
     short_cmd = NotImplemented
 
     def execute(self):
+        utils.echo(f'Send command {self.command}')
         xp.commandOnce(self.command)
 
     @property
@@ -50,6 +51,7 @@ class CommandDataRefValue(Command):
             utils.echo(f'Unknown dataref={self.cmd} for execute command {self}', error=True)
             return
 
+        utils.echo(f'Set dref {self.cmd!r}={value}')
         if isinstance(value, int):
             xp.setDatai(dref, value)
         elif isinstance(value, float):
@@ -81,6 +83,7 @@ class CommandDataRefIntegerValue(CommandDataRefValue):
             return
 
         new_value = match.groups()[0]
+        utils.echo(f'Set dref {self.cmd!r}={value}')
         self._set_value(dref, int(new_value))
 
     def _set_value(self, dataref, value):

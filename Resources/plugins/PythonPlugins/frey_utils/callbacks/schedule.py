@@ -72,7 +72,10 @@ def scheduled_callback(sinceLast, elapsedTime, counter, refCon):
         for v_cmd in VALUED_COMMANDS_MAPPING:
             if short_cmd.startswith(v_cmd.short_cmd):
                 cmd = v_cmd()
-                cmd.set_value(short_cmd)
+                try:
+                    cmd.set_value(short_cmd)
+                except Exception as exc:
+                    utils.echo(f'Не могу выполнить команду {short_cmd} / {cmd}: {exc}\n{dir(cmd)}')
                 break
         else:
             utils.echo(f'Cant find command for {command_string!r}')

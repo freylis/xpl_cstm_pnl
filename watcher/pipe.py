@@ -39,7 +39,9 @@ class Pipe(serial.Serial):
                     if answr == cls.EXPECT_ANSWER:
                         pipe.close()
                         real_pipe = cls(port_name, timeout=0)
+                        logger.info(f'Start works with {port_name}')
                         return real_pipe
 
             logger.warning(f'Cant find COM port with {lap_n} try')
             lap_n += 1
+            time.sleep(2)
