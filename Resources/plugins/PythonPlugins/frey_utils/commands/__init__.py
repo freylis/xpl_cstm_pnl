@@ -31,5 +31,9 @@ from .ap import CommandVNAVToggle
 from .ap import CommandSetCourse
 from .ap import CommandSetNav
 from .ap import CommandAutoThrottle
+from .ap import CommandAutoThrottleOn
+from .ap import CommandAutoThrottleOff
 from .ap import CommandFlightDirector
+from .ap import CommandFlightDirectorOn
+from .ap import CommandFlightDirectorOff
 from .ap import CommandLevelChanged

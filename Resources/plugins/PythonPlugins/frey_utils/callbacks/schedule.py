@@ -32,14 +32,18 @@ COMMANDS_MAPPING = {
     commands.CommandLNAVToggle.short_cmd: commands.CommandLNAVToggle,
     commands.CommandVNAVToggle.short_cmd: commands.CommandVNAVToggle,
     commands.CommandLevelChanged.short_cmd: commands.CommandLevelChanged,
+    commands.CommandAutoThrottleOn.short_cmd: commands.CommandAutoThrottleOn,
+    commands.CommandAutoThrottleOff.short_cmd: commands.CommandAutoThrottleOff,
+    commands.CommandFlightDirectorOn.short_cmd: commands.CommandFlightDirectorOn,
+    commands.CommandFlightDirectorOff.short_cmd: commands.CommandFlightDirectorOff,
 }
 VALUED_COMMANDS_MAPPING = (
     commands.CommandSetAltitude,
     commands.CommandSetHeading,
     commands.CommandSetSpeed,
     commands.CommandSetNav,
-    commands.CommandAutoThrottle,
-    commands.CommandFlightDirector,
+    # commands.CommandAutoThrottle,
+    # commands.CommandFlightDirector,
     commands.CommandSetCourse,
 )
 
