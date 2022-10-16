@@ -6,8 +6,8 @@
 #include "FreyCommand.h"
 #include "FreyEncoder.h"
 
-const unsigned int pinFlapsEncoderCLK = 35;
-const unsigned int pinFlapsEncoderDIO = 34;
+const unsigned int pinFlapsEncoderCLK = 34;
+const unsigned int pinFlapsEncoderDIO = 35;
 const unsigned int pinFlapsDisplayCLK = 50;
 const unsigned int pinFlapsDisplayDIO = 51;
 

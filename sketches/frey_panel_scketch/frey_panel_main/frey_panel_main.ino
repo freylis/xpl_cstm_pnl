@@ -223,6 +223,7 @@ void sendHardState() {
 
 
 void loop() {
+
     flaps.lap();
     //vtrim.lap();
     gear.lap();
