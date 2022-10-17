@@ -36,7 +36,14 @@ COMMANDS_MAPPING = {
     commands.CommandAutoThrottleOff.short_cmd: commands.CommandAutoThrottleOff,
     commands.CommandFlightDirectorOn.short_cmd: commands.CommandFlightDirectorOn,
     commands.CommandFlightDirectorOff.short_cmd: commands.CommandFlightDirectorOff,
+
+    # replace AP/FD to Landing/taxi lights
+    commands.CommandTaxiLightsOn.short_cmd: commands.CommandTaxiLightsOn,
+    commands.CommandTaxiLightsOff.short_cmd: commands.CommandTaxiLightsOff,
+    commands.CommandLandingLightsOn.short_cmd: commands.CommandLandingLightsOn,
+    commands.CommandLandingLightsOff.short_cmd: commands.CommandLandingLightsOff,
 }
+
 VALUED_COMMANDS_MAPPING = (
     commands.CommandSetAltitude,
     commands.CommandSetHeading,

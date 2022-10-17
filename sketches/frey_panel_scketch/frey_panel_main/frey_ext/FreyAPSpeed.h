@@ -85,27 +85,37 @@ class FreyAPSpeed {
 
         void handleATToggle() {
             /*
-                AutoThrottle
-                Check it once per 10ms
+                Old:
+                    AutoThrottle
+
+                New:
+                    Landing Lights
             */
             int at_current = !digitalRead(pinATEnabled);
             if (at_current == 1 && !_at_enabled) {
-                sendPanelCommand("AUTO_THROTTLE_1");
+                sendPanelCommand("LANDING_LIGHTS_1");
                 _at_enabled = true;
             } else if (at_current == 0 && _at_enabled) {
-                sendPanelCommand("AUTO_THROTTLE_0");
+                sendPanelCommand("LANDING_LIGHTS_0");
                 _at_enabled = false;
             };
 
         };
 
         void handleFDToggle() {
+            /*
+                Old:
+                    Flight Directory
+
+                New:
+                    Taxi Lights
+            */
             int fd_current = !digitalRead(pinFDEnabled);
             if (fd_current == 1 && !_fd_enabled) {
-                sendPanelCommand("FLIGHT_DIRECTOR_0");
+                sendPanelCommand("TAXI_LIGHTS_0");
                 _fd_enabled = true;
             } else if (fd_current == 0 && _fd_enabled) {
-                sendPanelCommand("FLIGHT_DIRECTOR_1");
+                sendPanelCommand("TAXI_LIGHTS_1");
                 _fd_enabled = false;
             };
         };

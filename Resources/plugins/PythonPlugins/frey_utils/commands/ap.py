@@ -139,6 +139,18 @@ class CommandAutoThrottleOff(base.Command):
     cmd = 'sim/lights/landing_lights_off'
 
 
+class CommandLandingLightsOn(base.Command):
+    short_cmd = 'LANDING_LIGHTS_1'
+    # cmd = 'laminar/B738/switches/autopilot/at_arm'
+    cmd = 'sim/lights/landing_lights_on'
+
+
+class CommandLandingLightsOff(base.Command):
+    short_cmd = 'LANDING_LIGHTS_0'
+    # cmd = 'laminar/B738/switches/autopilot/at_arm'
+    cmd = 'sim/lights/landing_lights_off'
+
+
 class CommandFlightDirector(base.Command):
     short_cmd = 'FLIGHT_DIRECTOR_'
     # cmd = 'laminar/B738/switches/autopilot/fd_ca'
@@ -154,6 +166,16 @@ class CommandFlightDirectorOn(base.Command):
 class CommandFlightDirectorOff(base.Command):
     short_cmd = 'FLIGHT_DIRECTOR_0'
     # cmd = 'laminar/B738/switches/autopilot/fd_ca'
+    cmd = 'laminar/B738/toggle_switch/taxi_light_brightness_off'
+
+
+class CommandTaxiLightsOn(base.Command):
+    short_cmd = 'TAXI_LIGHTS_1'
+    cmd = 'laminar/B738/toggle_switch/taxi_light_brightness_on'
+
+
+class CommandTaxiLightsOff(base.Command):
+    short_cmd = 'TAXI_LIGHTS_0'
     cmd = 'laminar/B738/toggle_switch/taxi_light_brightness_off'
 
 

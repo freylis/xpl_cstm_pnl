@@ -37,3 +37,7 @@ from .ap import CommandFlightDirector
 from .ap import CommandFlightDirectorOn
 from .ap import CommandFlightDirectorOff
 from .ap import CommandLevelChanged
+from .ap import CommandLandingLightsOn
+from .ap import CommandLandingLightsOff
+from .ap import CommandTaxiLightsOn
+from .ap import CommandTaxiLightsOff
