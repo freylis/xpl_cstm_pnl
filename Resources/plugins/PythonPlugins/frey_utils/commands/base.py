@@ -22,7 +22,7 @@ class Command:
 
     def send_command(self):
         command_text = self.get_command()
-        with open('D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_x.log', 'a') as f:
+        with open('D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_x.log', 'a') as f:
             f.write(command_text + '\n')
 
     def get_command(self):

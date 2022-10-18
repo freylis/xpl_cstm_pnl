@@ -20,7 +20,7 @@ setattr(logger, 'ACMD', logging.WARNING - 2)
 formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s')
 
 f_handler = handlers.TimedRotatingFileHandler(
-    'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_watcher.log',
+    'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_watcher.log',
     when='D', encoding='utf-8'
 )
 f_handler.setFormatter(formatter)
@@ -70,9 +70,9 @@ class ArduinoToXplane(Race):
     Читаем из COM. Если находим команду по нужной маске, пишем в
     """
     command_regexp = re.compile(r'\[frey-cmd-a] (\w+)', flags=re.I)
-    command_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_a.log'
+    command_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_a.log'
     log_regexp = re.compile(r'\[frey-log-a] (\w+)', flags=re.I)
-    log_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log'
+    log_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey.log'
     CMD_LEVEL = logger.ACMD
 
     def log(self, msg):
@@ -132,9 +132,9 @@ class ArduinoToXplane(Race):
 
 class XplaneToArduino(Race):
     command_regexp = re.compile(r'^\[frey-cmd-x] ([\w ]+)\s*$', flags=re.I)
-    command_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_x.log'
+    command_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_x.log'
     log_regexp = re.compile(r'\[frey-log-x] (\w+)', flags=re.I)
-    log_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey.log'
+    log_path = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey.log'
     CMD_LEVEL = logger.XCMD
 
     def __init__(self):

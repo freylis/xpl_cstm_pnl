@@ -7,7 +7,7 @@ from .. import utils
 from .. import commands
 
 
-CMD_PATH = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 11\\frey_cmd_a.log'
+CMD_PATH = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_a.log'
 command_regexp = re.compile(r'\[frey-cmd-a] (.+)\s*', flags=re.I)
 
 
@@ -32,14 +32,25 @@ COMMANDS_MAPPING = {
     commands.CommandLNAVToggle.short_cmd: commands.CommandLNAVToggle,
     commands.CommandVNAVToggle.short_cmd: commands.CommandVNAVToggle,
     commands.CommandLevelChanged.short_cmd: commands.CommandLevelChanged,
+    commands.CommandAutoThrottleOn.short_cmd: commands.CommandAutoThrottleOn,
+    commands.CommandAutoThrottleOff.short_cmd: commands.CommandAutoThrottleOff,
+    commands.CommandFlightDirectorOn.short_cmd: commands.CommandFlightDirectorOn,
+    commands.CommandFlightDirectorOff.short_cmd: commands.CommandFlightDirectorOff,
+
+    # replace AP/FD to Landing/taxi lights
+    commands.CommandTaxiLightsOn.short_cmd: commands.CommandTaxiLightsOn,
+    commands.CommandTaxiLightsOff.short_cmd: commands.CommandTaxiLightsOff,
+    commands.CommandLandingLightsOn.short_cmd: commands.CommandLandingLightsOn,
+    commands.CommandLandingLightsOff.short_cmd: commands.CommandLandingLightsOff,
 }
+
 VALUED_COMMANDS_MAPPING = (
     commands.CommandSetAltitude,
     commands.CommandSetHeading,
     commands.CommandSetSpeed,
     commands.CommandSetNav,
-    commands.CommandAutoThrottle,
-    commands.CommandFlightDirector,
+    # commands.CommandAutoThrottle,
+    # commands.CommandFlightDirector,
     commands.CommandSetCourse,
 )
 

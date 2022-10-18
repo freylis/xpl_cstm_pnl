@@ -15,8 +15,8 @@ const unsigned char FREY_GEAR_STATE_MIDDLE = 2;
 const unsigned char FREY_GEAR_STATE_DOWN = 3;
 
 
-EncButton2<EB_BTN> gearButtonUp(INPUT, pinGearUp);;
-EncButton2<EB_BTN> gearButtonDown(INPUT, pinGearDown);;
+EncButton2<EB_BTN> gearButtonUp(INPUT, pinGearUp);
+EncButton2<EB_BTN> gearButtonDown(INPUT, pinGearDown);
 
 
 class FreyGear {
