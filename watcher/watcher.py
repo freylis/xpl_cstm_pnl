@@ -4,9 +4,6 @@ import serial
 import logging
 from logging import handlers
 
-from pipe import Pipe
-import watcher_utils
-
 
 # prepare logger
 logging.addLevelName(logging.WARNING - 1, 'XCMD')
@@ -29,6 +26,48 @@ c_handler.setFormatter(formatter)
 
 logger.addHandler(f_handler)
 logger.addHandler(c_handler)
+
+
+class Pipe(serial.Serial):
+    PING_CMD = '[frey-ping]\n'.encode('utf-8')
+    EXPECT_ANSWER = '[frey-pong] PANEL_1'
+
+    def __init__(self, port, timeout=0):
+        super().__init__(port, baudrate=9600, timeout=timeout, write_timeout=timeout)
+
+    @classmethod
+    def init(cls):
+        lap_n = 1
+        while True:
+            for porn_n in range(1, 50):
+                port_name = f'COM{porn_n}'
+
+                try:
+                    pipe = cls(port_name, timeout=1)
+                except Exception:
+                    continue
+
+                try:
+                    pipe.write(cls.PING_CMD)
+                except Exception:
+                    continue
+
+                time.sleep(1)
+                answers = pipe.readlines()
+                if not answers:
+                    continue
+
+                for r_answer in answers:
+                    answr = r_answer.decode('utf-8').strip()
+                    if answr == cls.EXPECT_ANSWER:
+                        pipe.close()
+                        real_pipe = cls(port_name, timeout=0)
+                        logger.info(f'Start works with {port_name}')
+                        return real_pipe
+
+            logger.warning(f'Cant find COM port with {lap_n} try')
+            lap_n += 1
+            time.sleep(2)
 
 
 try:
@@ -78,7 +117,6 @@ class ArduinoToXplane(Race):
     def log(self, msg):
         return super().log('[a->x] ' + msg)
 
-    @watcher_utils.timer
     def lap(self):
         super().lap()
 
@@ -141,7 +179,6 @@ class XplaneToArduino(Race):
         super().__init__()
         self.future_commands = []
 
-    @watcher_utils.timer
     def lap(self):
         super().lap()
         try:
