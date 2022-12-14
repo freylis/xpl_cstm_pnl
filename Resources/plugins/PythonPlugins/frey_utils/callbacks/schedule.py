@@ -7,7 +7,7 @@ from .. import utils
 from .. import commands
 
 
-CMD_PATH = 'D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_a.log'
+CMD_PATH = 'E:\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey_cmd_a.log'
 command_regexp = re.compile(r'\[frey-cmd-a] (.+)\s*', flags=re.I)
 
 

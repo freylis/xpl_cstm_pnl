@@ -20,7 +20,7 @@ def echo(msg, error=False):
         msg = f'\tERROR\t: {msg}'
     xp.log(msg)
     now = datetime.datetime.now()
-    with open('D:\\games\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey.log', 'a') as f:
+    with open('E:\\SteamLibrary\\steamapps\\common\\X-Plane 12\\frey.log', 'a') as f:
         f.write(f'\n[{now}]: {msg}')
 
 
